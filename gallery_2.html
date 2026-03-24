@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サンプル一覧 | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fdfbf9;
+  color: #333;
+  min-height: 100vh;
+}
+
+.site-header {
+  background: #f8bdcb;
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+.site-header h1 {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.1em;
+}
+
+.nav {
+  background: #fff;
+  border-bottom: 1px solid #f0c0d0;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(248,189,203,0.2);
+}
+.nav a {
+  display: inline-block;
+  margin: 0 0.4rem;
+  font-size: 12px;
+  color: #c45c80;
+  text-decoration: none;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid #f0c0d0;
+  transition: background 0.2s;
+}
+.nav a:hover, .nav a.active { background: #fff0f5; }
+
+.page-header {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+}
+.page-header-eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  color: #e8a0b8;
+  margin-bottom: 0.75rem;
+}
+.page-header h2 {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #2a2a2a;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+.page-header-line {
+  width: 36px;
+  height: 1px;
+  background: #f0c0d0;
+  margin: 0 auto 1rem;
+}
+.page-header p {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.8;
+}
+
+/* =============================================
+   ギャラリーグリッド
+
+   【画像の追加方法】
+   .gallery-grid の中に以下をコピーして追加するだけ！
+
+   <div class="gallery-item">
+     <img src="ファイル名.jpg" alt="説明" loading="lazy">
+   </div>
+
+   ・画像は正方形（1:1比率）で用意すると綺麗に表示されます
+   ・loading="lazy" はそのまま残してください（表示速度改善）
+   ============================================= */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  max-width: 960px;
+  margin: 0 auto 5rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 600px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    padding: 0 0.5rem;
+  }
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: #f7eff2;
+  cursor: pointer;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+  filter: brightness(0.96) saturate(0.95);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.01) saturate(1.05);
+}
+
+.gallery-item-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fce8f0;
+  font-size: 12px;
+  color: #e8a0b8;
+}
+
+/* ライトボックス（クリックで拡大） */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 8, 12, 0.94);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  cursor: pointer;
+}
+.lightbox.open { display: flex; }
+
+.lightbox-img-wrap {
+  position: relative;
+  cursor: default;
+}
+.lightbox img {
+  max-width: min(88vw, 680px);
+  max-height: 88vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 3px;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 38px;
+  height: 38px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.8);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  font-family: sans-serif;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+.footer {
+  text-align: center;
+  padding: 2rem 1.5rem 3rem;
+  border-top: 1px solid #f0c0d0;
+  font-size: 12px;
+  color: #aaa;
+}
+.footer p { margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>hug nui² studio</h1>
+</header>
+
+<nav class="nav">
+  <a href="https://hughana.stores.jp/">TOPへ戻る</a>
+  <a href="order.html">オーダーの流れ</a>
+  <a href="before-order.html">オーダー前のお願い</a>
+  <a href="size.html">料金表</a>
+  <a href="fabric.html">布色一覧表</a>
+  <a href="https://hughana.stores.jp/faq">よくある質問</a>
+  <a href="template.html">テンプレート</a>
+</nav>
+
+<div class="page-header">
+  <p class="page-header-eyebrow">works</p>
+  <h2>サンプル一覧</h2>
+  <div class="page-header-line"></div>
+  <p>今までに制作したぬいぐるみたちをご紹介します。(順不同)</p>
+</div>
+
+<!-- =============================================
+     ギャラリーグリッド
+
+     【画像の追加方法】
+     以下のブロックをコピーして貼り付けるだけ！
+
+     <div class="gallery-item">
+       <img src="ファイル名.jpg" alt="作品の説明" loading="lazy">
+     </div>
+
+     ・画像は正方形（1:1）で用意すると綺麗に表示されます
+     ・loading="lazy" はそのまま残してください
+     ・プレースホルダーは画像ができたら削除してください
+     ============================================= -->
+<div class="gallery-grid">
+
+  <!-- ↓ ここから画像を追加 ↓ -->
+
+  <!-- 画像サンプル（実際の画像に差し替えてください）
+  <div class="gallery-item">
+    <img src="sample01.jpg" alt="作品名" loading="lazy">
+  </div>
+  -->
+
+  <!-- 現在はプレースホルダー表示 -->
+  <div class="gallery-item">
+    <img src="image/sample (1).jpg" alt="sample" loading="lazy">
+  </div>
+  <div class="gallery-item">
+    <img src="image/sample (1).png" alt="sample" loading="lazy">  </div>
+  <div class="gallery-item">
+    <img src="image/sample (10).jpg" alt="sample" loading="lazy">
+  </div>
+  
+  <div class="gallery-item">
+    <img src="image/sample (2).jpg" alt="sample" loading="lazy">
+  </div>
+  <div class="gallery-item">
+    <img src="image/sample (2).png" alt="sample" loading="lazy">  </div>
+  <div class="gallery-item">
+    <img src="image/sample (3).jpg" alt="sample" loading="lazy">
+  </div>
+
+  <div class="gallery-item">
+    <img src="image/sample (3).png" alt="sample" loading="lazy">
+  </div>
+  <div class="gallery-item">
+    <img src="image/sample (4).jpg" alt="sample" loading="lazy">  </div>
+  <div class="gallery-item">
+    <img src="image/sample (5).jpg" alt="sample" loading="lazy">
+  </div>
+
+   <div class="gallery-item">
+    <img src="image/sample (6).jpg" alt="sample" loading="lazy">
+  </div>
+  <div class="gallery-item">
+    <img src="image/sample (7).jpg" alt="sample" loading="lazy">  </div>
+  <div class="gallery-item">
+    <img src="image/sample (8).jpg" alt="sample" loading="lazy">
+  </div>
+
+  <div class="gallery-item">
+    <img src="image/sample (9).jpg" alt="sample" loading="lazy">
+  </div>
+
+  <!-- ↑ ここまで ↑ -->
+
+</div>
+
+<!-- ライトボックス -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">✕</button>
+  <div class="lightbox-img-wrap">
+    <img src="" alt="" id="lightbox-img">
+  </div>
+</div>
+
+<div class="footer">
+  <p>ご不明な点はXのDMにてお問い合わせください</p>
+  <p>@hug87_OuO</p>
+</div>
+
+<script>
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxClose = document.getElementById('lightbox-close');
+
+function openLightbox(src, alt) {
+  lightboxImg.src = src;
+  lightboxImg.alt = alt;
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.gallery-item img').forEach(img => {
+  img.addEventListener('click', () => openLightbox(img.src, img.alt));
+});
+
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+lightboxClose.addEventListener('click', closeLightbox);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+</script>
+</body>
+</html>
