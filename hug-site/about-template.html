@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>テンプレートについて | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: #333; min-height: 100vh; }
+.site-header { background: #f8bdcb; padding: 1rem 1.5rem; text-align: center; }
+.site-header h1 { font-family: 'Zen Maru Gothic', sans-serif; font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 0.1em; }
+.nav {
+  background: #fff; border-bottom: 1px solid #f0c0d0; padding: 0.75rem 1rem;
+  overflow-x: auto; white-space: nowrap; text-align: center;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(248,189,203,0.2);
+}
+.nav a { display: inline-block; margin: 0 0.4rem; font-size: 12px; color: #c45c80; text-decoration: none; padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #f0c0d0; transition: background 0.2s; }
+.nav a:hover, .nav a.active { background: #fff0f5; }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #c45c80; text-align: center; margin-bottom: 0.5rem; }
+.page-subtitle { text-align: center; font-size: 13px; color: #999; margin-bottom: 2rem; line-height: 1.9; }
+.deco-line { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 2.5rem; }
+.deco-line span.bar { display: inline-block; width: 40px; height: 1px; background: #f0c0d0; }
+.deco-line span.heart { color: #e8a0b8; font-size: 12px; }
+
+.section { margin-bottom: 2rem; }
+.section-title {
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700; color: #c45c80;
+  padding: 0.4rem 0.9rem; background: #fff0f5; border-left: 3px solid #e8a0b8;
+  border-radius: 0 8px 8px 0; margin-bottom: 0.75rem;
+}
+.section-body { font-size: 13.5px; line-height: 1.95; color: #444; padding: 0 0.25rem; }
+.section-body p { margin-bottom: 0.6rem; }
+.section-body p:last-child { margin-bottom: 0; }
+
+.highlight {
+  background: #fff5f8; border: 1px solid #f0c0d0; border-radius: 10px;
+  padding: 1rem 1.25rem; margin-top: 0.75rem;
+  font-size: 13.5px; color: #444; line-height: 1.95;
+}
+.highlight p { margin-bottom: 0.5rem; }
+.highlight p:last-child { margin-bottom: 0; }
+
+.note {
+  background: #fff0f5; border: 1px solid #f5d0de; border-radius: 8px;
+  padding: 0.75rem 1rem; margin-top: 0.75rem;
+  font-size: 12.5px; color: #a04060; line-height: 1.85;
+}
+.note p { margin-bottom: 0.35rem; }
+.note p:last-child { margin-bottom: 0; }
+
+/* ダウンロードへのリンクボタン */
+.cta-btn {
+  display: block; text-align: center; padding: 0.85rem 1rem; margin-top: 2rem;
+  background: #f8bdcb; color: #fff; border-radius: 24px; font-size: 14px;
+  font-weight: 700; text-decoration: none; font-family: 'Zen Maru Gothic', sans-serif;
+  transition: opacity 0.2s; letter-spacing: 0.05em;
+}
+.cta-btn:hover { opacity: 0.8; }
+
+.footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #f0c0d0; font-size: 12px; color: #aaa; }
+.footer p { margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>hug nui² studio</h1>
+</header>
+
+<nav class="nav">
+  <a href="https://hughana.stores.jp/">TOPへ戻る</a>
+  <a href="order.html">オーダーの流れ</a>
+  <a href="before-order.html">オーダー前のお願い</a>
+  <a href="size.html">料金表</a>
+  <a href="fabric.html">布色一覧表</a>
+  <a href="https://hughana.stores.jp/faq">よくある質問</a>
+  <a href="template.html" class="active">テンプレート</a>
+</nav>
+
+<div class="wrap">
+
+  <h1 class="page-title">テンプレートについて</h1>
+  <p class="page-subtitle">ぬいぐるみオーダーに必要なテンプレートについてまとめました。<br>「どのテンプレートを使えばいいの？」「転写用データってなに？」<br>という方は、ここを読めば安心です。</p>
+  <div class="deco-line">
+    <span class="bar"></span><span class="heart">♡</span><span class="bar"></span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">テンプレートの種類</div>
+    <div class="section-body">
+      <p>オーダーの際には、テンプレートの提出が必須となります。テンプレートには2種類あり、用途によって使い分けます。</p>
+      <p>1つ目は、ぬいぐるみのデザインを考えるための「デザイン用テンプレート」。2つ目は、布に印刷して制作に使用する「転写用テンプレート」です。</p>
+      <p>デザイン用で全体の見た目を決め、転写用で実際の制作データを仕上げます。どちらも、ぬいぐるみの完成度を左右する大切な資料です。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">ぬいぐるみデザイン用テンプレートとは</div>
+    <div class="section-body">
+      <p>ぬいぐるみの見た目を考えるためのテンプレートです。正面・側面などのシルエットをもとに、表情や髪型、服装、模様などを描き込みます。</p>
+      <div class="highlight">
+        <p>目の模様や体の模様（服）は簡略化するのをオススメします。細かい描写はつぶれる可能性があります。</p>
+      </div>
+      <p style="margin-top:0.75rem">このテンプレートをもとに、配色や形、装飾などを細かく確認しながら制作の方向性を決めていきます。ラフスケッチのような描き方でも大丈夫ですが、できるだけ丁寧に描いていただけると作り手も完成をイメージしやすくなります🪡</p>
+      <p>細かい部分はご相談しながら一緒に詰めていきますので、「こうしたいな」というイメージを気軽に描いてみてください。</p>
+      <div class="note"><p>※ぬいぐるみデザインの作成代行は承っておりません。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">転写用テンプレートとは</div>
+    <div class="section-body">
+      <p>転写用データは、ぬいぐるみの「布に印刷するための最終データ」です。このテンプレートをもとに、昇華転写という方法でデザインを布にプリントします。</p>
+      <p>ぬいぐるみの顔や体のパーツを、型紙の形に合わせて配置し、そのまま印刷して裁断・縫製できるように整えます。提出の際は、線や色のズレがないかを確認してください。</p>
+      <p>印刷後に修正はできないため、最終確認をしっかり行うことをおすすめします。</p>
+      <div class="highlight">
+        <p>転写用テンプレートの作成が難しい場合は、オプションとしてこちらでデータを作成代行することも可能です。ご希望の方はオーダー時にお知らせください。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">昇華転写とは</div>
+    <div class="section-body">
+      <p>専用のインクを使って、デザインを熱と圧力で布に染み込ませる印刷方法です。プリントではなく「布そのものに色を染み込ませる」ため、仕上がりがなめらかで、剥がれや色落ちがほとんどありません。</p>
+      <p>ぬいぐるみ制作では、顔の表情や細かい模様などを美しく再現できるのが特徴です。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">注意事項</div>
+    <div class="note">
+      <p>テンプレートは必ず、指定の形式・サイズでご提出ください。形式やサイズが異なる場合、印刷や縫製にズレが生じることがあります。</p>
+      <p>データの不備が見つかった場合は、一度ご連絡のうえ再提出をお願いする場合があります。</p>
+      <p>ご覧になる端末やモニター環境、インクの仕様により、印刷時の色味が多少異なる場合があります。</p>
+      <p>RGBで作成されたデータはCMYKに変換されるため、原色などのカラーはくすむ場合があります。</p>
+      <p>転写用データは、制作工程に入る前の最終確認が非常に重要です。修正後の再印刷には追加費用が発生する場合がありますので、ご注意ください。</p>
+    </div>
+  </div>
+
+  <!-- テンプレートダウンロードページへのリンク -->
+  <a href="select-size.html" class="cta-btn">テンプレートをダウンロードする →</a>
+
+  <div class="footer">
+    <p>ご不明な点はXのDMにてお問い合わせください</p>
+    <p>@hug87_OuO</p>
+  </div>
+
+</div>
+</body>
+</html>
