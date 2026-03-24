@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8cmサイズ（海星型）料金表 | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: #333; min-height: 100vh; }
+.site-header { background: #f8bdcb; padding: 1rem 1.5rem; text-align: center; }
+.site-header h1 { font-family: 'Zen Maru Gothic', sans-serif; font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 0.1em; }
+.nav {
+  background: #fff; border-bottom: 1px solid #f0c0d0; padding: 0.75rem 1rem;
+  overflow-x: auto; white-space: nowrap; text-align: center;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(248,189,203,0.2);
+}
+.nav a { display: inline-block; margin: 0 0.4rem; font-size: 12px; color: #c45c80; text-decoration: none; padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #f0c0d0; transition: background 0.2s; }
+.nav a:hover, .nav a.active { background: #fff0f5; }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #c45c80; text-align: center; margin-bottom: 0.5rem; }
+.page-subtitle { text-align: center; font-size: 13px; color: #999; margin-bottom: 2rem; line-height: 1.8; }
+.deco-line { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 2.5rem; }
+.deco-line span.bar { display: inline-block; width: 40px; height: 1px; background: #f0c0d0; }
+.deco-line span.heart { color: #e8a0b8; font-size: 12px; }
+
+/* 基本料金ボックス */
+.price-hero {
+  background: #fff5f8;
+  border: 1px solid #f0c0d0;
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.price-hero-label { font-size: 12px; color: #e8a0b8; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.price-hero-amount { font-family: 'Zen Maru Gothic', sans-serif; font-size: 36px; font-weight: 700; color: #f06292; line-height: 1.2; }
+.price-hero-note { font-size: 12px; color: #aaa; margin-top: 0.5rem; }
+
+/* セクション */
+.section { margin-bottom: 2rem; }
+.section-title {
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700; color: #c45c80;
+  padding: 0.4rem 0.9rem; background: #fff0f5; border-left: 3px solid #e8a0b8;
+  border-radius: 0 8px 8px 0; margin-bottom: 0.75rem;
+}
+.section-body { font-size: 13.5px; line-height: 1.9; color: #444; padding: 0 0.25rem; }
+
+/* 基本料金の内容リスト */
+.include-list { list-style: none; padding: 0; }
+.include-list li {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #fce8f0;
+  font-size: 13.5px;
+  color: #444;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.include-list li:last-child { border-bottom: none; }
+.include-list li::before { content: '✓'; color: #f8bdcb; font-weight: 700; flex-shrink: 0; }
+
+/* オプションリスト */
+.option-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.option-item {
+  background: #fff;
+  border: 1px solid #f0c0d0;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+.option-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+.option-name { font-size: 14px; font-weight: 700; color: #333; }
+.option-price { font-size: 13px; font-weight: 700; color: #f06292; white-space: nowrap; }
+.option-desc { font-size: 12.5px; color: #666; line-height: 1.75; }
+
+/* 送料 */
+.shipping-box {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-size: 13.5px;
+  color: #444;
+  line-height: 1.8;
+}
+
+/* 注意事項 */
+.note {
+  background: #fff0f5; border: 1px solid #f5d0de; border-radius: 8px;
+  padding: 0.75rem 1rem; font-size: 12.5px; color: #a04060; line-height: 1.85;
+}
+.note p { margin-bottom: 0.35rem; }
+.note p:last-child { margin-bottom: 0; }
+
+.footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #f0c0d0; font-size: 12px; color: #aaa; }
+.footer p { margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>hug nui² studio</h1>
+</header>
+
+<nav class="nav">
+ <a href="https://hughana.stores.jp/">TOPへ戻る</a>
+  <a href="order.html">オーダーの流れ</a>
+  <a href="before-order.html">オーダー前のお願い</a>
+  <a href="size_1.html">料金表</a>
+  <a href="fabric.html">布色一覧表</a>
+  <a href="https://hughana.stores.jp/faq">よくある質問</a>
+  <a href="select-size.html" class="active">テンプレート</a>
+</nav>
+
+<div class="wrap">
+
+  <h1 class="page-title">8cmサイズ（海星型）料金表</h1>
+  <p class="page-subtitle">基本料金とオプション内容をご案内しています。<br>ご依頼前に内容をご確認のうえご検討ください。</p>
+  <div class="deco-line">
+    <span class="bar"></span><span class="heart">♡</span><span class="bar"></span>
+  </div>
+
+  <!-- 基本料金 -->
+  <div class="price-hero">
+    <div class="price-hero-label">基本料金</div>
+    <div class="price-hero-amount">12,000円～</div>
+    <div class="price-hero-note">税込・送料別</div>
+  </div>
+
+  <!-- 基本料金の内容 -->
+  <div class="section">
+    <div class="section-title">基本料金に含まれるもの</div>
+    <ul class="include-list">
+      <li>転写用データの色味調整</li>
+      <li>プリント作業</li>
+      <li>布の取り寄せ</li>
+      <li>手縫い縫製（つぶ綿使用）</li>
+      <li>頭部・体パーツの作成</li>
+      <li>色味・パーツの修正1回まで無料</li>
+      <li>梱包・発送対応</li>
+      <li>完成品のサンプル掲載</li>
+    </ul>
+  </div>
+
+  <!-- オプション -->
+  <div class="section">
+    <div class="section-title">オプション</div>
+    <div class="option-list">
+
+      <div class="option-item">
+        <div class="option-header">
+          <span class="option-name">転写用データ作成委託</span>
+          <span class="option-price">＋2,000円</span>
+        </div>
+        <div class="option-desc">ぬいぐるみの転写用デザインデータをhug＊hanaが代わりに制作します。依頼主様が描かれたぬいデザインをもとに、プリント用の形式に整えます。色味やパーツの配置などの調整も含まれます。</div>
+      </div>
+
+      <div class="option-item">
+        <div class="option-header">
+          <span class="option-name">納期優先</span>
+          <span class="option-price">＋2,000円</span>
+        </div>
+        <div class="option-desc">通常より早めに仕上げたい方向けのオプションです。制作スケジュールの状況により対応できない場合もありますので、事前にご相談ください。</div>
+      </div>
+
+      <div class="option-item">
+        <div class="option-header">
+          <span class="option-name">複雑なパーツの作成</span>
+          <span class="option-price">要見積もり</span>
+        </div>
+        <div class="option-desc">立体的な装飾、細かい髪の毛の分割、特殊な形状など、通常工程を超えるパーツを再現します。デザイン確認の上、追加料金をお見積もりいたします。</div>
+      </div>
+
+      <div class="option-item">
+        <div class="option-header">
+          <span class="option-name">カラーボールチェーン追加</span>
+          <span class="option-price">＋300円</span>
+        </div>
+        <div class="option-desc">ぬいぐるみにボールチェーンをお付けします。持ち歩きやすく、バッグなどに飾りたい方におすすめです。</div>
+      </div>
+
+      <div class="option-item">
+        <div class="option-header">
+          <span class="option-name">ナスカン追加</span>
+          <span class="option-price">＋400円</span>
+        </div>
+        <div class="option-desc">ぬいぐるみにナスカンをお付けします。</div>
+      </div>
+
+      <div class="option-item">
+        <div class="option-header">
+          <span class="option-name">サンプル一部掲載（顔ぼかし）</span>
+          <span class="option-price">＋300円</span>
+        </div>
+        <div class="option-desc">ぬいぐるみのお顔部分など、個人が特定される箇所をぼかした上で、作品全体の雰囲気のみ掲載します。</div>
+      </div>
+
+      <div class="option-item">
+        <div class="option-header">
+          <span class="option-name">サンプル掲載なし</span>
+          <span class="option-price">＋600円</span>
+        </div>
+        <div class="option-desc">SNSやギャラリーなどでの掲載は行いません。納品時の画像は、依頼主様のみにお送りします。</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 送料 -->
+  <div class="section">
+    <div class="section-title">送料</div>
+    <div class="shipping-box">レターパックプラスでお届けいたします。送料は基本料金内に組み込まれています。</div>
+  </div>
+
+  <!-- 注意事項 -->
+  <div class="section">
+    <div class="section-title">注意事項</div>
+    <div class="note">
+      <p>デザイン内容により追加料金が発生する場合があります。</p>
+      <p>料金はすべて税込です。</p>
+      <p>オーダー確定後のキャンセルはできません。</p>
+      <p>その他詳細は「オーダー前のお願い」をご確認ください。</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>ご不明な点はXのDMにてお問い合わせください</p>
+    <p>@hug87_OuO</p>
+  </div>
+
+</div>
+</body>
+</html>

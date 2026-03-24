@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>布素材紹介 | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: #333; min-height: 100vh; }
+.site-header { background: #f8bdcb; padding: 1rem 1.5rem; text-align: center; }
+.site-header h1 { font-family: 'Zen Maru Gothic', sans-serif; font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 0.1em; }
+.nav {
+  background: #fff; border-bottom: 1px solid #f0c0d0; padding: 0.75rem 1rem;
+  overflow-x: auto; white-space: nowrap; text-align: center;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(248,189,203,0.2);
+}
+.nav a { display: inline-block; margin: 0 0.4rem; font-size: 12px; color: #c45c80; text-decoration: none; padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #f0c0d0; transition: background 0.2s; }
+.nav a:hover, .nav a.active { background: #fff0f5; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #c45c80; text-align: center; margin-bottom: 0.5rem; }
+.page-subtitle { text-align: center; font-size: 13px; color: #999; margin-bottom: 0.5rem; line-height: 1.8; }
+.page-note { text-align: center; font-size: 12px; color: #e8a0b8; margin-bottom: 2rem; }
+.deco-line { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 2.5rem; }
+.deco-line span.bar { display: inline-block; width: 40px; height: 1px; background: #f0c0d0; }
+.deco-line span.heart { color: #e8a0b8; font-size: 12px; }
+
+/* =============================================
+   カードグリッド
+   カードを追加する場合は .card-grid 内に
+   下のカードのHTMLブロックをコピーして追加してください
+   ============================================= */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* =============================================
+   素材カード 1枚分のスタイル
+   ============================================= */
+.fabric-card {
+  background: #fff5f8;
+  border: 1px solid #f0c0d0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+/* 画像がない場合のプレースホルダー */
+.card-img-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #fce8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #e8a0b8;
+}
+.card-body { padding: 1.1rem 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.6rem; }
+.card-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700; color: #333; }
+.card-divider { height: 1px; background: #f0c0d0; }
+.card-desc { font-size: 13px; line-height: 1.85; color: #555; }
+
+/* 色選択可否バッジ */
+.badge {
+  display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 10px;
+  border-radius: 20px; font-family: 'Zen Maru Gothic', sans-serif;
+}
+.badge-ok { background: #fff0f5; color: #c45c80; border: 1px solid #f0c0d0; }
+.badge-ng { background: #f5f5f5; color: #aaa; border: 1px solid #ddd; }
+
+.card-footer { padding: 0 1.25rem 1.25rem; }
+.btn {
+  display: block; text-align: center; padding: 0.6rem 1rem;
+  border-radius: 20px; font-size: 13px; font-weight: 700;
+  text-decoration: none; transition: opacity 0.2s;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.btn:hover { opacity: 0.75; }
+.btn-primary { background: #333; color: #fff; }
+
+.footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #f0c0d0; font-size: 12px; color: #aaa; }
+.footer p { margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>hug nui² studio</h1>
+</header>
+
+<nav class="nav">
+ <a href="https://hughana.stores.jp/">TOPへ戻る</a>
+  <a href="order.html">オーダーの流れ</a>
+  <a href="before-order.html">オーダー前のお願い</a>
+  <a href="size_1.html">料金表</a>
+  <a href="fabric.html">布色一覧表</a>
+  <a href="https://hughana.stores.jp/faq">よくある質問</a>
+  <a href="select-size.html" class="active">テンプレート</a>
+</nav>
+
+<div class="wrap">
+
+  <h1 class="page-title">布素材紹介</h1>
+  <p class="page-subtitle">hug＊hanaで使用している主な布素材の色見本をご案内しています。</p>
+  <p class="page-note">カラーを選べるのはソフトボア（1mm・5mm）のみです。※色見本PDFが開きます</p>
+  <div class="deco-line">
+    <span class="bar"></span><span class="heart">♡</span><span class="bar"></span>
+  </div>
+
+  <!-- =============================================
+       カードグリッド
+       新しい素材を追加する場合は、
+       下の「カード1枚分」のブロックをまるごとコピーして
+       このコメントの下に貼り付けてください
+       ============================================= -->
+  <div class="card-grid">
+
+    <!-- =============================================
+         カード1枚分（ここからコピー）
+
+         【追加・編集の方法】
+         1. <div class="fabric-card">〜</div> をまるごとコピー
+         2. 各テキストを書き換える
+         3. card-img-placeholder を <img> タグに差し替えると画像表示
+            例: <img class="card-img" src="画像ファイル名.jpg" alt="素材名">
+         4. 色選択可の場合は badge-ok、不可の場合は badge-ng を使用
+         5. 色見本リンクがない素材は card-footer ごと削除してOK
+         ============================================= -->
+
+    <!-- ソフトボア 1mm -->
+    <div class="fabric-card">
+      <!-- 画像：ある場合は下の img のコメントを外してください -->
+      <div class="card-img-placeholder"> <img class="card-img" src="imgrc0155805005.jpg" alt="ソフトボア（1mm）"></div>
+      <div class="card-body">
+        <div class="card-title">ソフトボア（1mm）</div>
+        <div class="card-divider"></div>
+        <div class="card-desc">ふんわりとした短毛素材。ぬいぐるみの肌や髪に多く使用しています。店主のイチオシです。</div>
+        <span class="badge badge-ok">カラー選択できます</span>
+      </div>
+      <div class="card-footer">
+        <!-- 色見本PDFのURLに変更してください -->
+        <a href="s-1x1_6ee63c1a-d520-43ba-8b3f-334ef5d212fd.pdf" class="btn btn-primary" target="_blank">色の一覧を見る</a>
+      </div>
+    </div>
+
+    <!-- ソフトボア 5mm -->
+    <div class="fabric-card">
+      <div class="card-img-placeholder"> <img class="card-img" src="cb392a08ffa7f9d4ce5c70dea8d0ffd8.jpg" alt="ソフトボア（5mm）"></div>
+      <div class="card-body">
+        <div class="card-title">ソフトボア（5mm）</div>
+        <div class="card-divider"></div>
+        <div class="card-desc">1mmよりも長い短毛素材。ぬいぐるみの髪に多く使用しています。厚みがあり、小さいサイズに使用するともふもふな仕上がりになります。</div>
+        <span class="badge badge-ok">カラー選択できます</span>
+      </div>
+      <div class="card-footer">
+        <!-- 色見本PDFのURLに変更してください -->
+        <a href="s-1x1_94502d36-30a1-43cf-ad7c-94af434a0351.pdf" class="btn btn-primary" target="_blank">色の一覧を見る</a>
+      </div>
+    </div>
+
+    <!-- トイクロス -->
+    <div class="fabric-card">
+   
+      <div class="card-img-placeholder"><img class="card-img" src="s-372x372_webp_d6517e9b-58a5-410a-b978-c9cba3f9b8bf.png" alt="トイクロス"></div>
+      <div class="card-body">
+        <div class="card-title">トイクロス</div>
+        <div class="card-divider"></div>
+        <div class="card-desc">表面が起毛した素材で、ソフトボアと比べるとサラサラしています。ふわふわ感は控えめ。主にぬいぐるみの肌に使用されており、プライズぬいではおなじみ。</div>
+        <span class="badge badge-ng">カラー選択できません</span>
+      </div>
+      <!-- カラー選択不可のため色見本ボタンなし -->
+    </div>
+
+    <!-- =============================================
+         ↓ 新しい素材カードをここに追加 ↓
+         上のカードブロックをコピーして貼り付けてください
+         ============================================= -->
+
+  </div><!-- /.card-grid -->
+
+  <div class="footer">
+    <p>ご不明な点はXのDMにてお問い合わせください</p>
+    <p>@hug87_OuO</p>
+  </div>
+
+</div>
+</body>
+</html>
