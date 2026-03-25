@@ -478,6 +478,107 @@ async function submitForm() {
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+
+// =====================
+// 一時保存（localStorage）
+// =====================
+const SAVE_KEY = 'hugnui_order_draft';
+
+// フィールドIDの一覧（ファイル以外）
+const DRAFT_FIELDS = ['name', 'email', 'xid', 'charDesc', 'message'];
+
+// 入力のたびに自動保存
+function setupAutosave() {
+  DRAFT_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', saveDraft);
+  });
+  document.getElementById('agree').addEventListener('change', saveDraft);
+}
+
+function saveDraft() {
+  const data = {};
+  DRAFT_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data[id] = el.value;
+  });
+  data.agree = document.getElementById('agree').checked;
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    showSaveIndicator();
+  } catch(e) { /* localStorage 使用不可の場合は無視 */ }
+}
+
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    DRAFT_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id] !== undefined) el.value = data[id];
+    });
+    if (data.agree) document.getElementById('agree').checked = true;
+    showBanner();
+  } catch(e) { /* 壊れたデータは無視 */ }
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
+}
+
+// 保存インジケーター（右下に一瞬表示）
+function showSaveIndicator() {
+  let el = document.getElementById('saveIndicator');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'saveIndicator';
+    el.style.cssText = 'position:fixed;bottom:1.25rem;right:1.25rem;background:#2a2030;color:#fff;font-family:Zen Maru Gothic,sans-serif;font-size:11px;font-weight:700;padding:.4rem .85rem;border-radius:20px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;';
+    el.textContent = '💾 一時保存しました';
+    document.body.appendChild(el);
+  }
+  el.style.opacity = '1';
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.style.opacity = '0'; }, 1800);
+}
+
+// 復元バナー
+function showBanner() {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'max-width:520px;margin:0 auto 1rem;background:#e8f4fa;border:1.5px solid #a8d8ea;border-radius:12px;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;font-family:Zen Maru Gothic,sans-serif;font-size:12px;color:#2a5870;font-weight:700;';
+  banner.innerHTML = `
+    <span>💾 前回の入力内容を復元しました</span>
+    <button onclick="clearDraft();this.parentElement.remove()"
+      style="background:none;border:1.5px solid #a8d8ea;border-radius:20px;padding:.2rem .65rem;font-family:Zen Maru Gothic,sans-serif;font-size:11px;font-weight:700;color:#5ba4c7;cursor:pointer;">
+      クリア
+    </button>`;
+  const wrap = document.getElementById('formWrap');
+  if (wrap) wrap.insertBefore(banner, wrap.firstChild);
+}
+
+// 送信完了時にdraftを削除（submitForm内の完了処理に追加）
+const _origSubmit = submitForm;
+// ※ submitForm内の完了時clearDraftを呼ぶようにパッチ
+const _origSubmitStr = submitForm.toString();
+
+// 送信完了後にclearDraftを呼ぶ
+document.addEventListener('DOMContentLoaded', () => {}); // 念のため
+// submitted = true の直後にclearDraftを差し込む
+// → submitForm内を直接書き換えず、MutationObserverでcompleteCardの表示を検知
+const _obs = new MutationObserver(() => {
+  const card = document.getElementById('completeCard');
+  if (card && card.style.display !== 'none' && card.style.display !== '') {
+    clearDraft();
+    _obs.disconnect();
+  }
+});
+const _completeCard = document.getElementById('completeCard');
+if (_completeCard) _obs.observe(_completeCard, { attributes: true, attributeFilter: ['style'] });
+
+// 起動時に復元 & 自動保存セットアップ
+restoreDraft();
+setupAutosave();
 </script>
 </body>
 </html>
