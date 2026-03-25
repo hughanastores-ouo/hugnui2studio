@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>送信完了 | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fdf0f4;
+  min-height: 100vh;
+  padding: 2.5rem 1rem 5rem;
+  background-image: radial-gradient(circle, rgba(168,216,234,0.25) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+
+.wrap { max-width: 480px; margin: 0 auto; }
+
+/* ステップ */
+.steps { display: flex; align-items: center; justify-content: center; max-width: 360px; margin: 0 auto 2.5rem; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
+.step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700; border: 2.5px solid #ddd; background: #fff; color: #ccc; }
+.step-circle.done { background: #a8d8ea; border-color: #5ba4c7; color: #2a2030; }
+.step-label { font-size: 10px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
+.step-line { height: 2px; background: #a8d8ea; flex: 1; margin-bottom: 1.4rem; max-width: 40px; }
+
+/* STEP1完了カード */
+.complete-card {
+  background: #fff; border-radius: 20px; border: 2.5px solid #2a2030;
+  box-shadow: 5px 5px 0 #2a2030; padding: 2rem 1.75rem; margin-bottom: 1.25rem;
+  text-align: center;
+
+  /* 入場アニメーション */
+  opacity: 0; transform: translateY(16px);
+  animation: fadeUp 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.complete-icon { font-size: 48px; margin-bottom: 0.75rem; }
+.complete-title {
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 20px; font-weight: 700;
+  color: #2a2030; margin-bottom: 0.5rem;
+}
+.complete-sub { font-size: 13px; color: #6a5870; line-height: 1.9; margin-bottom: 1.5rem; }
+
+/* 依頼番号バナー */
+.order-id-banner {
+  background: #2a2030; border-radius: 14px; padding: 1.1rem 1.5rem;
+  margin-bottom: 1.5rem; text-align: center;
+}
+.order-id-label { font-size: 9px; letter-spacing: 0.3em; color: #a8d8ea; text-transform: uppercase; margin-bottom: 0.4rem; font-family: 'Zen Maru Gothic', sans-serif; }
+.order-id-value { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.1em; font-family: 'Zen Maru Gothic', sans-serif; }
+.order-id-hint { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+/* 依頼内容サマリー */
+.summary {
+  background: #fef0f5; border-radius: 12px; padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem; text-align: left;
+}
+.summary-title { font-size: 9px; letter-spacing: 0.2em; color: #d96a8a; text-transform: uppercase; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; margin-bottom: 0.75rem; }
+.summary-row { display: flex; gap: 0.5rem; padding: 0.45rem 0; border-bottom: 1px solid rgba(247,184,204,0.4); font-size: 12.5px; }
+.summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+.summary-key { color: #b0a0b8; width: 72px; flex-shrink: 0; font-size: 11px; padding-top: 1px; }
+.summary-val { color: #2a2030; font-weight: 700; word-break: break-all; font-family: 'Zen Maru Gothic', sans-serif; }
+
+/* メール通知 */
+.mail-notice {
+  background: #e8f4fa; border-radius: 10px; padding: 0.75rem 1rem;
+  font-size: 12px; color: #2a5870; line-height: 1.75; margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+/* STEP2カード */
+.step2-card {
+  background: #fff; border-radius: 20px; border: 2.5px solid #2a2030;
+  box-shadow: 5px 5px 0 #2a2030; padding: 1.75rem; margin-bottom: 1.25rem;
+
+  opacity: 0; transform: translateY(16px);
+  animation: fadeUp 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;
+}
+.step2-eyebrow {
+  font-size: 9px; letter-spacing: 0.25em; color: #5ba4c7; text-transform: uppercase;
+  font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; margin-bottom: 0.5rem;
+}
+.step2-title {
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700;
+  color: #2a2030; margin-bottom: 0.6rem;
+}
+.step2-desc { font-size: 13px; color: #6a5870; line-height: 1.85; margin-bottom: 1.25rem; }
+.step2-note { font-size: 11px; color: #b0a0b8; margin-top: 0.35rem; }
+
+/* CTAボタン */
+.cta-btn {
+  display: block; width: 100%; padding: 0.95rem;
+  background: #f7b8cc; border: 2.5px solid #2a2030; border-radius: 14px;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700;
+  color: #2a2030; text-align: center; text-decoration: none;
+  box-shadow: 4px 4px 0 #2a2030; letter-spacing: 0.04em;
+  transition: translate 0.1s, box-shadow 0.1s, background 0.15s;
+}
+.cta-btn:hover { translate: 2px 2px; box-shadow: 2px 2px 0 #2a2030; background: #d96a8a; color: #fff; }
+
+/* 後でリンク */
+.later-link { text-align: center; margin-top: 0.75rem; }
+.later-link a { font-size: 12px; color: #b0a0b8; text-decoration: none; font-family: 'Zen Maru Gothic', sans-serif; }
+.later-link a:hover { color: #5ba4c7; }
+
+/* トップへ */
+.top-link {
+  text-align: center; margin-top: 0.5rem;
+
+  opacity: 0; animation: fadeUp 0.5s ease 0.5s forwards;
+}
+.top-link a { font-size: 12px; color: #b0a0b8; text-decoration: none; font-family: 'Zen Maru Gothic', sans-serif; }
+.top-link a:hover { color: #d96a8a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ステップ（全部done） -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-circle done">✓</div>
+      <div class="step-label">タイプ選択</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-circle done">✓</div>
+      <div class="step-label">時期選択</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-circle done">✓</div>
+      <div class="step-label">フォーム入力</div>
+    </div>
+  </div>
+
+  <!-- STEP1完了カード -->
+  <div class="complete-card">
+    <div class="complete-icon">🎉</div>
+    <div class="complete-title">STEP 1 完了！</div>
+    <div class="complete-sub">
+      依頼情報を受け取りました。<br>
+      確認メールをお送りしているのでご確認ください 🩷
+    </div>
+
+    <!-- 依頼番号 -->
+    <div class="order-id-banner">
+      <div class="order-id-label">依頼番号 / Order Number</div>
+      <div class="order-id-value" id="orderIdDisplay">-</div>
+      <div class="order-id-hint">STEP 2のフォームに記入してね</div>
+    </div>
+
+    <!-- 内容サマリー -->
+    <div class="summary">
+      <div class="summary-title">ご依頼内容</div>
+      <div class="summary-row"><span class="summary-key">タイプ</span><span class="summary-val" id="sType">-</span></div>
+      <div class="summary-row"><span class="summary-key">希望時期</span><span class="summary-val" id="sPeriod">-</span></div>
+      <div class="summary-row"><span class="summary-key">お名前</span><span class="summary-val" id="sName">-</span></div>
+      <div class="summary-row"><span class="summary-key">メール</span><span class="summary-val" id="sEmail">-</span></div>
+      <div class="summary-row"><span class="summary-key">X ID</span><span class="summary-val" id="sXid">-</span></div>
+    </div>
+
+    <!-- メール通知 -->
+    <div class="mail-notice" id="mailNotice">
+      📧 <strong id="sEmailInline">-</strong> 宛に依頼番号・入力内容を記載した確認メールをお送りしました。<br>
+      <span style="font-size:11px;color:#5ba4c7;">届いていない場合は迷惑メールフォルダをご確認ください。</span>
+    </div>
+
+  </div>
+
+  <!-- STEP2カード -->
+  <div class="step2-card">
+    <div class="step2-eyebrow">STEP 2 / Next Step</div>
+    <div class="step2-title">🎨 イラスト・データを送ってください</div>
+    <div class="step2-desc">
+      依頼番号を添えて、下記フォームよりイラストや転写用テンプレート、こだわりポイントをお送りください。
+      <div class="step2-note">※ 後から送っていただいても大丈夫です！このページをブックマークしておいてね。</div>
+    </div>
+    <a class="cta-btn" id="step2Btn" href="https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog" target="_blank">
+      イラスト・データを送る →
+    </a>
+    <div class="later-link">
+      <a href="index.html">後で送る（トップへ戻る）</a>
+    </div>
+  </div>
+
+  <div class="top-link">
+    <a href="index.html">← hug nui² studio トップへ</a>
+  </div>
+
+</div>
+
+<script>
+// =============================================
+// ★ GoogleフォームURLを設定してください ★
+// =============================================
+const STEP2_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog'; // ← GoogleフォームのURLに置き換え
+// =============================================
+
+// URLパラメータから情報を復元
+const params = new URLSearchParams(location.search);
+const orderId     = params.get('orderId')     ?? '';
+const name        = params.get('name')        ?? '';
+const type        = params.get('type')        ?? '';
+const periodLabel = params.get('periodLabel') ?? '';
+const email       = params.get('email')       ?? '';
+const xid         = params.get('xid')         ?? '';
+
+// パラメータがなければトップへ
+if (!orderId) { location.href = 'index.html'; }
+
+// 表示を埋める
+document.getElementById('orderIdDisplay').textContent = orderId;
+document.getElementById('sType').textContent          = type        || '-';
+document.getElementById('sPeriod').textContent        = periodLabel || '-';
+document.getElementById('sName').textContent          = name        || '-';
+document.getElementById('sEmail').textContent         = email       || '-';
+document.getElementById('sXid').textContent           = xid         || '未記入';
+document.getElementById('sEmailInline').textContent   = email       || '-';
+
+// STEP2ボタンにURLを設定（設定済みならそのまま）
+const step2Btn = document.getElementById('step2Btn');
+if (STEP2_URL && STEP2_URL !== 'YOUR_GOOGLE_FORM_URL_HERE') {
+  step2Btn.href = STEP2_URL;
+} else {
+  // URL未設定の場合はボタンを無効化
+  step2Btn.style.opacity = '0.5';
+  step2Btn.style.cursor  = 'not-allowed';
+  step2Btn.removeAttribute('href');
+  step2Btn.addEventListener('click', e => {
+    e.preventDefault();
+    alert('STEP2のGoogleフォームURLが設定されていません。');
+  });
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
