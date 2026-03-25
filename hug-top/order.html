@@ -87,6 +87,8 @@ body {
 .period-btn.disabled { background: #f5f5f5; border-color: #e8e8e8; color: #ccc; cursor: not-allowed; }
 .period-status { font-size: 18px; line-height: 1; }
 .period-name { font-size: 11px; }
+.period-remain { font-size: 9px; color: #5ba4c7; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; }
+.period-remain.full { color: #d96a8a; }
 
 /* 次へボタン */
 .next-btn {
@@ -202,11 +204,21 @@ function renderPeriods() {
     html += `<div class="period-month-label">${y}年${m}月</div><div class="period-row">`;
     ['early','mid','late'].forEach(phase => {
       const key    = `${mStr}-${phase}`;
-      const isOpen = scheduleData[key]?.open ?? false;
+      const sched  = scheduleData[key] ?? {};
+      const slots  = sched.slots ?? {};
+      // 選択中タイプの残り枠
+      const remain = selectedType && slots[selectedType] !== undefined
+        ? slots[selectedType]
+        : null;
+      // openかつ残り枠>0（またはslots未設定）なら受付可
+      const isOpen = sched.open && (remain === null || remain > 0);
+      const remainLabel = remain !== null ? `残り${remain}枠` : '';
       html += `<button class="period-btn${isOpen ? '' : ' disabled'}"
         ${isOpen ? `onclick="selectPeriod('${key}','${m}月${PHASE_LABEL[phase]}',this)"` : ''}
       ><span class="period-status">${isOpen ? '○' : '✕'}</span>
-       <span class="period-name">${PHASE_LABEL[phase]}</span></button>`;
+       <span class="period-name">${PHASE_LABEL[phase]}</span>
+       ${remainLabel ? `<span class="period-remain${remain===0?' full':''}">${remainLabel}</span>` : ''}
+      </button>`;
     });
     html += '</div>';
   }

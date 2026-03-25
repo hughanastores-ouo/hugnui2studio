@@ -249,12 +249,12 @@ input.error, textarea.error { border-color: #c0405a; }
 
 </div><!-- /#formWrap -->
 
-
 <script>
 // =============================================
 // ★ 設定 ★
 // =============================================
 const FORMSPREE_URL   = 'https://formspree.io/f/xaqlwabk';
+const BIN1_ID         = '69c3843daa77b81da918a941';
 const BIN2_ID         = '69c3a2fac3097a1dd55a28e3';
 const X_KEY           = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';
 const EJS_SERVICE_ID  = 'service_nfbeo2e';
@@ -266,7 +266,7 @@ const STEP2_URL       = 'https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jp
 // EmailJS初期化
 emailjs.init({ publicKey: EJS_PUBLIC_KEY });
 
-// 依頼番号生成（例：ORD-20260325-A3F2）
+// 依頼番号生成
 function generateOrderId() {
   const now  = new Date();
   const date = now.getFullYear().toString() +
@@ -274,6 +274,33 @@ function generateOrderId() {
                String(now.getDate()).padStart(2,'0');
   const rand = Math.random().toString(36).toUpperCase().slice(2,6);
   return 'ORD-' + date + '-' + rand;
+}
+
+// 枠を1消費（Bin①のslots[type]をデクリメント）
+async function consumeSlot(type, pKey) {
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN1_ID}/latest`, { headers: { 'X-Access-Key': X_KEY } });
+    if (!res.ok) return;
+    const rec = (await res.json()).record;
+    const sched = rec.schedule ?? {};
+    if (!sched[pKey]) return;
+    const slots = sched[pKey].slots ?? {};
+    if (slots[type] !== undefined && slots[type] > 0) {
+      slots[type] = slots[type] - 1;
+      if (slots[type] === 0) {
+        // 全タイプが0になったら旬ごとopenをfalseに
+        const allZero = Object.values(slots).every(v => v <= 0);
+        if (allZero) sched[pKey].open = false;
+      }
+      sched[pKey].slots = slots;
+      rec.schedule = sched;
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN1_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY },
+        body: JSON.stringify(rec)
+      });
+    }
+  } catch(err) { console.warn('枠消費失敗:', err); }
 }
 
 // URLパラメータから選択内容を復元
@@ -365,36 +392,23 @@ async function submitForm() {
     const xidVal   = document.getElementById('xid').value.trim();
 
     // JSONBin Bin②に依頼データを保存
-    const orderRec = {
-      id: orderId, type: typeVal, periodKey, periodLabel,
-      name: nameVal, email: emailVal, xid: xidVal,
-      charDesc: '', message: '',
-      submittedAt: new Date().toISOString(), status: 'pending'
-    };
     try {
-      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, {
-        headers: { 'X-Access-Key': X_KEY }
-      });
+      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, { headers: { 'X-Access-Key': X_KEY } });
       const existing = getRes.ok ? ((await getRes.json()).record ?? {}) : {};
       const orders = existing.orders ?? [];
-      orders.push(orderRec);
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY },
-        body: JSON.stringify({ orders })
-      });
+      orders.push({ id: orderId, type: typeVal, periodKey, periodLabel, name: nameVal, email: emailVal, xid: xidVal, charDesc:'', message:'', submittedAt: new Date().toISOString(), status:'pending' });
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}`, { method:'PUT', headers:{'Content-Type':'application/json','X-Access-Key':X_KEY}, body:JSON.stringify({orders}) });
     } catch(e) { console.warn('JSONBin保存失敗:', e); }
 
-    // EmailJSで依頼者に確認メール送信
+    // 枠を1消費
+    await consumeSlot(typeVal, periodKey);
+
+    // EmailJSで確認メール送信
     try {
       await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
-        order_id:     orderId,
-        type:         typeVal,
-        period_label: periodLabel,
-        name:         nameVal,
-        reply_email:  emailVal,
-        xid:          xidVal || '未記入',
-        step2_url:    STEP2_URL
+        order_id: orderId, type: typeVal, period_label: periodLabel,
+        name: nameVal, reply_email: emailVal,
+        xid: xidVal || '未記入', step2_url: STEP2_URL
       });
     } catch(ejsErr) { console.warn('EmailJS失敗:', ejsErr); }
 
