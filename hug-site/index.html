@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&family=Kiwi+Maru:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pink: #f8bdcb;
+  --pink-dark: #c45c80;
+  --pink-mid: #e8a0b8;
+  --pink-light: #fff5f8;
+  --pink-border: #f0c0d0;
+  --ink: #2a2a2a;
+  --ink-mid: #666;
+  --ink-light: #aaa;
+  --bg: #fffbfc;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* =====================
+   ヘッダー
+   ===================== */
+.header {
+  background: var(--pink);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-logo {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+.header-nav { display: flex; gap: 1rem; align-items: center; }
+.header-nav a {
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.header-nav a:hover { color: #fff; }
+.header-nav .nav-btn {
+  background: #fff;
+  color: var(--pink-dark);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.header-nav .nav-btn:hover { opacity: 0.9; color: var(--pink-dark); }
+
+/* =====================
+   ヒーロー
+   ===================== */
+.hero {
+  background: var(--pink-light);
+  border-bottom: 2px dashed var(--pink-border);
+  padding: 3.5rem 1.5rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景の丸い装飾 */
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: var(--pink);
+  opacity: 0.15;
+  top: -80px; right: -60px;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: var(--pink);
+  opacity: 0.12;
+  bottom: -60px; left: -40px;
+}
+
+.hero-inner { position: relative; z-index: 1; }
+
+/* イラストエリア */
+.hero-illust {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--pink-border);
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--pink-mid);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  text-align: center;
+  line-height: 1.6;
+  overflow: hidden;
+  /* イラスト画像がある場合はimgタグに差し替えてください */
+}
+.hero-illust img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.hero-tagline {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--pink-mid);
+  margin-bottom: 0.75rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+.hero-title {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: clamp(26px, 6vw, 38px);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+.hero-title span { color: var(--pink-dark); }
+
+.hero-desc {
+  font-size: 13.5px;
+  line-height: 2;
+  color: var(--ink-mid);
+  margin-bottom: 1.75rem;
+}
+
+/* 受付状況 */
+.status-wrap { margin-bottom: 1.75rem; }
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1px solid var(--pink-border);
+  border-radius: 24px;
+  padding: 0.5rem 1.25rem;
+  font-size: 12.5px;
+  color: var(--ink-mid);
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+  flex-shrink: 0;
+}
+.status-dot.open { background: #84cc9a; }
+
+.hero-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.btn-main {
+  display: inline-block;
+  background: var(--pink-dark);
+  color: #fff;
+  padding: 0.85rem 2rem;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s;
+  box-shadow: 0 4px 12px rgba(196,92,128,0.25);
+}
+.btn-main:hover { opacity: 0.85; }
+.btn-sub {
+  display: inline-block;
+  background: #fff;
+  color: var(--pink-dark);
+  padding: 0.85rem 1.5rem;
+  border-radius: 30px;
+  border: 1.5px solid var(--pink-border);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  transition: background 0.2s;
+}
+.btn-sub:hover { background: var(--pink-light); }
+
+/* =====================
+   セクション共通
+   ===================== */
+.section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem;
+}
+.section-head { text-align: center; margin-bottom: 2rem; }
+.section-en {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--pink-mid);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  margin-bottom: 0.3rem;
+}
+.section-ja {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.section-deco {
+  width: 32px; height: 2px;
+  background: var(--pink);
+  margin: 0.75rem auto 0;
+  border-radius: 2px;
+}
+
+/* =====================
+   サンプルグリッド
+   ===================== */
+.sample-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.sample-item {
+  aspect-ratio: 1 / 1;
+  background: var(--pink-light);
+  overflow: hidden;
+}
+.sample-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.sample-item:hover img { transform: scale(1.06); }
+.sample-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--pink-mid);
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+.sample-more { text-align: center; }
+.sample-more a {
+  font-size: 13px;
+  color: var(--pink-dark);
+  text-decoration: none;
+  border-bottom: 1px solid var(--pink-border);
+  padding-bottom: 2px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+
+/* =====================
+   区切り
+   ===================== */
+.sep {
+  text-align: center;
+  color: var(--pink-border);
+  font-size: 20px;
+  letter-spacing: 0.3em;
+  padding: 0.5rem 0;
+}
+
+/* =====================
+   メニューカード
+   ===================== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.menu-card {
+  background: #fff;
+  border: 1.5px solid var(--pink-border);
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem 1rem;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+.menu-card:hover {
+  background: var(--pink-light);
+  border-color: var(--pink-mid);
+}
+.menu-card-en {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--pink-mid);
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+.menu-card-title {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.menu-card-desc {
+  font-size: 12px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  margin-top: 0.25rem;
+}
+.menu-card-arrow {
+  font-size: 12px;
+  color: var(--pink-mid);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+/* =====================
+   ハンドメイドアピール
+   ===================== */
+.handmade-box {
+  background: var(--pink-light);
+  border: 1.5px dashed var(--pink-border);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+.handmade-icon { font-size: 28px; margin-bottom: 0.75rem; }
+.handmade-title {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.handmade-desc {
+  font-size: 13.5px;
+  color: var(--ink-mid);
+  line-height: 2;
+}
+
+/* =====================
+   フッター
+   ===================== */
+.footer {
+  background: var(--pink);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+.footer-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.footer-links a {
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #fff; }
+.footer-copy { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+/* =====================
+   レスポンシブ
+   ===================== */
+@media (max-width: 600px) {
+  .sample-grid { grid-template-columns: repeat(2, 1fr); }
+  .menu-grid { grid-template-columns: 1fr; }
+  .header-nav a:not(.nav-btn) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="header">
+  <a href="#" class="header-logo">hug nui² studio 🧸</a>
+  <nav class="header-nav">
+    <a href="gallery.html">作品一覧</a>
+    <a href="order.html">オーダーの流れ</a>
+    <!-- STORESのURLに変更してください -->
+    <a href="https://hughana.stores.jp/" class="nav-btn" target="_blank">オーダーはこちら ✉️</a>
+  </nav>
+</header>
+
+<!-- ヒーロー -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- イラストエリア：画像がある場合はimgタグに差し替えてください -->
+    <div class="hero-illust">
+      <!--
+      <img src="illust.png" alt="hug nui² studio">
+      -->
+      ここにイラストを<br>配置してね🩷
+    </div>
+
+    <p class="hero-tagline">✦ handmade plush doll ✦</p>
+    <h1 class="hero-title">
+      あなたの推しを、<br>
+      <span>ぬいぐるみ</span>にしませんか？
+    </h1>
+    <p class="hero-desc">
+      オリジナルキャラクターを<br>
+      ひとつひとつ手作りでお届けしています。
+    </p>
+
+    <!-- 受付状況：受付中は class="status-dot open" に変更 -->
+    <div class="status-wrap">
+      <span class="status-badge">
+        <span class="status-dot"></span>
+        <!-- ↓ 受付状況に合わせて書き換えてください -->
+        8cm海星型：受付停止中
+      </span>
+    </div>
+
+    <div class="hero-btns">
+      <!-- STORESの仮予約ページURLに変更してください -->
+      <a href="https://hughana.stores.jp/" class="btn-main" target="_blank">オーダーページへ 🛒</a>
+      <a href="order.html" class="btn-sub">オーダーの流れ</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- サンプル -->
+<section class="section">
+  <div class="section-head">
+    <p class="section-en">works</p>
+    <p class="section-ja">最近の作品</p>
+    <div class="section-deco"></div>
+  </div>
+
+  <!-- =============================================
+       サンプル画像
+       <img src="ファイル名.jpg" alt="説明"> に差し替えてください
+       ============================================= -->
+  <div class="sample-grid">
+    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
+    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
+    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
+    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
+  </div>
+
+  <div class="sample-more">
+    <a href="gallery.html">作品をもっと見る →</a>
+  </div>
+</section>
+
+<div class="sep">✦ ✦ ✦</div>
+
+<!-- ハンドメイドアピール -->
+<section class="section" style="padding-top:2rem;padding-bottom:2rem;">
+  <div class="handmade-box">
+    <div class="handmade-icon">🪡</div>
+    <div class="handmade-title">すべて手作りでお届けします</div>
+    <div class="handmade-desc">
+      昇華転写×手縫いで、<br>
+      イラストをそのままぬいぐるみに。<br>
+      世界にひとつだけの作品をお作りします。
+    </div>
+  </div>
+</section>
+
+<div class="sep">✦ ✦ ✦</div>
+
+<!-- メニュー -->
+<section class="section" style="padding-top:2rem;">
+  <div class="section-head">
+    <p class="section-en">menu</p>
+    <p class="section-ja">ご案内</p>
+    <div class="section-deco"></div>
+  </div>
+
+  <div class="menu-grid">
+    <a href="order.html" class="menu-card">
+      <span class="menu-card-en">order</span>
+      <span class="menu-card-title">オーダーの流れ</span>
+      <span class="menu-card-desc">はじめての方も安心。受注の手順をご案内します。</span>
+      <span class="menu-card-arrow">→</span>
+    </a>
+    <a href="price.html" class="menu-card">
+      <span class="menu-card-en">price</span>
+      <span class="menu-card-title">料金表</span>
+      <span class="menu-card-desc">8cmサイズ ¥12,000〜。オプションも充実。</span>
+      <span class="menu-card-arrow">→</span>
+    </a>
+    <a href="before-order.html" class="menu-card">
+      <span class="menu-card-en">notice</span>
+      <span class="menu-card-title">オーダー前のお願い</span>
+      <span class="menu-card-desc">ご依頼前に必ずお読みください。</span>
+      <span class="menu-card-arrow">→</span>
+    </a>
+    <a href="coupon.html" class="menu-card">
+      <span class="menu-card-en">coupon</span>
+      <span class="menu-card-title">クーポン 🎟️</span>
+      <span class="menu-card-desc">Xフォロワー限定で10%OFF！</span>
+      <span class="menu-card-arrow">→</span>
+    </a>
+    <a href="fabric.html" class="menu-card">
+      <span class="menu-card-en">fabric</span>
+      <span class="menu-card-title">布素材紹介</span>
+      <span class="menu-card-desc">使用している布素材と色見本をご確認いただけます。</span>
+      <span class="menu-card-arrow">→</span>
+    </a>
+    <a href="about-template.html" class="menu-card">
+      <span class="menu-card-en">template</span>
+      <span class="menu-card-title">テンプレートについて</span>
+      <span class="menu-card-desc">デザイン用・転写用テンプレートの説明はこちら。</span>
+      <span class="menu-card-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- フッター -->
+<footer class="footer">
+  <div class="footer-logo">hug nui² studio 🧸</div>
+  <div class="footer-links">
+    <a href="order.html">オーダーの流れ</a>
+    <a href="gallery.html">作品一覧</a>
+    <a href="coupon.html">クーポン</a>
+    <a href="https://twitter.com/hug87_OuO" target="_blank">X（Twitter）</a>
+  </div>
+  <p class="footer-copy">© hug nui² studio. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
