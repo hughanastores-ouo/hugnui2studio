@@ -2,9 +2,9 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>依頼フォーム | hug nui² studio</title>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -120,27 +120,17 @@ input[type="file"] { display: none; }
 }
 .submit-btn:hover:not(:disabled) { translate: 2px 2px; box-shadow: 2px 2px 0 #2a2030; background: #d96a8a; color: #fff; }
 .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.submit-btn.loading {
-  background: #2a2030 !important; color: #fff !important;
-  cursor: not-allowed; translate: none !important;
-  box-shadow: 4px 4px 0 #2a2030 !important;
-  position: relative; overflow: hidden;
-}
-.submit-btn.loading::after {
-  content: ''; position: absolute; top: 0; left: -100%;
-  width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
-  animation: btnShine 1.2s ease-in-out infinite;
-}
+.submit-btn.loading { background: #2a2030 !important; color: #fff !important; cursor: not-allowed; translate: none !important; box-shadow: 4px 4px 0 #2a2030 !important; position: relative; overflow: hidden; }
+.submit-btn.loading::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); animation: btnShine 1.2s ease-in-out infinite; }
 @keyframes btnShine { 0%{left:-100%} 100%{left:160%} }
 .sending-steps { display:none; max-width:520px; margin:.75rem auto 0; background:#fff; border:2px solid #f7b8cc; border-radius:14px; padding:1rem 1.25rem; }
 .sending-steps.show { display:block; }
 .sending-step { display:flex; align-items:center; gap:.65rem; padding:.4rem 0; font-size:12.5px; color:#b0a0b8; transition:color .3s; font-family:'Zen Maru Gothic',sans-serif; }
 .sending-step.active { color:#2a2030; font-weight:700; }
-.sending-step.done   { color:#5ba4c7; }
+.sending-step.done { color:#5ba4c7; }
 .step-icon { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; background:#f0e8f4; border:1.5px solid #e0d0e8; transition:all .3s; }
 .sending-step.active .step-icon { background:#f7b8cc; border-color:#d96a8a; animation:pulse .8s ease-in-out infinite alternate; }
-.sending-step.done   .step-icon { background:#a8d8ea; border-color:#5ba4c7; }
+.sending-step.done .step-icon { background:#a8d8ea; border-color:#5ba4c7; }
 @keyframes pulse { from{transform:scale(1)} to{transform:scale(1.1);box-shadow:0 0 6px rgba(247,184,204,.6)} }
 .dots-spinner { display:none; }
 .sending-step.active .dots-spinner { display:inline-flex; gap:2px; margin-left:2px; }
@@ -386,7 +376,22 @@ input.error, textarea.error { border-color: #c0405a; }
     </div>
   </div>
 
+  <div class="sending-steps" id="sendingSteps">
+    <div class="sending-step" id="sstep1"><div class="step-icon" id="sicon1">1</div><span>依頼内容を送信中</span><span class="dots-spinner"><span></span><span></span><span></span></span></div>
+    <div class="sending-step" id="sstep2"><div class="step-icon" id="sicon2">2</div><span>データを保存中</span><span class="dots-spinner"><span></span><span></span><span></span></span></div>
+    <div class="sending-step" id="sstep3"><div class="step-icon" id="sicon3">3</div><span>確認メールを送信中</span><span class="dots-spinner"><span></span><span></span><span></span></span></div>
+  </div>
 </div><!-- /#formWrap -->
+
+  <div class="complete-title">送信が完了しました！</div>
+  <div class="complete-text">
+    ご依頼ありがとうございます。<br>
+    内容を確認次第、メールまたはXのDMにて<br>
+    ご連絡いたします。<br><br>
+    お時間をいただく場合がございますが、<br>
+    しばらくお待ちください 🩷
+  </div>
+</div>
 
 <script>
 // =============================================
@@ -412,17 +417,17 @@ function generateOrderId() {
 
 async function consumeSlot(type, pKey) {
   try {
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN1_ID}/latest`, { headers: { 'X-Access-Key': X_KEY } });
+    const res = await fetch('https://api.jsonbin.io/v3/b/' + BIN1_ID + '/latest', { headers: { 'X-Access-Key': X_KEY } });
     if (!res.ok) return;
     const rec = (await res.json()).record;
-    const sched = rec.schedule ?? {};
+    const sched = rec.schedule || {};
     if (!sched[pKey] || !sched[pKey].slots) return;
     const slots = sched[pKey].slots;
     if (slots[type] !== undefined && slots[type] > 0) {
       slots[type] -= 1;
-      if (Object.values(slots).every(v => v <= 0)) sched[pKey].open = false;
+      if (Object.values(slots).every(function(v){ return v <= 0; })) sched[pKey].open = false;
       rec.schedule = sched;
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN1_ID}`, {
+      await fetch('https://api.jsonbin.io/v3/b/' + BIN1_ID, {
         method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY },
         body: JSON.stringify(rec)
       });
@@ -431,14 +436,17 @@ async function consumeSlot(type, pKey) {
 }
 
 function setStep(n) {
-  [1,2,3].forEach(i => {
-    const el = document.getElementById('sstep'+i);
-    const ic = document.getElementById('sicon'+i);
+  [1,2,3].forEach(function(i) {
+    var el = document.getElementById('sstep'+i);
+    var ic = document.getElementById('sicon'+i);
     el.classList.remove('active','done');
     if (i < n)  { el.classList.add('done');   ic.textContent = '✓'; }
-    if (i === n) { el.classList.add('active'); ic.textContent = i;  }
+    if (i === n) { el.classList.add('active'); ic.textContent = String(i); }
   });
 }
+const BIN2_ID       = '69c3a2fac3097a1dd55a28e3'; // 依頼データ保存用Bin
+const X_KEY         = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';      // ← Access Keyに置き換え
+// =============================================
 
 // URLパラメータから選択内容を復元
 const params      = new URLSearchParams(location.search);
@@ -496,22 +504,11 @@ function validate() {
 // 送信レート制限（同一セッション内で2回以上は弾く）
 let submitted = false;
 
-// ステップUI更新ヘルパー
-function setStep(n) {
-  [1,2,3].forEach(i => {
-    const el = document.getElementById(`sstep${i}`);
-    const ic = document.getElementById(`sicon${i}`);
-    el.classList.remove('active','done');
-    if (i < n)  { el.classList.add('done');   ic.textContent = '✓'; }
-    if (i === n) { el.classList.add('active'); ic.textContent = i;  }
-  });
-}
-
 async function submitForm() {
   if (submitted) { alert('すでに送信済みです'); return; }
   if (!validate()) return;
 
-  const btn = document.getElementById('submitBtn');
+  var btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = '送信中…';
   btn.classList.add('loading');
@@ -519,37 +516,35 @@ async function submitForm() {
   setStep(1);
 
   try {
-    // 入力値を変数に格納
-    const nameVal  = document.getElementById('name').value.trim();
-    const emailVal = document.getElementById('email').value.trim();
-    const xidVal   = document.getElementById('xid').value.trim();
+    var nameVal  = document.getElementById('name').value.trim();
+    var emailVal = document.getElementById('email').value.trim();
+    var xidVal   = document.getElementById('xid').value.trim();
 
     // Step1: Formspree送信
-    const fd = new FormData();
+    var fd = new FormData();
     fd.append('_subject', document.getElementById('subjectField').value);
     fd.append('type',        typeVal);
     fd.append('periodLabel', periodLabel);
     fd.append('name',        nameVal);
     fd.append('email',       emailVal);
     fd.append('xid',         xidVal);
-
-    const fsRes = await fetch(FORMSPREE_URL, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+    var fsRes = await fetch(FORMSPREE_URL, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
     if (!fsRes.ok) {
-      const errBody = await fsRes.json().catch(()=>({}));
+      var errBody = await fsRes.json().catch(function(){ return {}; });
       throw new Error('Formspree error: ' + fsRes.status + ' ' + JSON.stringify(errBody));
     }
 
     setStep(2);
 
     // Step2: 依頼番号生成・JSONBin保存・枠消費
-    const orderId = generateOrderId();
+    var orderId = generateOrderId();
     try {
-      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, { headers: { 'X-Access-Key': X_KEY } });
-      const existing = getRes.ok ? ((await getRes.json()).record ?? {}) : {};
-      const orders = existing.orders ?? [];
-      orders.push({ id: orderId, type: typeVal, periodKey, periodLabel, name: nameVal, email: emailVal, xid: xidVal, charDesc: '', message: '', submittedAt: new Date().toISOString(), status: 'pending' });
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY }, body: JSON.stringify({ orders }) });
-    } catch(e) { console.warn('JSONBin保存失敗:', e); }
+      var getRes = await fetch('https://api.jsonbin.io/v3/b/' + BIN2_ID + '/latest', { headers: { 'X-Access-Key': X_KEY } });
+      var existing = getRes.ok ? ((await getRes.json()).record || {}) : {};
+      var orders = existing.orders || [];
+      orders.push({ id: orderId, type: typeVal, periodKey: periodKey, periodLabel: periodLabel, name: nameVal, email: emailVal, xid: xidVal, charDesc: '', message: '', submittedAt: new Date().toISOString(), status: 'pending' });
+      await fetch('https://api.jsonbin.io/v3/b/' + BIN2_ID, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY }, body: JSON.stringify({ orders: orders }) });
+    } catch(e2) { console.warn('JSONBin保存失敗:', e2); }
     await consumeSlot(typeVal, periodKey);
 
     setStep(3);
@@ -569,15 +564,91 @@ async function submitForm() {
 
     // 完了ページへ遷移
     submitted = true;
-    const cp = new URLSearchParams({ orderId, name: nameVal, type: typeVal, periodLabel, email: emailVal, xid: xidVal });
+    var cp = new URLSearchParams({ orderId: orderId, name: nameVal, type: typeVal, periodLabel: periodLabel, email: emailVal, xid: xidVal });
     location.href = 'order-complete.html?' + cp.toString();
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '依頼を送信する 🧸';
+    btn.classList.remove('loading');
+    document.getElementById('sendingSteps').classList.remove('show');
+    alert('送信に失敗しました。
+' + e.message);
+  }
+}
+
+async function submitForm() {
+  if (submitted) { alert('すでに送信済みです'); return; }
+  if (!validate()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中…';
+  btn.classList.add('loading');
+  document.getElementById('sendingSteps').classList.add('show');
+  setStep(1);
+
+  try {
+    // FormDataを組み立て
+    const fd = new FormData();
+    fd.append('_subject', document.getElementById('subjectField').value);
+    fd.append('type',        typeVal);
+    fd.append('periodLabel', periodLabel);
+    fd.append('name',        document.getElementById('name').value.trim());
+    fd.append('email',       document.getElementById('email').value.trim());
+    fd.append('xid',         document.getElementById('xid').value.trim());
+    // charDescはSTEP2フォームで収集
+    // messageはSTEP2フォームで収集
+
+    // Formspreeへ送信
+    const fsRes = await fetch(FORMSPREE_URL, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+    if (!fsRes.ok) {
+      const errBody = await fsRes.json().catch(()=>({}));
+      throw new Error('Formspree error: ' + fsRes.status + ' ' + JSON.stringify(errBody));
+    }
+
+    // JSONBin Bin②に依頼データを保存
+    const orderId  = 'ord-' + Date.now();
+    const orderRec = {
+      id:          orderId,
+      type:        typeVal,
+      periodKey,
+      periodLabel,
+      name:        document.getElementById('name').value.trim(),
+      email:       document.getElementById('email').value.trim(),
+      xid:         document.getElementById('xid').value.trim(),
+      charDesc:    '',  // STEP2フォームで収集
+      message:     '',  // STEP2フォームで収集
+      submittedAt: new Date().toISOString(),
+      status:      'pending'
+    };
+
+    // 既存データを読んでから追記（簡易的にGETしてPUT）
+    try {
+      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, {
+        headers: { 'X-Access-Key': X_KEY }
+      });
+      const existing = getRes.ok ? ((await getRes.json()).record ?? {}) : {};
+      const orders = existing.orders ?? [];
+      orders.push(orderRec);
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY },
+        body: JSON.stringify({ orders })
+      });
+    } catch { /* JSONBinへの保存失敗はFormspreeが通っていれば致命的ではない */ }
+
+    submitted = true;
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('completeCard').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
   } catch (e) {
     btn.disabled = false;
     btn.textContent = '依頼を送信する 🧸';
     btn.classList.remove('loading');
     document.getElementById('sendingSteps').classList.remove('show');
-    alert('送信に失敗しました。しばらく経ってから再度お試しください。\n' + e.message);
+    alert('送信に失敗しました。しばらく経ってから再度お試しください。');
   }
 }
 
