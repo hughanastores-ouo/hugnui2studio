@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>依頼フォーム | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fdf0f4;
+  min-height: 100vh;
+  padding: 2rem 1rem 5rem;
+  background-image: radial-gradient(circle, rgba(168,216,234,0.25) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-header a { font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; color: #b0a0b8; text-decoration: none; display: inline-block; margin-bottom: 0.75rem; }
+.page-header a:hover { color: #d96a8a; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #2a2030; }
+.page-title small { display: block; font-size: 11px; color: #b0a0b8; font-weight: 400; margin-top: 0.25rem; letter-spacing: 0.1em; }
+
+/* ステップ（3がactive） */
+.steps { display: flex; align-items: center; justify-content: center; max-width: 360px; margin: 0 auto 2rem; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
+.step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700; border: 2.5px solid #ddd; background: #fff; color: #ccc; }
+.step-circle.done { background: #a8d8ea; border-color: #5ba4c7; color: #2a2030; }
+.step-circle.active { background: #f7b8cc; border-color: #d96a8a; color: #2a2030; }
+.step-label { font-size: 10px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
+.step-label.active { color: #d96a8a; font-weight: 700; }
+.step-line { height: 2px; background: #f0c0d0; flex: 1; margin-bottom: 1.4rem; max-width: 40px; }
+
+/* 選択内容サマリー */
+.summary-bar {
+  max-width: 520px; margin: 0 auto 1.25rem;
+  background: #2a2030; border-radius: 12px; padding: 0.75rem 1.1rem;
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.summary-item { font-family: 'Zen Maru Gothic', sans-serif; font-size: 12px; color: rgba(255,255,255,0.7); }
+.summary-item strong { color: #fff; }
+
+/* フォームカード */
+.card {
+  background: #fff; border-radius: 20px; border: 2.5px solid #2a2030;
+  box-shadow: 5px 5px 0 #2a2030; padding: 1.75rem;
+  width: 100%; max-width: 520px; margin: 0 auto 1.25rem;
+}
+.card-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700; color: #2a2030; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #fce8f0; }
+
+/* フォームフィールド */
+.field { margin-bottom: 1.1rem; }
+.field:last-child { margin-bottom: 0; }
+.field-label {
+  display: flex; align-items: center; gap: 0.35rem;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 12px; font-weight: 700;
+  color: #6a5870; margin-bottom: 0.4rem;
+}
+.field-required {
+  background: #f7b8cc; color: #2a2030; font-size: 9px; font-weight: 700;
+  padding: 1px 6px; border-radius: 10px; font-family: 'Zen Maru Gothic', sans-serif;
+}
+.field-optional {
+  background: #e8f4fa; color: #5ba4c7; font-size: 9px; font-weight: 700;
+  padding: 1px 6px; border-radius: 10px; font-family: 'Zen Maru Gothic', sans-serif;
+}
+.field-hint { font-size: 11px; color: #b0a0b8; margin-top: 0.3rem; line-height: 1.6; }
+
+input[type="text"], input[type="email"], textarea {
+  width: 100%; padding: 0.7rem 0.9rem;
+  border: 2px solid #f7b8cc; border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: #2a2030;
+  background: #fff; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  border-color: #a8d8ea; box-shadow: 0 0 0 3px rgba(168,216,234,0.25);
+}
+textarea { resize: vertical; min-height: 90px; }
+
+/* ファイルアップロード */
+.file-zone {
+  border: 2px dashed #f7b8cc; border-radius: 12px; padding: 1.5rem;
+  text-align: center; cursor: pointer; background: #fef0f5;
+  transition: background 0.15s, border-color 0.15s;
+}
+.file-zone:hover { background: #fff0f5; border-color: #d96a8a; }
+.file-zone.dragover { background: #e8f4fa; border-color: #5ba4c7; }
+.file-zone-icon { font-size: 28px; margin-bottom: 0.4rem; }
+.file-zone-text { font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; color: #b0a0b8; }
+.file-zone-text strong { color: #d96a8a; }
+.file-list { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.file-item {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #fff; border: 1.5px solid #f7b8cc; border-radius: 8px; padding: 0.4rem 0.75rem;
+  font-size: 12px; font-family: 'Zen Maru Gothic', sans-serif; color: #6a5870;
+}
+.file-remove { background: none; border: none; color: #d0a0b8; cursor: pointer; font-size: 14px; }
+.file-remove:hover { color: #c0405a; }
+input[type="file"] { display: none; }
+
+/* 規約同意 */
+.agree-row {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  background: #fef0f5; border: 1.5px solid #f7b8cc; border-radius: 12px; padding: 0.85rem 1rem;
+}
+.agree-row input[type="checkbox"] { margin-top: 2px; width: 16px; height: 16px; flex-shrink: 0; accent-color: #d96a8a; }
+.agree-row label { font-size: 13px; color: #2a2030; font-family: 'Zen Maru Gothic', sans-serif; line-height: 1.6; }
+.agree-row label a { color: #5ba4c7; }
+
+/* 送信ボタン */
+.submit-btn {
+  display: block; width: 100%; max-width: 520px; margin: 0 auto;
+  padding: 0.9rem; background: #f7b8cc; border: 2.5px solid #2a2030; border-radius: 14px;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700;
+  color: #2a2030; cursor: pointer; box-shadow: 4px 4px 0 #2a2030;
+  transition: translate 0.1s, box-shadow 0.1s, background 0.15s; letter-spacing: 0.04em;
+}
+.submit-btn:hover:not(:disabled) { translate: 2px 2px; box-shadow: 2px 2px 0 #2a2030; background: #d96a8a; color: #fff; }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 完了メッセージ */
+.complete-card {
+  display: none; background: #fff; border-radius: 20px; border: 2.5px solid #2a2030;
+  box-shadow: 5px 5px 0 #2a2030; padding: 2.5rem 1.75rem; text-align: center;
+  width: 100%; max-width: 520px; margin: 0 auto;
+}
+.complete-icon { font-size: 48px; margin-bottom: 1rem; }
+.complete-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 20px; font-weight: 700; color: #2a2030; margin-bottom: 0.75rem; }
+.complete-text { font-size: 13.5px; color: #6a5870; line-height: 2; }
+
+/* エラー */
+.field-error { font-size: 11px; color: #c0405a; margin-top: 0.3rem; font-family: 'Zen Maru Gothic', sans-serif; display: none; }
+.field-error.show { display: block; }
+input.error, textarea.error { border-color: #c0405a; }
+
+/* Honeypot（非表示） */
+.hp { display: none !important; visibility: hidden; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="order.html" id="backLink">← 時期選択に戻る</a>
+  <div class="page-title">依頼フォーム<small>hug nui² studio</small></div>
+</div>
+
+<div class="steps">
+  <div class="step"><div class="step-circle done">1</div><div class="step-label">タイプ選択</div></div>
+  <div class="step-line"></div>
+  <div class="step"><div class="step-circle done">2</div><div class="step-label">時期選択</div></div>
+  <div class="step-line"></div>
+  <div class="step"><div class="step-circle active">3</div><div class="step-label active">フォーム入力</div></div>
+</div>
+
+<!-- 選択内容サマリー -->
+<div class="summary-bar">
+  <div class="summary-item">タイプ：<strong id="summaryType">-</strong></div>
+  <div class="summary-item">希望時期：<strong id="summaryPeriod">-</strong></div>
+</div>
+
+<!-- フォーム -->
+<div id="formWrap">
+
+  <form id="orderForm" novalidate>
+
+    <!-- Honeypot（スパム対策・非表示） -->
+    <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+    <input type="hidden" name="_subject" id="subjectField" value="">
+    <input type="hidden" name="type"        id="typeField">
+    <input type="hidden" name="periodKey"   id="periodKeyField">
+    <input type="hidden" name="periodLabel" id="periodLabelField">
+
+    <!-- お名前・ニックネーム -->
+    <div class="card">
+      <div class="card-title">📝 基本情報</div>
+
+      <div class="field">
+        <div class="field-label">お名前・ニックネーム <span class="field-required">必須</span></div>
+        <input type="text" id="name" name="name" placeholder="例：はな" maxlength="50">
+        <div class="field-error" id="err-name">お名前を入力してください</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">メールアドレス <span class="field-required">必須</span></div>
+        <input type="email" id="email" name="email" placeholder="例：example@gmail.com">
+        <div class="field-error" id="err-email">正しいメールアドレスを入力してください</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">X（Twitter）ID <span class="field-optional">任意</span></div>
+        <input type="text" id="xid" name="xid" placeholder="例：@hug87_OuO" maxlength="50">
+        <div class="field-hint">DM連絡を希望する場合はご記入ください</div>
+      </div>
+    </div>
+
+    <!-- キャラクター情報 -->
+    <div class="card">
+      <div class="card-title">🎨 キャラクターについて</div>
+
+      <div class="field">
+        <div class="field-label">キャラクター名・説明 <span class="field-required">必須</span></div>
+        <textarea id="charDesc" name="charDesc" placeholder="例：ピンク色の髪の女の子。青い目で、縞模様の服を着ています。"></textarea>
+        <div class="field-error" id="err-charDesc">キャラクターの説明を入力してください</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">イラスト画像 <span class="field-required">必須</span></div>
+        <div class="file-zone" id="illustZone" onclick="document.getElementById('illustInput').click()">
+          <div class="file-zone-icon">🖼️</div>
+          <div class="file-zone-text"><strong>クリックまたはドロップ</strong>で画像を追加<br>PNG・JPG・GIF・WEBP（最大5MB）</div>
+          <div class="file-list" id="illustList"></div>
+        </div>
+        <input type="file" id="illustInput" accept="image/*" multiple>
+        <div class="field-error" id="err-illust">イラスト画像を1枚以上追加してください</div>
+        <div class="field-hint">※ Formspree経由で送信されます（最大10MBまで）</div>
+      </div>
+    </div>
+
+    <!-- テンプレート・要望 -->
+    <div class="card">
+      <div class="card-title">📐 テンプレート・その他</div>
+
+      <div class="field">
+        <div class="field-label">転写用テンプレート <span class="field-optional">任意</span></div>
+        <div class="file-zone" id="templateZone" onclick="document.getElementById('templateInput').click()">
+          <div class="file-zone-icon">📄</div>
+          <div class="file-zone-text"><strong>クリックまたはドロップ</strong>でファイルを追加<br>PNG・JPG・PSD・CLIP（最大10MB）</div>
+          <div class="file-list" id="templateList"></div>
+        </div>
+        <input type="file" id="templateInput" accept="image/*,.psd,.clip,.csp" multiple>
+        <div class="field-hint">まだない場合は空欄でOKです</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">ご要望・連絡事項 <span class="field-optional">任意</span></div>
+        <textarea id="message" name="message" placeholder="例：背面はシンプルにしてほしい、急ぎではない、など"></textarea>
+      </div>
+    </div>
+
+    <!-- 規約同意 -->
+    <div class="card">
+      <div class="agree-row">
+        <input type="checkbox" id="agree" name="agree">
+        <label for="agree">
+          <a href="before-order.html" target="_blank">オーダー前のお願い</a>と
+          <a href="terms.html" target="_blank">利用規約</a>を読み、内容に同意します。
+        </label>
+      </div>
+      <div class="field-error" id="err-agree" style="margin-top:0.5rem;">規約への同意が必要です</div>
+    </div>
+
+  </form>
+
+  <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+    依頼を送信する 🧸
+  </button>
+
+</div><!-- /#formWrap -->
+
+<!-- 完了メッセージ -->
+<div class="complete-card" id="completeCard">
+  <div class="complete-icon">🎉</div>
+  <div class="complete-title">送信が完了しました！</div>
+  <div class="complete-text">
+    ご依頼ありがとうございます。<br>
+    内容を確認次第、メールまたはXのDMにて<br>
+    ご連絡いたします。<br><br>
+    お時間をいただく場合がございますが、<br>
+    しばらくお待ちください 🩷
+  </div>
+</div>
+
+<script>
+// =============================================
+// ★ 設定 ★
+// =============================================
+const FORMSPREE_URL = 'https://formspree.io/f/xaqlwabk';
+const BIN2_ID       = '69c3843daa77b81da918a941'; // 依頼データ保存用Bin
+const X_KEY         = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';      // ← Access Keyに置き換え
+// =============================================
+
+// URLパラメータから選択内容を復元
+const params      = new URLSearchParams(location.search);
+const typeVal     = params.get('type')        ?? '';
+const periodKey   = params.get('periodKey')   ?? '';
+const periodLabel = params.get('periodLabel') ?? '';
+
+document.getElementById('summaryType').textContent   = typeVal     || '未選択';
+document.getElementById('summaryPeriod').textContent = periodLabel || '未選択';
+document.getElementById('typeField').value        = typeVal;
+document.getElementById('periodKeyField').value   = periodKey;
+document.getElementById('periodLabelField').value = periodLabel;
+document.getElementById('subjectField').value     = `【hug nui² studio】依頼：${typeVal} / ${periodLabel}`;
+
+// パラメータがなければ選択ページに戻す
+if (!typeVal || !periodKey) location.href = 'order.html';
+
+// =====================
+// ファイルアップロード
+// =====================
+const illustFiles  = new DataTransfer();
+const templateFiles = new DataTransfer();
+
+function setupFileZone(zoneId, inputId, dtObj, listId, maxMB) {
+  const zone  = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+
+  input.addEventListener('change', () => { addFiles(dtObj, input.files, listId, maxMB); input.value = ''; });
+
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('dragover');
+    addFiles(dtObj, e.dataTransfer.files, listId, maxMB);
+  });
+}
+
+function addFiles(dt, files, listId, maxMB) {
+  Array.from(files).forEach(f => {
+    if (f.size > maxMB * 1024 * 1024) { alert(`${f.name} は${maxMB}MBを超えています`); return; }
+    dt.items.add(f);
+  });
+  renderFileList(dt, listId);
+}
+
+function removeFile(dt, idx, listId) {
+  const newDt = new DataTransfer();
+  Array.from(dt.files).forEach((f, i) => { if (i !== idx) newDt.items.add(f); });
+  // dtを書き換える（参照渡しが使えないので直接itemsを操作）
+  while (dt.items.length) dt.items.remove(0);
+  Array.from(newDt.files).forEach(f => dt.items.add(f));
+  renderFileList(dt, listId);
+}
+
+function renderFileList(dt, listId) {
+  const list = document.getElementById(listId);
+  list.innerHTML = Array.from(dt.files).map((f, i) => `
+    <div class="file-item">
+      <span>📎 ${escHtml(f.name)} (${(f.size/1024/1024).toFixed(1)}MB)</span>
+      <button class="file-remove" type="button" onclick="removeFileByListId('${listId}', ${i})">✕</button>
+    </div>`).join('');
+}
+
+function removeFileByListId(listId, idx) {
+  const dt = listId === 'illustList' ? illustFiles : templateFiles;
+  removeFile(dt, idx, listId);
+}
+
+setupFileZone('illustZone',   'illustInput',   illustFiles,   'illustList',   5);
+setupFileZone('templateZone', 'templateInput', templateFiles, 'templateList', 10);
+
+// =====================
+// バリデーション
+// =====================
+function validate() {
+  let ok = true;
+
+  // Honeypot チェック
+  if (document.querySelector('input[name="_gotcha"]').value) return false;
+
+  // 必須チェック
+  const checks = [
+    ['name',     document.getElementById('name').value.trim(),  'err-name'],
+    ['email',    '',                                            'err-email'],
+    ['charDesc', document.getElementById('charDesc').value.trim(), 'err-charDesc'],
+  ];
+
+  checks.forEach(([field, val, errId]) => {
+    const el  = document.getElementById(field === 'email' ? 'email' : field);
+    const err = document.getElementById(errId);
+    let invalid = false;
+    if (field === 'email') {
+      invalid = !el.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+    } else {
+      invalid = !val;
+    }
+    el.classList.toggle('error', invalid);
+    err.classList.toggle('show', invalid);
+    if (invalid) ok = false;
+  });
+
+  // イラスト必須
+  const errIllust = document.getElementById('err-illust');
+  const noIllust  = illustFiles.files.length === 0;
+  errIllust.classList.toggle('show', noIllust);
+  if (noIllust) ok = false;
+
+  // 規約同意
+  const errAgree = document.getElementById('err-agree');
+  const noAgree  = !document.getElementById('agree').checked;
+  errAgree.classList.toggle('show', noAgree);
+  if (noAgree) ok = false;
+
+  return ok;
+}
+
+// =====================
+// 送信処理
+// =====================
+// 送信レート制限（同一セッション内で2回以上は弾く）
+let submitted = false;
+
+async function submitForm() {
+  if (submitted) { alert('すでに送信済みです'); return; }
+  if (!validate()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = '送信中...';
+
+  try {
+    // FormDataを組み立て
+    const fd = new FormData();
+    fd.append('_subject', document.getElementById('subjectField').value);
+    fd.append('type',        typeVal);
+    fd.append('periodLabel', periodLabel);
+    fd.append('name',        document.getElementById('name').value.trim());
+    fd.append('email',       document.getElementById('email').value.trim());
+    fd.append('xid',         document.getElementById('xid').value.trim());
+    fd.append('charDesc',    document.getElementById('charDesc').value.trim());
+    fd.append('message',     document.getElementById('message').value.trim());
+
+    // ファイル添付
+    Array.from(illustFiles.files).forEach(f  => fd.append('illust',   f));
+    Array.from(templateFiles.files).forEach(f => fd.append('template', f));
+
+    // Formspreeへ送信
+    const fsRes = await fetch(FORMSPREE_URL, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+    if (!fsRes.ok) {
+      const errBody = await fsRes.json().catch(()=>({}));
+      throw new Error('Formspree error: ' + fsRes.status + ' ' + JSON.stringify(errBody));
+    }
+
+    // JSONBin Bin②に依頼データを保存
+    const orderId  = 'ord-' + Date.now();
+    const orderRec = {
+      id:          orderId,
+      type:        typeVal,
+      periodKey,
+      periodLabel,
+      name:        document.getElementById('name').value.trim(),
+      email:       document.getElementById('email').value.trim(),
+      xid:         document.getElementById('xid').value.trim(),
+      charDesc:    document.getElementById('charDesc').value.trim(),
+      message:     document.getElementById('message').value.trim(),
+      submittedAt: new Date().toISOString(),
+      status:      'pending'
+    };
+
+    // 既存データを読んでから追記（簡易的にGETしてPUT）
+    try {
+      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, {
+        headers: { 'X-Access-Key': X_KEY }
+      });
+      const existing = getRes.ok ? ((await getRes.json()).record ?? {}) : {};
+      const orders = existing.orders ?? [];
+      orders.push(orderRec);
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY },
+        body: JSON.stringify({ orders })
+      });
+    } catch { /* JSONBinへの保存失敗はFormspreeが通っていれば致命的ではない */ }
+
+    submitted = true;
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('completeCard').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '依頼を送信する 🧸';
+    alert('送信に失敗しました。しばらく経ってから再度お試しください。');
+  }
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>オーダー | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fdf0f4;
+  min-height: 100vh;
+  padding: 2rem 1rem 5rem;
+  background-image: radial-gradient(circle, rgba(168,216,234,0.25) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+.page-header { text-align: center; margin-bottom: 2.5rem; }
+.page-header a {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 13px; color: #b0a0b8; text-decoration: none; display: inline-block; margin-bottom: 0.75rem;
+}
+.page-header a:hover { color: #d96a8a; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #2a2030; }
+.page-title small { display: block; font-size: 11px; color: #b0a0b8; font-weight: 400; margin-top: 0.25rem; letter-spacing: 0.1em; }
+
+/* ステップ */
+.steps { display: flex; align-items: center; justify-content: center; max-width: 360px; margin: 0 auto 2.5rem; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
+.step-circle {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700;
+  border: 2.5px solid #ddd; background: #fff; color: #ccc; transition: all 0.3s;
+}
+.step-circle.active { background: #f7b8cc; border-color: #d96a8a; color: #2a2030; }
+.step-circle.done   { background: #a8d8ea; border-color: #5ba4c7; color: #2a2030; }
+.step-label { font-size: 10px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
+.step-label.active { color: #d96a8a; font-weight: 700; }
+.step-line { height: 2px; background: #f0c0d0; flex: 1; margin-bottom: 1.4rem; max-width: 40px; }
+
+/* カード */
+.card {
+  background: #fff; border-radius: 20px; border: 2.5px solid #2a2030;
+  box-shadow: 5px 5px 0 #2a2030; padding: 1.75rem;
+  width: 100%; max-width: 520px; margin: 0 auto 1.5rem;
+}
+.card-title {
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700; color: #2a2030;
+  margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #fce8f0;
+}
+
+/* タイプボタン */
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.type-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.4rem; padding: 1.1rem 0.75rem;
+  background: #fef0f5; border: 2px solid #f7b8cc; border-radius: 14px;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 14px; font-weight: 700;
+  color: #2a2030; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.type-btn:hover { background: #f7b8cc; border-color: #d96a8a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(247,184,204,0.4); }
+.type-btn.selected { background: #a8d8ea; border-color: #5ba4c7; box-shadow: 3px 3px 0 #2a2030; transform: none; }
+.type-btn-icon { font-size: 24px; }
+.type-btn-sub { font-size: 10px; color: #b0a0b8; font-weight: 400; }
+
+/* 旬選択 */
+.period-section { display: none; }
+.period-section.show { display: block; }
+.period-month-label {
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700;
+  color: #6a5870; margin-bottom: 0.6rem; margin-top: 1rem;
+}
+.period-month-label:first-child { margin-top: 0; }
+.period-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 0.25rem; }
+.period-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.25rem; padding: 0.85rem 0.5rem;
+  border-radius: 12px; border: 2px solid #f7b8cc; background: #fef0f5;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; color: #2a2030;
+}
+.period-btn:hover:not(.disabled) { background: #f7b8cc; border-color: #d96a8a; transform: translateY(-1px); }
+.period-btn.selected { background: #a8d8ea; border-color: #5ba4c7; box-shadow: 2px 2px 0 #2a2030; transform: none; }
+.period-btn.disabled { background: #f5f5f5; border-color: #e8e8e8; color: #ccc; cursor: not-allowed; }
+.period-status { font-size: 18px; line-height: 1; }
+.period-name { font-size: 11px; }
+
+/* 次へボタン */
+.next-btn {
+  display: block; width: 100%; max-width: 520px; margin: 0 auto;
+  padding: 0.9rem; background: #a8d8ea; border: 2.5px solid #2a2030; border-radius: 14px;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700;
+  color: #2a2030; cursor: pointer; box-shadow: 4px 4px 0 #2a2030;
+  transition: translate 0.1s, box-shadow 0.1s, background 0.15s; letter-spacing: 0.04em;
+}
+.next-btn:hover:not(:disabled) { translate: 2px 2px; box-shadow: 2px 2px 0 #2a2030; background: #5ba4c7; color: #fff; }
+.next-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.loading { text-align: center; padding: 2rem; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; color: #b0a0b8; }
+.notice {
+  max-width: 520px; margin: 1.25rem auto 0;
+  background: #fef9e8; border: 1.5px solid #ffe27a; border-radius: 12px;
+  padding: 0.85rem 1rem; font-size: 12px; color: #7a6a20; line-height: 1.8;
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html">← トップへ戻る</a>
+  <div class="page-title">オーダーのお申し込み<small>hug nui² studio</small></div>
+</div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-circle active" id="s1">1</div>
+    <div class="step-label active" id="l1">タイプ選択</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step">
+    <div class="step-circle" id="s2">2</div>
+    <div class="step-label" id="l2">時期選択</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step">
+    <div class="step-circle" id="s3">3</div>
+    <div class="step-label" id="l3">フォーム入力</div>
+  </div>
+</div>
+
+<!-- Step1 -->
+<div class="card" id="cardType">
+  <div class="card-title">🧸 ぬいぐるみのタイプを選んでください</div>
+  <div class="type-grid" id="typeGrid"><div class="loading">読み込み中...</div></div>
+</div>
+
+<!-- Step2 -->
+<div class="card period-section" id="cardPeriod">
+  <div class="card-title">📅 着手してほしい時期を選んでください</div>
+  <div id="periodGrid"><div class="loading">読み込み中...</div></div>
+</div>
+
+<button class="next-btn" id="nextBtn" disabled onclick="goToForm()">次へ → フォームに進む</button>
+
+<div class="notice">
+  ⚠️ 着手予定日は目安です。確定後、改めてご連絡いたします。<br>
+  ✕の時期は現在受付できません。○の時期のみ選択できます。
+</div>
+
+<script>
+// =============================================
+// ★ JSONBinの設定を入れてください ★
+// =============================================
+const BIN1_ID = '69c3843daa77b81da918a941';    // ← ステータス・スケジュールBinのID
+const X_KEY   = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza'; // ← Access Key
+// =============================================
+
+const PHASE_LABEL = { early: '上旬', mid: '中旬', late: '下旬' };
+let selectedType = null, selectedPeriod = null;
+let scheduleData = {}, typesData = [];
+
+async function loadData() {
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN1_ID}/latest`, {
+      headers: { 'X-Access-Key': X_KEY }
+    });
+    if (!res.ok) throw new Error();
+    const r = (await res.json()).record;
+    typesData    = r.types    ?? [];
+    scheduleData = r.schedule ?? {};
+  } catch {
+    typesData    = [{ name: '8cm海星型' }];
+    scheduleData = {};
+  }
+  renderTypes();
+}
+
+function renderTypes() {
+  const g = document.getElementById('typeGrid');
+  if (!typesData.length) {
+    g.innerHTML = '<p style="color:#b0a0b8;font-size:13px;text-align:center;font-family:\'Zen Maru Gothic\',sans-serif;padding:1rem;">現在受付可能なタイプがありません</p>';
+    return;
+  }
+  g.innerHTML = typesData.map(t => `
+    <button class="type-btn" data-name="${esc(t.name)}" onclick="selectType(this)">
+      <span class="type-btn-icon">🧸</span>
+      <span>${esc(t.name)}</span>
+    </button>`).join('');
+}
+
+function renderPeriods() {
+  const g   = document.getElementById('periodGrid');
+  const now = new Date();
+  let html  = '';
+  for (let i = 0; i < 3; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    const y = d.getFullYear(), m = d.getMonth() + 1;
+    const mStr = `${y}-${String(m).padStart(2,'0')}`;
+    html += `<div class="period-month-label">${y}年${m}月</div><div class="period-row">`;
+    ['early','mid','late'].forEach(phase => {
+      const key    = `${mStr}-${phase}`;
+      const isOpen = scheduleData[key]?.open ?? false;
+      html += `<button class="period-btn${isOpen ? '' : ' disabled'}"
+        ${isOpen ? `onclick="selectPeriod('${key}','${m}月${PHASE_LABEL[phase]}',this)"` : ''}
+      ><span class="period-status">${isOpen ? '○' : '✕'}</span>
+       <span class="period-name">${PHASE_LABEL[phase]}</span></button>`;
+    });
+    html += '</div>';
+  }
+  g.innerHTML = html;
+}
+
+function selectType(el) {
+  selectedType = el.dataset.name;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  renderPeriods();
+  document.getElementById('cardPeriod').classList.add('show');
+  document.getElementById('s1').className = 'step-circle done';
+  document.getElementById('s2').className = 'step-circle active';
+  document.getElementById('l2').className = 'step-label active';
+  checkNext();
+  setTimeout(() => document.getElementById('cardPeriod').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+}
+
+function selectPeriod(key, label, el) {
+  selectedPeriod = { key, label };
+  document.querySelectorAll('.period-btn:not(.disabled)').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  checkNext();
+}
+
+function checkNext() {
+  document.getElementById('nextBtn').disabled = !(selectedType && selectedPeriod);
+}
+
+function goToForm() {
+  if (!selectedType || !selectedPeriod) return;
+  const p = new URLSearchParams({ type: selectedType, periodKey: selectedPeriod.key, periodLabel: selectedPeriod.label });
+  location.href = `order-form.html?${p}`;
+}
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+loadData();
+</script>
+</body>
+</html>
