@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>依頼フォーム | hug nui² studio</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -248,27 +249,32 @@ input.error, textarea.error { border-color: #c0405a; }
 
 </div><!-- /#formWrap -->
 
-<!-- 完了メッセージ -->
-<div class="complete-card" id="completeCard">
-  <div class="complete-icon">🎉</div>
-  <div class="complete-title">送信が完了しました！</div>
-  <div class="complete-text">
-    ご依頼ありがとうございます。<br>
-    内容を確認次第、メールまたはXのDMにて<br>
-    ご連絡いたします。<br><br>
-    お時間をいただく場合がございますが、<br>
-    しばらくお待ちください 🩷
-  </div>
-</div>
 
 <script>
 // =============================================
 // ★ 設定 ★
 // =============================================
-const FORMSPREE_URL = 'https://formspree.io/f/xaqlwabk';
-const BIN2_ID       = '69c3a2fac3097a1dd55a28e3'; // 依頼データ保存用Bin
-const X_KEY         = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';      // ← Access Keyに置き換え
+const FORMSPREE_URL   = 'https://formspree.io/f/xaqlwabk';
+const BIN2_ID         = '69c3a2fac3097a1dd55a28e3';
+const X_KEY           = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';
+const EJS_SERVICE_ID  = 'service_nfbeo2e';
+const EJS_TEMPLATE_ID = 'template_ybf9ipv';
+const EJS_PUBLIC_KEY  = 'LQ0qfr6VX15Pa4Sx-';
+const STEP2_URL       = 'https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog';
 // =============================================
+
+// EmailJS初期化
+emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+
+// 依頼番号生成（例：ORD-20260325-A3F2）
+function generateOrderId() {
+  const now  = new Date();
+  const date = now.getFullYear().toString() +
+               String(now.getMonth()+1).padStart(2,'0') +
+               String(now.getDate()).padStart(2,'0');
+  const rand = Math.random().toString(36).toUpperCase().slice(2,6);
+  return 'ORD-' + date + '-' + rand;
+}
 
 // URLパラメータから選択内容を復元
 const params      = new URLSearchParams(location.search);
@@ -352,23 +358,19 @@ async function submitForm() {
       throw new Error('Formspree error: ' + fsRes.status + ' ' + JSON.stringify(errBody));
     }
 
-    // JSONBin Bin②に依頼データを保存
-    const orderId  = 'ord-' + Date.now();
-    const orderRec = {
-      id:          orderId,
-      type:        typeVal,
-      periodKey,
-      periodLabel,
-      name:        document.getElementById('name').value.trim(),
-      email:       document.getElementById('email').value.trim(),
-      xid:         document.getElementById('xid').value.trim(),
-      charDesc:    '',  // STEP2フォームで収集
-      message:     '',  // STEP2フォームで収集
-      submittedAt: new Date().toISOString(),
-      status:      'pending'
-    };
+    // 依頼番号生成
+    const orderId  = generateOrderId();
+    const nameVal  = document.getElementById('name').value.trim();
+    const emailVal = document.getElementById('email').value.trim();
+    const xidVal   = document.getElementById('xid').value.trim();
 
-    // 既存データを読んでから追記（簡易的にGETしてPUT）
+    // JSONBin Bin②に依頼データを保存
+    const orderRec = {
+      id: orderId, type: typeVal, periodKey, periodLabel,
+      name: nameVal, email: emailVal, xid: xidVal,
+      charDesc: '', message: '',
+      submittedAt: new Date().toISOString(), status: 'pending'
+    };
     try {
       const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, {
         headers: { 'X-Access-Key': X_KEY }
@@ -381,12 +383,25 @@ async function submitForm() {
         headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY },
         body: JSON.stringify({ orders })
       });
-    } catch { /* JSONBinへの保存失敗はFormspreeが通っていれば致命的ではない */ }
+    } catch(e) { console.warn('JSONBin保存失敗:', e); }
 
+    // EmailJSで依頼者に確認メール送信
+    try {
+      await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+        order_id:     orderId,
+        type:         typeVal,
+        period_label: periodLabel,
+        name:         nameVal,
+        reply_email:  emailVal,
+        xid:          xidVal || '未記入',
+        step2_url:    STEP2_URL
+      });
+    } catch(ejsErr) { console.warn('EmailJS失敗:', ejsErr); }
+
+    // 完了ページへ遷移
     submitted = true;
-    document.getElementById('formWrap').style.display = 'none';
-    document.getElementById('completeCard').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const cp = new URLSearchParams({ orderId, name: nameVal, type: typeVal, periodLabel, email: emailVal, xid: xidVal });
+    location.href = 'order-complete.html?' + cp.toString();
 
   } catch (e) {
     btn.disabled = false;
