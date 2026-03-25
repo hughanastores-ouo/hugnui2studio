@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>依頼フォーム | hug nui² studio</title>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -196,47 +195,36 @@ input.error, textarea.error { border-color: #c0405a; }
       </div>
     </div>
 
-    <!-- キャラクター情報 -->
-    <div class="card">
-      <div class="card-title">🎨 キャラクターについて</div>
-
-      <div class="field">
-        <div class="field-label">キャラクター名・説明 <span class="field-required">必須</span></div>
-        <textarea id="charDesc" name="charDesc" placeholder="例：ピンク色の髪の女の子。青い目で、縞模様の服を着ています。"></textarea>
-        <div class="field-error" id="err-charDesc">キャラクターの説明を入力してください</div>
-      </div>
-
-      <div class="field">
-        <div class="field-label">イラスト画像 <span class="field-required">必須</span></div>
-        <div class="file-zone" id="illustZone" onclick="document.getElementById('illustInput').click()">
-          <div class="file-zone-icon">🖼️</div>
-          <div class="file-zone-text"><strong>クリックまたはドロップ</strong>で画像を追加<br>PNG・JPG・GIF・WEBP（最大5MB）</div>
-          <div class="file-list" id="illustList"></div>
+    <!-- 次ページ案内 -->
+    <div class="card" style="background:#e8f4fa;border-color:#a8d8ea;box-shadow:5px 5px 0 #5ba4c7;">
+      <div style="display:flex;align-items:flex-start;gap:1rem;">
+        <span style="font-size:32px;flex-shrink:0;line-height:1;">🎨</span>
+        <div>
+          <div style="font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:700;color:#2a2030;margin-bottom:0.5rem;">
+            イラスト・データは次のページで送ってね！
+          </div>
+          <p style="font-size:13px;color:#2a5870;line-height:1.85;margin-bottom:0.6rem;">
+            このフォームを送信すると、<strong>STEP 2</strong> のページに移動します。<br>
+            そこからイラスト画像・転写テンプレート・こだわりポイントなどをまとめてアップロードできます。
+          </p>
+          <div style="display:flex;flex-direction:column;gap:0.35rem;">
+            <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
+              <span style="width:18px;height:18px;border-radius:50%;background:#a8d8ea;border:1.5px solid #2a2030;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">✓</span>
+              イラスト画像（PNG・JPG・GIF など）
+            </div>
+            <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
+              <span style="width:18px;height:18px;border-radius:50%;background:#a8d8ea;border:1.5px solid #2a2030;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">✓</span>
+              転写用テンプレート（任意）
+            </div>
+            <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
+              <span style="width:18px;height:18px;border-radius:50%;background:#a8d8ea;border:1.5px solid #2a2030;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">✓</span>
+              キャラクターの説明・こだわりポイント
+            </div>
+          </div>
+          <p style="font-size:11px;color:#7ab8d4;margin-top:0.75rem;">
+            ※ 後から送っていただいても大丈夫です！
+          </p>
         </div>
-        <input type="file" id="illustInput" accept="image/*" multiple>
-        <div class="field-error" id="err-illust">イラスト画像を1枚以上追加してください</div>
-        <div class="field-hint">※ Formspree経由で送信されます（最大10MBまで）</div>
-      </div>
-    </div>
-
-    <!-- テンプレート・要望 -->
-    <div class="card">
-      <div class="card-title">📐 テンプレート・その他</div>
-
-      <div class="field">
-        <div class="field-label">転写用テンプレート <span class="field-optional">任意</span></div>
-        <div class="file-zone" id="templateZone" onclick="document.getElementById('templateInput').click()">
-          <div class="file-zone-icon">📄</div>
-          <div class="file-zone-text"><strong>クリックまたはドロップ</strong>でファイルを追加<br>PNG・JPG・PSD・CLIP（最大10MB）</div>
-          <div class="file-list" id="templateList"></div>
-        </div>
-        <input type="file" id="templateInput" accept="image/*,.psd,.clip,.csp" multiple>
-        <div class="field-hint">まだない場合は空欄でOKです</div>
-      </div>
-
-      <div class="field">
-        <div class="field-label">ご要望・連絡事項 <span class="field-optional">任意</span></div>
-        <textarea id="message" name="message" placeholder="例：背面はシンプルにしてほしい、急ぎではない、など"></textarea>
       </div>
     </div>
 
@@ -260,33 +248,27 @@ input.error, textarea.error { border-color: #c0405a; }
 
 </div><!-- /#formWrap -->
 
-
+<!-- 完了メッセージ -->
+<div class="complete-card" id="completeCard">
+  <div class="complete-icon">🎉</div>
+  <div class="complete-title">送信が完了しました！</div>
+  <div class="complete-text">
+    ご依頼ありがとうございます。<br>
+    内容を確認次第、メールまたはXのDMにて<br>
+    ご連絡いたします。<br><br>
+    お時間をいただく場合がございますが、<br>
+    しばらくお待ちください 🩷
+  </div>
+</div>
 
 <script>
 // =============================================
 // ★ 設定 ★
 // =============================================
-const FORMSPREE_URL  = 'https://formspree.io/f/xaqlwabk';
-const BIN2_ID        = '69c3a2fac3097a1dd55a28e3';
-const X_KEY          = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';
-const EJS_SERVICE_ID  = 'service_nfbeo2e';
-const EJS_TEMPLATE_ID = 'template_ybf9ipv';
-const EJS_PUBLIC_KEY  = 'LQ0qfr6VX15Pa4Sx-';
-const STEP2_URL       = 'https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=publish-editor'; // ← GoogleフォームのURLに置き換え
+const FORMSPREE_URL = 'https://formspree.io/f/xaqlwabk';
+const BIN2_ID       = '69c3a2fac3097a1dd55a28e3'; // 依頼データ保存用Bin
+const X_KEY         = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';      // ← Access Keyに置き換え
 // =============================================
-
-// EmailJS初期化
-emailjs.init({ publicKey: EJS_PUBLIC_KEY });
-
-// 依頼番号生成（例：ORD-20260325-A3F2）
-function generateOrderId() {
-  const now   = new Date();
-  const date  = now.getFullYear().toString() +
-                String(now.getMonth()+1).padStart(2,'0') +
-                String(now.getDate()).padStart(2,'0');
-  const rand  = Math.random().toString(36).toUpperCase().slice(2,6);
-  return 'ORD-' + date + '-' + rand;
-}
 
 // URLパラメータから選択内容を復元
 const params      = new URLSearchParams(location.search);
@@ -304,59 +286,7 @@ document.getElementById('subjectField').value     = `【hug nui² studio】依�
 // パラメータがなければ選択ページに戻す
 if (!typeVal || !periodKey) location.href = 'order.html';
 
-// =====================
-// ファイルアップロード
-// =====================
-const illustFiles  = new DataTransfer();
-const templateFiles = new DataTransfer();
-
-function setupFileZone(zoneId, inputId, dtObj, listId, maxMB) {
-  const zone  = document.getElementById(zoneId);
-  const input = document.getElementById(inputId);
-
-  input.addEventListener('change', () => { addFiles(dtObj, input.files, listId, maxMB); input.value = ''; });
-
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
-  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-  zone.addEventListener('drop', e => {
-    e.preventDefault(); zone.classList.remove('dragover');
-    addFiles(dtObj, e.dataTransfer.files, listId, maxMB);
-  });
-}
-
-function addFiles(dt, files, listId, maxMB) {
-  Array.from(files).forEach(f => {
-    if (f.size > maxMB * 1024 * 1024) { alert(`${f.name} は${maxMB}MBを超えています`); return; }
-    dt.items.add(f);
-  });
-  renderFileList(dt, listId);
-}
-
-function removeFile(dt, idx, listId) {
-  const newDt = new DataTransfer();
-  Array.from(dt.files).forEach((f, i) => { if (i !== idx) newDt.items.add(f); });
-  // dtを書き換える（参照渡しが使えないので直接itemsを操作）
-  while (dt.items.length) dt.items.remove(0);
-  Array.from(newDt.files).forEach(f => dt.items.add(f));
-  renderFileList(dt, listId);
-}
-
-function renderFileList(dt, listId) {
-  const list = document.getElementById(listId);
-  list.innerHTML = Array.from(dt.files).map((f, i) => `
-    <div class="file-item">
-      <span>📎 ${escHtml(f.name)} (${(f.size/1024/1024).toFixed(1)}MB)</span>
-      <button class="file-remove" type="button" onclick="removeFileByListId('${listId}', ${i})">✕</button>
-    </div>`).join('');
-}
-
-function removeFileByListId(listId, idx) {
-  const dt = listId === 'illustList' ? illustFiles : templateFiles;
-  removeFile(dt, idx, listId);
-}
-
-setupFileZone('illustZone',   'illustInput',   illustFiles,   'illustList',   5);
-setupFileZone('templateZone', 'templateInput', templateFiles, 'templateList', 10);
+// ファイルアップロードはSTEP2（Googleフォーム）で収集
 
 // =====================
 // バリデーション
@@ -367,32 +297,19 @@ function validate() {
   // Honeypot チェック
   if (document.querySelector('input[name="_gotcha"]').value) return false;
 
-  // 必須チェック
-  const checks = [
-    ['name',     document.getElementById('name').value.trim(),  'err-name'],
-    ['email',    '',                                            'err-email'],
-    ['charDesc', document.getElementById('charDesc').value.trim(), 'err-charDesc'],
-  ];
+  // 必須チェック（名前・メール）
+  const nameEl  = document.getElementById('name');
+  const emailEl = document.getElementById('email');
 
-  checks.forEach(([field, val, errId]) => {
-    const el  = document.getElementById(field === 'email' ? 'email' : field);
-    const err = document.getElementById(errId);
-    let invalid = false;
-    if (field === 'email') {
-      invalid = !el.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
-    } else {
-      invalid = !val;
-    }
-    el.classList.toggle('error', invalid);
-    err.classList.toggle('show', invalid);
-    if (invalid) ok = false;
-  });
+  const noName = !nameEl.value.trim();
+  nameEl.classList.toggle('error', noName);
+  document.getElementById('err-name').classList.toggle('show', noName);
+  if (noName) ok = false;
 
-  // イラスト必須
-  const errIllust = document.getElementById('err-illust');
-  const noIllust  = illustFiles.files.length === 0;
-  errIllust.classList.toggle('show', noIllust);
-  if (noIllust) ok = false;
+  const noEmail = !emailEl.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value);
+  emailEl.classList.toggle('error', noEmail);
+  document.getElementById('err-email').classList.toggle('show', noEmail);
+  if (noEmail) ok = false;
 
   // 規約同意
   const errAgree = document.getElementById('err-agree');
@@ -425,12 +342,8 @@ async function submitForm() {
     fd.append('name',        document.getElementById('name').value.trim());
     fd.append('email',       document.getElementById('email').value.trim());
     fd.append('xid',         document.getElementById('xid').value.trim());
-    fd.append('charDesc',    document.getElementById('charDesc').value.trim());
-    fd.append('message',     document.getElementById('message').value.trim());
-
-    // ファイル添付
-    Array.from(illustFiles.files).forEach(f  => fd.append('illust',   f));
-    Array.from(templateFiles.files).forEach(f => fd.append('template', f));
+    // charDescはSTEP2フォームで収集
+    // messageはSTEP2フォームで収集
 
     // Formspreeへ送信
     const fsRes = await fetch(FORMSPREE_URL, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
@@ -439,21 +352,23 @@ async function submitForm() {
       throw new Error('Formspree error: ' + fsRes.status + ' ' + JSON.stringify(errBody));
     }
 
-    // 依頼番号生成
-    const orderId = generateOrderId();
-    const nameVal     = document.getElementById('name').value.trim();
-    const emailVal    = document.getElementById('email').value.trim();
-    const xidVal      = document.getElementById('xid').value.trim();
-    const charDescVal = document.getElementById('charDesc').value.trim();
-    const messageVal  = document.getElementById('message').value.trim();
-
     // JSONBin Bin②に依頼データを保存
+    const orderId  = 'ord-' + Date.now();
     const orderRec = {
-      id: orderId, type: typeVal, periodKey, periodLabel,
-      name: nameVal, email: emailVal, xid: xidVal,
-      charDesc: charDescVal, message: messageVal,
-      submittedAt: new Date().toISOString(), status: 'pending'
+      id:          orderId,
+      type:        typeVal,
+      periodKey,
+      periodLabel,
+      name:        document.getElementById('name').value.trim(),
+      email:       document.getElementById('email').value.trim(),
+      xid:         document.getElementById('xid').value.trim(),
+      charDesc:    '',  // STEP2フォームで収集
+      message:     '',  // STEP2フォームで収集
+      submittedAt: new Date().toISOString(),
+      status:      'pending'
     };
+
+    // 既存データを読んでから追記（簡易的にGETしてPUT）
     try {
       const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, {
         headers: { 'X-Access-Key': X_KEY }
@@ -466,34 +381,12 @@ async function submitForm() {
         headers: { 'Content-Type': 'application/json', 'X-Access-Key': X_KEY },
         body: JSON.stringify({ orders })
       });
-    } catch { /* JSONBin保存失敗は致命的でない */ }
+    } catch { /* JSONBinへの保存失敗はFormspreeが通っていれば致命的ではない */ }
 
-    // EmailJSで依頼者に確認メールを送信
-    try {
-      await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
-        order_id:    orderId,
-        type:        typeVal,
-        period_label: periodLabel,
-        name:        nameVal,
-        reply_email: emailVal,
-        xid:         xidVal || '未記入',
-        step2_url:   STEP2_URL
-      });
-    } catch (ejsErr) {
-      console.warn('EmailJS送信失敗（フローは継続）:', ejsErr);
-    }
-
-    // 完了ページへ遷移（URLパラメータで依頼番号・内容を渡す）
     submitted = true;
-    const completeParams = new URLSearchParams({
-      orderId,
-      name:        nameVal,
-      type:        typeVal,
-      periodLabel,
-      email:       emailVal,
-      xid:         xidVal
-    });
-    location.href = 'order-complete.html?' + completeParams.toString();
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('completeCard').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
   } catch (e) {
     btn.disabled = false;
