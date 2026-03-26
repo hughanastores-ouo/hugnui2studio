@@ -102,6 +102,24 @@ body {
 .step2-desc { font-size: 14px; color: #6a5870; line-height: 1.85; margin-bottom: 1.25rem; }
 .step2-note { font-size: 12px; color: #b0a0b8; margin-top: 0.35rem; }
 
+/* 提出期限バナー */
+.deadline-banner {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  background: #fff8e6; border: 2px solid #e8a020; border-radius: 12px;
+  padding: 0.85rem 1rem; margin-bottom: 1.25rem;
+  animation: deadlinePulse 2.5s ease-in-out 1s 3;
+}
+@keyframes deadlinePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232,160,32,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(232,160,32,0.3); }
+}
+.deadline-icon { font-size: 22px; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+.deadline-body { flex: 1; }
+.deadline-label { font-size: 10px; letter-spacing: 0.2em; color: #b87000; font-weight: 700;
+  font-family: 'Zen Maru Gothic', sans-serif; text-transform: uppercase; margin-bottom: 0.25rem; }
+.deadline-main { font-family: 'Zen Maru Gothic', sans-serif; font-size: 14px; color: #2a2030; line-height: 1.6; }
+.deadline-main strong { font-size: 18px; color: #c05c00; letter-spacing: 0.02em; }
+
 /* CTAボタン */
 .cta-btn {
   display: block; width: 100%; padding: 1.1rem;
@@ -217,14 +235,14 @@ body {
         <div>
           <div style="font-size:10px;letter-spacing:.25em;color:#d96a8a;text-transform:uppercase;font-weight:700;font-family:'Zen Maru Gothic',sans-serif;margin-bottom:.3rem;">STEP 1 / Confirmed</div>
           <div class="complete-title">STEP 1 完了！</div>
-          <div class="complete-sub">依頼情報を受け取りました。確認メールをお送りしているのでご確認ください 🩷</div>
+          <div class="complete-sub">依頼情報を受け取りました。確認メールをお送りしているのでご確認ください。</div>
         </div>
       </div>
 
       <div class="order-id-banner">
-        <div class="order-id-label">依頼番号 / Order Number</div>
+        <div class="order-id-label">オーダー番号 / Order Number</div>
         <div class="order-id-value" id="orderIdDisplay">-</div>
-        <div class="order-id-hint">STEP 2のフォームに記入してね</div>
+        <div class="order-id-hint">STEP 2のフォームに記入してください</div>
       </div>
 
       <div class="summary">
@@ -248,19 +266,24 @@ body {
     <!-- 右：STEP2 -->
     <div class="step2-card" id="step2Card">
       <div class="step2-eyebrow">STEP 2 / Next Step</div>
-      <div class="step2-title">🎨 イラスト・データを<br>送ってください</div>
+      <div class="step2-title">イラスト・データを<br>送ってください</div>
+
+      <div class="deadline-banner">
+        <span class="deadline-icon">⏰</span>
+        <div class="deadline-body">
+          <div class="deadline-label">提出期限 / Deadline</div>
+          <div class="deadline-main">このフォームの送信後<strong>６時間以内</strong>に<br>イラストデータをお送りください</div>
+        </div>
+      </div>
+
       <div class="step2-desc">
-        依頼番号を添えて、下記フォームよりイラストや転写用テンプレート、こだわりポイントをお送りください。
-        <div class="step2-note">※ 後から送っていただいても大丈夫です！このページをブックマークしておいてね。</div>
+        オーダー番号を添えて、下記フォームよりイラストや転写用テンプレート、こだわりたいポイントをお送りください。
       </div>
       <img class="sample-img" src="ぬいぐるみデザイン作例.png">
       <div class="step2-spacer"></div>
       <a class="cta-btn" id="step2Btn" href="https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog" target="_blank">
-        イラスト・データを送る →
+        イラスト・データを送る
       </a>
-      <div class="later-link">
-        <a href="index.html">後で送る（トップへ戻る）</a>
-      </div>
     </div>
 
   </div><!-- /.layout -->
@@ -277,7 +300,7 @@ body {
 </div></div>
 
 <script>
-history.pushState(null, '', location.href)
+history.pushState(null, '', location.href);
 // =============================================
 // ★ GoogleフォームURLを設定してください ★
 // =============================================
