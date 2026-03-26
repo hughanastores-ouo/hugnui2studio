@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
+<!-- スマホヘッダー -->
 <header class="mobile-header">
   <a href="index.html" class="mobile-logo">hug <span>nui²</span> studio</a>
   <button class="menu-btn" id="menuBtn">
@@ -31,7 +32,7 @@
     <a href="https://twitter.com/hug87_OuO" target="_blank">🐦 X</a>
   </div>
   <div class="drawer-footer">
-    <a href="../hug-top/order.html" class="drawer-order">オーダーはこちら ✉️</a>
+    <a href="../hug-top/order.html" class="drawer-order" target="_blank">オーダーページへ ✉️</a>
   </div>
 </div>
 <!-- PCサイドバー -->
@@ -42,15 +43,15 @@
     <div class="logo-sub">handmade plush doll</div>
   </div>
   <div class="nav-card">
-    <a href="index.html"><span class="nav-dot"></span>TOP</a>
-    <a href="gallery_2.html"><span class="nav-dot"></span>サンプル一覧</a>
-    <a href="order.html"><span class="nav-dot"></span>オーダーの流れ</a>
+    <a href="index.html" ><span class="nav-dot"></span>TOP</a>
+    <a href="gallery_2.html" ><span class="nav-dot"></span>作品一覧</a>
+    <a href="order.html" ><span class="nav-dot"></span>オーダーの流れ</a>
     <a href="size_1.html" class="active"><span class="nav-dot"></span>料金表</a>
-    <a href="before-order.html"><span class="nav-dot"></span>オーダー前のお願い</a>
-    <a href="fabric.html"><span class="nav-dot"></span>布素材紹介</a>
-    <a href="about-template.html"><span class="nav-dot"></span>テンプレートについて</a>
+    <a href="before-order.html" ><span class="nav-dot"></span>オーダー前のお願い</a>
+    <a href="fabric.html" ><span class="nav-dot"></span>布素材紹介</a>
+    <a href="about-template.html" ><span class="nav-dot"></span>テンプレートについて</a>
     <div class="nav-divider"></div>
-    <a href="coupon.html"><span class="nav-dot"></span>クーポン 🎟️</a>
+    <a href="coupon.html" ><span class="nav-dot"></span>クーポン 🎟️</a>
     <a href="https://twitter.com/hug87_OuO" target="_blank"><span class="nav-dot"></span>X（Twitter）</a>
   </div>
 </aside>
@@ -61,7 +62,7 @@
     <p class="page-subtitle">基本料金とオプション内容をご案内しています。</p>
     
     <div class="page-divider"></div>
-    <div class="price-hero">
+<div class="price-hero">
       <div class="price-hero-label">基本料金</div>
       <div class="price-hero-amount">12,000円〜</div>
       <div class="price-hero-note">税込・送料込み</div>
@@ -121,14 +122,8 @@ function closeMenu() { isOpen=false; drawer.classList.remove('open'); overlay.cl
 menuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
 overlay.addEventListener('click', closeMenu);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-
-// サイドバー入場アニメーション
 window.addEventListener('DOMContentLoaded', () => {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.getElementById('sidebar')?.classList.add('visible');
-    });
-  });
+  requestAnimationFrame(() => { requestAnimationFrame(() => { document.getElementById('sidebar')?.classList.add('visible'); }); });
 });
 </script>
 </body>

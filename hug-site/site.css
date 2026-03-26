@@ -1,7 +1,6 @@
 /*
   hug nui² studio - 共通スタイルシート
-  nav.css
-  ナビゲーション・レイアウト・コンテンツ共通スタイル
+  site.css
 */
 
 /* =============================================
@@ -140,9 +139,6 @@ body {
 }
 .nav-card a:hover .nav-dot { background: var(--blue-dark); }
 .nav-divider { height: 1px; background: var(--bg); margin: 0.3rem 0.8rem; }
-
-/* 受付状況カード */
-.status-card {
 .mobile-header {
   display: none;
   position: fixed;
@@ -322,6 +318,15 @@ body {
   .main-title-ja { font-size: 18px; }
 }
 
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  background-image: radial-gradient(circle, rgba(168,216,234,.25) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  color: var(--ink);
+  min-height: 100vh;
+}
 
 /* =============================================
    コンテンツエリア
