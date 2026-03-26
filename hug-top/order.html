@@ -22,21 +22,21 @@ body {
   font-size: 13px; color: #b0a0b8; text-decoration: none; display: inline-block; margin-bottom: 0.75rem;
 }
 .page-header a:hover { color: #d96a8a; }
-.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 26px; font-weight: 700; color: #2a2030; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #2a2030; }
 .page-title small { display: block; font-size: 11px; color: #b0a0b8; font-weight: 400; margin-top: 0.25rem; letter-spacing: 0.1em; }
 
 /* ステップ */
 .steps { display: flex; align-items: center; justify-content: center; max-width: 360px; margin: 0 auto 2.5rem; }
 .step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
 .step-circle {
-  width: 36px; height: 36px; border-radius: 50%;
+  width: 32px; height: 32px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700;
   border: 2.5px solid #ddd; background: #fff; color: #ccc; transition: all 0.3s;
 }
 .step-circle.active { background: #f7b8cc; border-color: #d96a8a; color: #2a2030; }
 .step-circle.done   { background: #a8d8ea; border-color: #5ba4c7; color: #2a2030; }
-.step-label { font-size: 11px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
+.step-label { font-size: 10px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
 .step-label.active { color: #d96a8a; font-weight: 700; }
 .step-line { height: 2px; background: #f0c0d0; flex: 1; margin-bottom: 1.4rem; max-width: 40px; }
 
@@ -44,21 +44,20 @@ body {
 .card {
   background: #fff; border-radius: 20px; border: 2.5px solid #2a2030;
   box-shadow: 5px 5px 0 #2a2030; padding: 1.75rem;
-  width: 100%; max-width: 680px; margin: 0 auto 1.5rem;
+  width: 100%; max-width: 520px; margin: 0 auto 1.5rem;
 }
 .card-title {
-  font-family: 'Zen Maru Gothic', sans-serif; font-size: 18px; font-weight: 700; color: #2a2030;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700; color: #2a2030;
   margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #fce8f0;
 }
 
 /* タイプボタン */
-.type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.85rem; }
-@media(max-width:500px){.type-grid{grid-template-columns:1fr 1fr}}
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 .type-btn {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 0.4rem; padding: 1.1rem 0.75rem;
   background: #fef0f5; border: 2px solid #f7b8cc; border-radius: 14px;
-  font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 14px; font-weight: 700;
   color: #2a2030; cursor: pointer;
   transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
@@ -71,14 +70,14 @@ body {
 .period-section { display: none; }
 .period-section.show { display: block; }
 .period-month-label {
-  font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700;
   color: #6a5870; margin-bottom: 0.6rem; margin-top: 1rem;
 }
 .period-month-label:first-child { margin-top: 0; }
-.period-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 0.25rem; }
+.period-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 0.25rem; }
 .period-btn {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 0.3rem; padding: 1rem 0.5rem;
+  gap: 0.25rem; padding: 0.85rem 0.5rem;
   border-radius: 12px; border: 2px solid #f7b8cc; background: #fef0f5;
   font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700;
   cursor: pointer; transition: all 0.15s; color: #2a2030;
@@ -86,29 +85,24 @@ body {
 .period-btn:hover:not(.disabled) { background: #f7b8cc; border-color: #d96a8a; transform: translateY(-1px); }
 .period-btn.selected { background: #a8d8ea; border-color: #5ba4c7; box-shadow: 2px 2px 0 #2a2030; transform: none; }
 .period-btn.disabled { background: #f5f5f5; border-color: #e8e8e8; color: #ccc; cursor: not-allowed; }
-.period-slot-count { font-size: 11px; font-weight: 700; margin-top: 3px; display: block; }
-.period-slot-count.ok { color: #5ba4c7; }
-.period-slot-count.warn { color: #f59e0b; }
-.period-slot-count.full { color: #d96a8a; }
 .period-status { font-size: 18px; line-height: 1; }
-.period-name { font-size: 13px; }
+.period-name { font-size: 11px; }
 .period-remain { font-size: 9px; color: #5ba4c7; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; }
 .period-remain.full { color: #d96a8a; }
 
 /* 次へボタン */
 .next-btn {
-  display: block; width: 100%; max-width: 680px; margin: 0 auto;
+  display: block; width: 100%; max-width: 520px; margin: 0 auto;
   padding: 0.9rem; background: #a8d8ea; border: 2.5px solid #2a2030; border-radius: 14px;
   font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700;
   color: #2a2030; cursor: pointer; box-shadow: 4px 4px 0 #2a2030;
   transition: translate 0.1s, box-shadow 0.1s, background 0.15s; letter-spacing: 0.04em;
 }
 .next-btn:hover:not(:disabled) { translate: 2px 2px; box-shadow: 2px 2px 0 #2a2030; background: #5ba4c7; color: #fff; }
-.next-btn { font-size: 16px; }
 .next-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .loading { text-align: center; padding: 2rem; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; color: #b0a0b8; }
 .notice {
-  max-width: 680px; margin: 1.25rem auto 0;
+  max-width: 520px; margin: 1.25rem auto 0;
   background: #fef9e8; border: 1.5px solid #ffe27a; border-radius: 12px;
   padding: 0.85rem 1rem; font-size: 12px; color: #7a6a20; line-height: 1.8;
   font-family: 'Zen Maru Gothic', sans-serif;
@@ -209,22 +203,23 @@ function renderPeriods() {
     const mStr = `${y}-${String(m).padStart(2,'0')}`;
     html += `<div class="period-month-label">${y}年${m}月</div><div class="period-row">`;
     ['early','mid','late'].forEach(phase => {
-      const key    = `${mStr}-${phase}`;
-      const sched  = scheduleData[key] ?? {};
-      const slots  = sched.slots ?? {};
-      // 選択中タイプの残り枠
-      const remain = selectedType && slots[selectedType] !== undefined
+      const key     = `${mStr}-${phase}`;
+      const sched   = scheduleData[key] ?? {};
+      const slots   = sched.slots ?? {};
+      const slotVal = selectedType && slots[selectedType] !== undefined
         ? slots[selectedType]
         : null;
-      // openかつ残り枠>0（またはslots未設定）なら受付可
-      const isOpen = sched.open && (remain === null || remain > 0);
-      const remainLabel = remain !== null ? `残り${remain}枠` : '';
-      html += `<button class="period-btn${isOpen ? '' : ' disabled'}"
-        ${isOpen ? `onclick="selectPeriod('${key}','${m}月${PHASE_LABEL[phase]}',this)"` : ''}
-      ><span class="period-status">${isOpen ? '○' : '✕'}</span>
-       <span class="period-name">${PHASE_LABEL[phase]}</span>
-       ${remainLabel ? `<span class="period-remain${remain===0?' full':''}">${remainLabel}</span>` : ''}
-      </button>`;
+      const canSelect = (sched.open ?? false) && (slotVal === null || slotVal > 0);
+
+      // 枠数ラベル：選択可なら「あと○枠」、それ以外はすべて「満枠」
+      const cls   = canSelect ? (slotVal === 1 ? 'warn' : 'ok') : 'full';
+      const label = canSelect && slotVal !== null ? `あと${slotVal}枠` : '満枠';
+      const slotLabel = `<span class="period-slot-count ${cls}">${label}</span>`;
+
+      const btnClass = canSelect ? '' : ' disabled';
+      html += `<button class="period-btn${btnClass}"
+        ${canSelect ? `onclick="selectPeriod('${key}','${m}月${PHASE_LABEL[phase]}',this)"` : ''}
+      ><span class="period-name">${PHASE_LABEL[phase]}</span>${slotLabel}</button>`;
     });
     html += '</div>';
   }
