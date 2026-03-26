@@ -26,7 +26,7 @@
 body {
   font-family: 'Noto Sans JP', sans-serif;
   background: var(--bg);
-  background-image: radial-gradient(circle, rgba(168,216,234,.25) 1.5px, transparent 1.5px);
+  background-image: radial-gradient(circle, rgba(168,216,234,0.3) 1.5px, transparent 1.5px);
   background-size: 28px 28px;
   color: var(--ink);
   min-height: 100vh;
@@ -184,7 +184,7 @@ body {
   border-radius: 20px;
   padding: 0.55rem 1.2rem 0.55rem 0.9rem;
   font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 700;
   color: var(--white);
   cursor: pointer;
