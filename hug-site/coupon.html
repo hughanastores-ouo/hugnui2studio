@@ -57,6 +57,19 @@
     オーダーページへ
   </a>
 </aside>
+<!-- 受付状況ボタン -->
+<button class="status-trigger" id="statusTrigger">
+  <span class="status-trigger-dot" id="statusTriggerDot"></span>
+  <span id="statusTriggerLabel">受付状況</span>
+  <span class="status-trigger-arrow">⌾</span>
+</button>
+<div class="status-dropdown" id="statusDropdown">
+  <div class="status-dropdown-header">RECEPTION STATUS</div>
+  <div class="status-row">
+    <span class="status-dot"></span>
+    <span class="status-row-text">読み込み中...</span>
+  </div>
+</div>
 <div class="site-main">
   <div class="content-card">
     <div class="page-eyebrow">coupon</div>
@@ -103,9 +116,43 @@ function openMenu() { isOpen=true; drawer.classList.add('open'); overlay.classLi
 function closeMenu() { isOpen=false; drawer.classList.remove('open'); overlay.classList.remove('open'); menuLabel.textContent='MENU'; document.body.style.overflow=''; }
 menuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
 overlay.addEventListener('click', closeMenu);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+// 受付状況
+const BIN_ID = '69c3843daa77b81da918a941';
+const X_KEY  = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza';
+async function loadStatus() {
+  const dropdown = document.getElementById('statusDropdown');
+  const triggerDot = document.getElementById('statusTriggerDot');
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Access-Key': X_KEY } });
+    if (!res.ok) throw new Error();
+    const data = (await res.json()).record;
+    const types = data.types ?? [];
+    dropdown.innerHTML = '<div class="status-dropdown-header">RECEPTION STATUS</div>';
+    if (types.length === 0) { dropdown.innerHTML += '<div class="status-row"><span class="status-dot"></span><span class="status-row-text">---</span></div>'; return; }
+    const anyOpen = types.some(t => t.open);
+    anyOpen ? triggerDot.classList.add('open') : triggerDot.classList.remove('open');
+    types.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'status-row';
+      row.innerHTML = `<span class="status-dot${t.open ? ' open' : ''}"></span><span class="status-row-text">${t.text ?? t.name}</span>`;
+      dropdown.appendChild(row);
+    });
+  } catch { dropdown.innerHTML = '<div class="status-dropdown-header">RECEPTION STATUS</div><div class="status-row"><span class="status-dot"></span><span class="status-row-text">---</span></div>'; }
+}
+const statusTrigger = document.getElementById('statusTrigger');
+const statusDropdown = document.getElementById('statusDropdown');
+let statusOpen = false;
+function openStatus() { statusOpen=true; statusTrigger.classList.add('open'); statusDropdown.classList.add('open'); }
+function closeStatus() { statusOpen=false; statusTrigger.classList.remove('open'); statusDropdown.classList.remove('open'); }
+statusTrigger.addEventListener('click', e => { e.stopPropagation(); statusOpen ? closeStatus() : openStatus(); });
+document.addEventListener('click', e => { if (statusOpen && !statusDropdown.contains(e.target)) closeStatus(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMenu(); closeStatus(); } });
 window.addEventListener('DOMContentLoaded', () => {
-  requestAnimationFrame(() => { requestAnimationFrame(() => { document.getElementById('sidebar')?.classList.add('visible'); }); });
+  requestAnimationFrame(() => { requestAnimationFrame(() => {
+    document.getElementById('sidebar')?.classList.add('visible');
+    document.getElementById('statusTrigger')?.classList.add('visible');
+  }); });
+  loadStatus();
 });
 </script>
 </body>

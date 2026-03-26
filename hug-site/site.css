@@ -3,8 +3,10 @@
   site.css
 */
 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 /* =============================================
-   変数・ナビゲーション（index.htmlと同一）
+   変数
    ============================================= */
 :root {
   --bg: #fce8f0;
@@ -24,17 +26,15 @@
 body {
   font-family: 'Noto Sans JP', sans-serif;
   background: var(--bg);
-  color: var(--ink);
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  /* ドット背景 */
-  background-image: radial-gradient(circle, rgba(168,216,234,0.3) 1.5px, transparent 1.5px);
+  background-image: radial-gradient(circle, rgba(168,216,234,.25) 1.5px, transparent 1.5px);
   background-size: 28px 28px;
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
 }
 
 /* =====================
-   左サイドバー：浮いたカード
+   左サイドバー（浮かぶカード）
    ===================== */
 .sidebar {
   position: fixed;
@@ -46,13 +46,17 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 1rem 0;
+  scrollbar-width: none;
 
-  /* 入場アニメーション */
   opacity: 0;
   translate: -30px 0;
   transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
               translate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+.sidebar::-webkit-scrollbar { display: none; }
 .sidebar.visible {
   opacity: 1;
   translate: 0 0;
@@ -64,9 +68,10 @@ body {
   border-radius: 20px;
   border: 2.5px solid var(--ink);
   box-shadow: 4px 4px 0 var(--ink);
-  padding: 1.5rem 1.25rem 1.5rem;
+  padding: 1.5rem 1.25rem;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .logo-card::before {
   content: '';
@@ -74,13 +79,6 @@ body {
   top: 0; left: 0; right: 0;
   height: 5px;
   background: linear-gradient(90deg, var(--pink) 0%, var(--blue) 100%);
-}
-.logo-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--pink);
-  border: 2px solid var(--ink);
-  margin-bottom: 0.4rem;
 }
 .logo-name {
   font-family: 'Zen Maru Gothic', sans-serif;
@@ -106,28 +104,32 @@ body {
   border-radius: 20px;
   border: 2.5px solid var(--ink);
   box-shadow: 4px 4px 0 var(--ink);
-  padding: 0.75rem 0.75rem;
+  padding: 0.75rem;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .nav-card a {
   display: flex;
   align-items: center;
   gap: 0.55rem;
   font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 15.5px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--ink-mid);
   text-decoration: none;
-  padding: 0.8rem 0.8rem;
+  padding: 0.7rem 0.8rem;
   border-radius: 12px;
   letter-spacing: 0.04em;
   transition: background 0.15s, color 0.12s, translate 0.15s;
-  position: relative;
 }
 .nav-card a:hover {
   background: var(--blue-pale);
   color: var(--blue-dark);
   translate: 3px 0;
+}
+.nav-card a.active {
+  background: var(--pink-pale);
+  color: var(--pink-dark);
 }
 .nav-card a .nav-dot {
   width: 6px; height: 6px;
@@ -138,7 +140,147 @@ body {
   transition: background 0.15s;
 }
 .nav-card a:hover .nav-dot { background: var(--blue-dark); }
+.nav-card a.active .nav-dot { background: var(--pink-dark); }
 .nav-divider { height: 1px; background: var(--bg); margin: 0.3rem 0.8rem; }
+
+/* オーダーカード（サイドバー下部） */
+.order-card {
+  text-decoration: none;
+  display: block;
+  background: var(--blue);
+  border-radius: 16px;
+  border: 2.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 0.75rem 1rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  letter-spacing: 0.05em;
+  transition: translate 0.12s, box-shadow 0.12s, background 0.15s;
+  flex-shrink: 0;
+}
+.order-card:hover {
+  translate: 2px 2px;
+  box-shadow: 2px 2px 0 var(--ink);
+  background: var(--blue-dark);
+  color: var(--white);
+}
+
+/* =====================
+   受付状況ボタン（右上固定）
+   ===================== */
+.status-trigger {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  padding: 0.55rem 1.2rem 0.55rem 0.9rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--pink-dark);
+  user-select: none;
+  opacity: 0;
+  translate: 0 -8px;
+  transition: opacity 0.5s ease 0.3s,
+              translate 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.3s,
+              box-shadow 0.1s;
+}
+.status-trigger.visible {
+  opacity: 1;
+  translate: 0 0;
+}
+.status-trigger:hover { translate: 1px 1px; box-shadow: 2px 2px 0 var(--pink-dark); }
+.status-trigger-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #666;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.status-trigger-dot.open {
+  background: #5fdb82;
+  box-shadow: 0 0 6px rgba(95,219,130,0.7);
+}
+.status-trigger-arrow {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  line-height: 1;
+}
+.status-trigger.open .status-trigger-arrow { transform: rotate(180deg); }
+
+.status-dropdown {
+  position: fixed;
+  top: 88px;
+  right: 50px;
+  z-index: 149;
+  background: var(--ink);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--pink-dark);
+  min-width: 220px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.25s cubic-bezier(0.34,1.2,0.64,1);
+}
+.status-dropdown.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.status-dropdown-header {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--blue);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  text-transform: uppercase;
+  padding: 0.75rem 1.1rem 0.4rem;
+}
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.status-row:last-child { padding-bottom: 1.1rem; }
+.status-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #555;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+.status-dot.open {
+  background: #5fdb82;
+  box-shadow: 0 0 6px rgba(95,219,130,0.6);
+}
+.status-row-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  line-height: 1.4;
+}
+
+/* =====================
+   スマホ用ヘッダー
+   ===================== */
 .mobile-header {
   display: none;
   position: fixed;
@@ -160,7 +302,6 @@ body {
 }
 .mobile-logo span { color: var(--pink-dark); }
 
-/* MENUボタン */
 .menu-btn {
   display: flex;
   align-items: center;
@@ -189,7 +330,7 @@ body {
 }
 
 /* =====================
-   ドロワーメニュー（JS制御）
+   ドロワーメニュー
    ===================== */
 .drawer {
   position: fixed;
@@ -199,18 +340,12 @@ body {
   border-radius: 0 0 24px 24px;
   border: 2.5px solid var(--ink);
   border-top: none;
-  padding: 0 1.25rem 1.5rem;
-  /* 初期状態：上に隠す */
+  padding: 70px 1.25rem 1.5rem;
   transform: translateY(calc(-100% - 4px));
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 4px 4px 0 rgba(42,32,48,0.15);
-  /* ヘッダー分の余白 */
-  padding-top: 70px;
 }
-.drawer.open {
-  transform: translateY(0);
-}
-
+.drawer.open { transform: translateY(0); }
 .drawer-logo {
   font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 18px;
@@ -221,7 +356,6 @@ body {
   border-bottom: 2px solid var(--bg);
 }
 .drawer-logo span { color: var(--pink-dark); }
-
 .drawer-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -249,7 +383,6 @@ body {
   color: var(--blue-dark);
   border-color: var(--blue);
 }
-
 .drawer-footer {
   display: flex;
   gap: 0.75rem;
@@ -277,19 +410,6 @@ body {
   background: var(--blue-dark);
   color: var(--white);
 }
-.drawer-sns a {
-  font-size: 12px;
-  color: var(--ink-mid);
-  text-decoration: none;
-  padding: 0.55rem 0.85rem;
-  border: 2px solid var(--ink);
-  border-radius: 10px;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  background: var(--white);
-  box-shadow: 2px 2px 0 var(--ink);
-  transition: translate 0.1s, box-shadow 0.1s;
-}
-.drawer-sns a:hover { translate: 1px 1px; box-shadow: 1px 1px 0 var(--ink); }
 
 /* オーバーレイ */
 .overlay {
@@ -305,48 +425,17 @@ body {
 .overlay.open { opacity: 1; pointer-events: auto; }
 
 /* =====================
-   レスポンシブ
+   メインコンテンツエリア
    ===================== */
-@media (max-width: 720px) {
-  html, body { height: auto; overflow: auto; }
-  body { flex-direction: column; background-size: 20px 20px; }
-  .sidebar { display: none; }
-  .mobile-header { display: flex; }
-  .main { margin-left: 0; height: 100svh; padding-top: 58px; }
-
-  .main-title { position: fixed; bottom: 1.2rem; right: 1rem; }
-  .main-title-ja { font-size: 18px; }
-}
-
-
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--bg);
-  background-image: radial-gradient(circle, rgba(168,216,234,.25) 1.5px, transparent 1.5px);
-  background-size: 28px 28px;
-  color: var(--ink);
-  min-height: 100vh;
-}
-
-/* =============================================
-   コンテンツエリア
-   ============================================= */
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--bg);
-  background-image: radial-gradient(circle, rgba(168,216,234,.25) 1.5px, transparent 1.5px);
-  background-size: 28px 28px;
-  color: var(--ink);
-  min-height: 100vh;
-}
-
-/* =============================================
-   コンテンツエリア共通スタイル
-   ============================================= */
 .site-main {
+  flex: 1;
   margin-left: 310px;
   padding: 2.5rem 2rem 5rem;
   min-height: 100vh;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .content-card {
   background: var(--white);
@@ -354,9 +443,10 @@ body {
   border: 2.5px solid var(--ink);
   box-shadow: 5px 5px 0 var(--ink);
   padding: 2.25rem 2.25rem;
+  width: 100%;
   max-width: 780px;
-  margin: 0 auto;
 }
+
 /* ページヘッダー */
 .page-eyebrow {
   font-size: 10px; letter-spacing: .25em; color: var(--blue-dark);
@@ -492,8 +582,8 @@ body {
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; }
 .fabric-card, .size-card { background: var(--white); border: 2px solid var(--ink); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 3px 3px 0 var(--ink); }
 .card-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
-.card-img-placeholder { width: 100%; aspect-ratio: 1/1; background: var(--pink-pale); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink-light); }
-.card-body { padding: 1.1rem 1.1rem; flex: 1; display: flex; flex-direction: column; gap: .6rem; }
+.card-img-placeholder { width: 100%; aspect-ratio: 1/1; background: var(--pink-pale); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink-light); overflow: hidden; }
+.card-body { padding: 1.1rem; flex: 1; display: flex; flex-direction: column; gap: .6rem; }
 .card-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 17px; font-weight: 700; color: var(--ink); }
 .card-divider { height: 1px; background: #fce8f0; }
 .card-desc { font-size: 13.5px; line-height: 1.85; color: #555; }
@@ -543,84 +633,75 @@ body {
 .site-footer { text-align: center; margin-top: 2rem; padding-top: 1.25rem; border-top: 1.5px solid #fce8f0; font-size: 12px; color: var(--ink-light); font-family: 'Zen Maru Gothic', sans-serif; }
 .site-footer p { margin-bottom: .35rem; }
 
-
-/* オーダーカード（サイドバー下部） */
-.order-card {
-  text-decoration: none;
-  display: block;
-  background: var(--blue);
-  border-radius: 16px;
-  border: 2.5px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--ink);
-  padding: 0.75rem 1rem;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 15.5px;
-  font-weight: 700;
-  color: var(--ink);
-  text-align: center;
-  letter-spacing: 0.05em;
-  transition: translate 0.12s, box-shadow 0.12s, background 0.15s;
-  position: relative;
-  overflow: hidden;
-}
-.order-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0);
-  transition: background 0.15s;
-}
-.order-card:hover {
-  translate: 2px 2px;
-  box-shadow: 2px 2px 0 var(--ink);
-  background: var(--blue-dark);
-  color: var(--white);
-}
-
-
-/* オーダーカード（サイドバー下部） */
-.order-card {
-  text-decoration: none;
-  display: block;
-  background: var(--blue);
-  border-radius: 16px;
-  border: 2.5px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--ink);
-  padding: 0.75rem 1rem;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 15.5px;
-  font-weight: 700;
-  color: var(--ink);
-  text-align: center;
-  letter-spacing: 0.05em;
-  transition: translate 0.12s, box-shadow 0.12s, background 0.15s;
-  position: relative;
-  overflow: hidden;
-}
-.order-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0);
-  transition: background 0.15s;
-}
-.order-card:hover {
-  translate: 2px 2px;
-  box-shadow: 2px 2px 0 var(--ink);
-  background: var(--blue-dark);
-  color: var(--white);
-}
-
-/* レスポンシブ */
-@media (max-width: 900px) {
-  .site-sidebar { display: none; }
+/* =====================
+   レスポンシブ（index.html用）
+   ===================== */
+@media (max-width: 720px) {
+  html, body { height: auto; overflow: auto; }
+  body { flex-direction: column; background-size: 20px 20px; }
+  .sidebar { display: none; }
   .mobile-header { display: flex; }
-  .site-main { margin-left: 0; padding: 1.5rem 1rem 4rem; padding-top: 72px; }
+  .main { margin-left: 0; height: 100svh; padding-top: 58px; }
+  .main-title { position: fixed; bottom: 1.2rem; right: 1rem; }
+  .main-title-ja { font-size: 18px; }
+  /* index.htmlのモバイル受付状況ボタン */
+  .status-trigger {
+    top: 75px;
+    left: 1.5rem;
+    right: auto;
+    font-size: 12px;
+    padding: 0.4rem 0.75rem 0.4rem 0.65rem;
+    box-shadow: 2px 2px 0 var(--pink-dark);
+    opacity: 1 !important;
+    translate: none !important;
+    transition: box-shadow 0.1s !important;
+  }
+  .status-dropdown {
+    top: 120px;
+    left: 1.5rem;
+    right: auto;
+    transform-origin: top left;
+  }
+}
+
+/* =====================
+   レスポンシブ（コンテンツページ用）
+   ===================== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .mobile-header { display: flex; }
+  .site-main {
+    margin-left: 0;
+    padding: 1.5rem 1rem 4rem;
+    padding-top: 80px;
+  }
   .content-card { padding: 1.5rem 1.25rem; }
   .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+  /* コンテンツページのモバイル受付状況ボタン */
+  .status-trigger {
+    top: 11px;
+    right: 6.5rem;
+    left: auto;
+    font-size: 12px;
+    padding: 0.4rem 0.7rem 0.4rem 0.6rem;
+    box-shadow: 2px 2px 0 var(--pink-dark);
+    opacity: 1 !important;
+    translate: none !important;
+    transition: box-shadow 0.1s !important;
+  }
+  .status-dropdown {
+    top: 65px;
+    right: 1rem;
+    left: auto;
+    transform-origin: top right;
+  }
 }
 @media (max-width: 480px) {
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .card-grid { grid-template-columns: 1fr; }
+  .status-trigger {
+    right: 5.5rem;
+    font-size: 11px;
+    padding: 0.35rem 0.6rem 0.35rem 0.55rem;
+  }
 }
-
