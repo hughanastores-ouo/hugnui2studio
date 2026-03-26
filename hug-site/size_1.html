@@ -8,19 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: #333; min-height: 100vh; }
-.site-header { background: #f8bdcb; padding: 1rem 1.5rem; text-align: center; }
-.site-header h1 { font-family: 'Zen Maru Gothic', sans-serif; font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 0.1em; }
-.nav {
-  background: #fff; border-bottom: 1px solid #f0c0d0; padding: 0.75rem 1rem;
-  overflow-x: auto; white-space: nowrap; text-align: center;
-  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(248,189,203,0.2);
-}
-.nav a { display: inline-block; margin: 0 0.4rem; font-size: 12px; color: #c45c80; text-decoration: none; padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #f0c0d0; transition: background 0.2s; }
-.nav a:hover, .nav a.active { background: #fff0f5; }
+body { font-family: 'Noto Sans JP', sans-serif; background: #fdf0f4; background-image: radial-gradient(circle, rgba(168,216,234,0.25) 1.5px, transparent 1.5px); background-size: 28px 28px; color: #2a2030; min-height: 100vh; }
+
+
+
+
+
+.nav a.active { background: #f7b8cc; border-color: #d96a8a; color: #2a2030; }
 
 .wrap { max-width: 800px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
-.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #c45c80; text-align: center; margin-bottom: 0.5rem; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #2a2030; text-align: center; margin-bottom: 0.5rem; }
 .page-subtitle { text-align: center; font-size: 13px; color: #999; margin-bottom: 2rem; }
 .deco-line { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 2.5rem; }
 .deco-line span.bar { display: inline-block; width: 40px; height: 1px; background: #f0c0d0; }
@@ -63,7 +60,7 @@ body { font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: #333
   font-size: 13px;
   color: #e8a0b8;
 }
-.card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
+.card-body { font-family: 'Noto Sans JP', sans-serif; background: #fdf0f4; background-image: radial-gradient(circle, rgba(168,216,234,0.25) 1.5px, transparent 1.5px); background-size: 28px 28px; color: #2a2030; min-height: 100vh; }
 .card-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 17px; font-weight: 700; color: #333; }
 .card-divider { height: 1px; background: #f0c0d0; }
 .card-desc { font-size: 13px; line-height: 1.85; color: #555; }
@@ -115,27 +112,217 @@ body { font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: #333
   line-height: 1.8;
 }
 
-.footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #f0c0d0; font-size: 12px; color: #aaa; }
+.footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid #2a2030; font-size: 12px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
 .footer p { margin-bottom: 0.5rem; }
+
+/* ===================== ナビゲーション ===================== */
+:root {
+  --bg: #fdf0f4;
+  --blue: #a8d8ea;
+  --blue-dark: #5ba4c7;
+  --blue-pale: #e8f4fa;
+  --pink: #f7b8cc;
+  --pink-dark: #d96a8a;
+  --pink-pale: #fef0f5;
+  --ink: #2a2030;
+  --ink-mid: #6a5870;
+  --ink-light: #b0a0b8;
+  --white: #ffffff;
+}
+/* PCサイドバー */
+.site-sidebar {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 210px;
+  z-index: 50;
+}
+.site-nav-card {
+  background: var(--white);
+  border-radius: 20px;
+  border: 2.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 0.65rem 0.65rem;
+  overflow: hidden;
+}
+.site-nav-card a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-mid);
+  text-decoration: none;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  transition: background 0.15s, color 0.12s;
+}
+.site-nav-card a:hover { background: var(--pink-pale); color: var(--pink-dark); }
+.site-nav-card a.active { background: var(--pink); color: var(--ink); }
+.site-nav-divider { height: 1px; background: #fce8f0; margin: 0.3rem 0.6rem; }
+/* スマホヘッダー */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--white);
+  border-bottom: 2.5px solid var(--ink);
+  z-index: 200;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+.mobile-logo {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.mobile-logo span { color: var(--pink-dark); }
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--blue);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  padding: 0.38rem 0.95rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: translate 0.1s, box-shadow 0.1s;
+  user-select: none;
+}
+.menu-btn:hover { translate: 1px 1px; box-shadow: 1px 1px 0 var(--ink); }
+.menu-btn .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--pink);
+  border: 1.5px solid var(--ink);
+  flex-shrink: 0;
+}
+/* ドロワー */
+.drawer {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  background: var(--white);
+  border-radius: 0 0 24px 24px;
+  border: 2.5px solid var(--ink);
+  border-top: none;
+  padding: 70px 1.25rem 1.5rem;
+  transform: translateY(calc(-100% - 4px));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 4px 0 rgba(42,32,48,0.15);
+}
+.drawer.open { transform: translateY(0); }
+.drawer-title {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #fce8f0;
+}
+.drawer-title span { color: var(--pink-dark); }
+.drawer-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+.drawer-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-mid);
+  text-decoration: none;
+  padding: 0.6rem 0.85rem;
+  border-radius: 12px;
+  border: 1.5px solid #fce8f0;
+  background: var(--pink-pale);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.drawer-nav a:hover { background: var(--blue-pale); color: var(--blue-dark); border-color: var(--blue); }
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(42,32,48,0.3);
+  z-index: 250;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+.overlay.open { opacity: 1; pointer-events: auto; }
+/* レスポンシブ */
+@media (max-width: 860px) {
+  .site-sidebar { display: none; }
+  .mobile-header { display: flex; }
+  .site-wrap { padding-top: 72px !important; }
+}
+
+.site-wrap { margin-left: 260px; }
+@media(max-width:860px){.site-wrap{margin-left:0;}}
 </style>
 </head>
 <body>
+<!-- PCサイドバー -->
+<aside class="site-sidebar">
+  <div class="site-nav-card">
+    <a href="gallery_2.html">🧸 作品一覧</a>
+    <a href="order.html">📋 オーダーの流れ</a>
+    <a href="size_1.html">💴 料金表</a>
+    <a href="before-order.html">📝 ご依頼前に</a>
+    <a href="fabric.html">🎀 布素材紹介</a>
+    <a href="about-template.html">📐 テンプレート</a>
+    <a href="coupon.html">🎟️ クーポン</a>
+    <div class="site-nav-divider"></div>
+    <a href="https://hughanastores-ouo.github.io/hugnui2studio/hug-top/order.html">✉️ オーダーはこちら</a>
+  </div>
+</aside>
 
-<header class="site-header">
-  <h1>hug nui² studio</h1>
+<!-- スマホヘッダー -->
+<header class="mobile-header">
+  <a href="https://hughanastores-ouo.github.io/hugnui2studio/hug-site/" class="mobile-logo">hug <span>nui²</span> studio</a>
+  <button class="menu-btn" id="menuBtn">
+    <span class="dot"></span>
+    <span>MENU</span>
+  </button>
 </header>
 
-<nav class="nav">
- <a href="https://hughana.stores.jp/">TOPへ戻る</a>
-  <a href="order.html">オーダーの流れ</a>
-  <a href="before-order.html">オーダー前のお願い</a>
-  <a href="size_1.html">料金表</a>
-  <a href="fabric.html">布色一覧表</a>
-  <a href="https://hughana.stores.jp/faq">よくある質問</a>
-  <a href="select-size.html" class="active">テンプレート</a>
-</nav>
+<!-- オーバーレイ -->
+<div class="overlay" id="overlay"></div>
 
-<div class="wrap">
+<!-- ドロワー -->
+<div class="drawer" id="drawer">
+  <div class="drawer-title">hug <span>nui²</span> studio 🧸</div>
+  <div class="drawer-nav">
+    <a href="gallery_2.html">🧸 作品一覧</a>
+    <a href="order.html">📋 オーダーの流れ</a>
+    <a href="size_1.html">💴 料金表</a>
+    <a href="before-order.html">📝 ご依頼前に</a>
+    <a href="fabric.html">🎀 布素材紹介</a>
+    <a href="about-template.html">📐 テンプレート</a>
+    <a href="coupon.html">🎟️ クーポン</a>
+    <a href="https://hughanastores-ouo.github.io/hugnui2studio/hug-top/order.html">✉️ オーダーはこちら</a>
+  </div>
+</div>
+
+
+<div class="wrap site-wrap">
 
   <h1 class="page-title">ぬいぐるみのサイズを選んでください</h1>
   <p class="page-subtitle">各サイズの詳細・料金はカードからご確認いただけます。</p>
@@ -202,5 +389,17 @@ body { font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: #333
   </div>
 
 </div>
+
+<script>
+const menuBtn  = document.getElementById('menuBtn');
+const drawer   = document.getElementById('drawer');
+const overlay  = document.getElementById('overlay');
+function openDrawer()  { drawer.classList.add('open');  overlay.classList.add('open');  }
+function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+menuBtn.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+overlay.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+</script>
+
 </body>
 </html>
