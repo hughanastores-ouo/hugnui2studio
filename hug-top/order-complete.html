@@ -34,7 +34,7 @@ body {
   gap: 1.25rem;
   max-width: 900px;
   margin: 0 auto;
-  align-items: start;
+  align-items: stretch;
 }
 @media (min-width: 681px) {
   .layout {
@@ -92,8 +92,11 @@ body {
   box-shadow: 5px 5px 0 #2a2030; padding: 1.75rem;
   opacity: 0; transform: translateY(16px);
   animation: fadeUp 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.25s forwards;
-  position: sticky; top: 1.5rem; /* PCではスクロールしても右カラムが追従 */
+  position: sticky; top: 1.5rem;
+  display: flex; flex-direction: column;
 }
+/* 画像とボタンの間を自動で広げて高さを合わせる */
+.step2-spacer { flex: 1; }
 .step2-eyebrow { font-size: 9px; letter-spacing: 0.25em; color: #5ba4c7; text-transform: uppercase; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; margin-bottom: 0.4rem; }
 .step2-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 17px; font-weight: 700; color: #2a2030; margin-bottom: 0.5rem; }
 .step2-desc { font-size: 13px; color: #6a5870; line-height: 1.85; margin-bottom: 1.25rem; }
@@ -132,9 +135,9 @@ body {
     align-self: center;
     width: 0;
     height: 0;
-    border-top: 14px solid transparent;
-    border-bottom: 14px solid transparent;
-    border-left: 22px solid #2a2030;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 28px solid #2a2030;
     flex-shrink: 0;
     opacity: 0;
     animation: fadeUp 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.4s forwards;
@@ -165,6 +168,15 @@ body {
   animation: hintBounce 1.8s ease-in-out infinite;
 }
 .scroll-hint.visible { display: flex; align-items: center; gap: 0.5rem; }
+
+/* 作品イメージ画像 */
+.sample-img {
+  width: 100%; border-radius: 16px;
+  border: 2px solid #f7b8cc;
+  margin-bottom: 1.25rem;
+  display: block;
+  object-fit: cover;
+}
 @keyframes hintBounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50%       { transform: translateX(-50%) translateY(-5px); }
@@ -178,7 +190,7 @@ body {
     grid-template-columns: 1fr; /* スマホは縦積み */
     max-width: 480px;
   }
-  .step2-card { position: static; } /* スマホではstickyを解除 */
+  .step2-card { position: static; display: block; } /* スマホではstickyを解除 */
 }
 </style>
 </head>
@@ -239,6 +251,8 @@ body {
         依頼番号を添えて、下記フォームよりイラストや転写用テンプレート、こだわりポイントをお送りください。
         <div class="step2-note">※ 後から送っていただいても大丈夫です！このページをブックマークしておいてね。</div>
       </div>
+      <img class="sample-img" src="ぬいぐるみデザイン作例.png">
+      <div class="step2-spacer"></div>
       <a class="cta-btn" id="step2Btn" href="https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog" target="_blank">
         イラスト・データを送る →
       </a>
