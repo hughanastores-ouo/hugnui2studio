@@ -5,548 +5,917 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>hug nui² studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&family=Kiwi+Maru:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
 
 :root {
-  --pink: #f8bdcb;
-  --pink-dark: #c45c80;
-  --pink-mid: #e8a0b8;
-  --pink-light: #fff5f8;
-  --pink-border: #f0c0d0;
-  --ink: #2a2a2a;
-  --ink-mid: #666;
-  --ink-light: #aaa;
-  --bg: #fffbfc;
+  --bg: #fce8f0;
+  --blue: #a8d8ea;
+  --blue-dark: #5ba4c7;
+  --blue-pale: #e8f4fa;
+  --pink: #f7b8cc;
+  --pink-dark: #d96a8a;
+  --pink-pale: #fef0f5;
+  --ink: #2a2030;
+  --ink-mid: #6a5870;
+  --ink-light: #b0a0b8;
+  --white: #ffffff;
+  --yellow: #ffe27a;
 }
 
 body {
   font-family: 'Noto Sans JP', sans-serif;
   background: var(--bg);
   color: var(--ink);
-  min-height: 100vh;
-  overflow-x: hidden;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  /* ドット背景 */
+  background-image: radial-gradient(circle, rgba(168,216,234,0.3) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
 }
 
 /* =====================
-   ヘッダー
+   左サイドバー：浮いたカード
    ===================== */
-.header {
+.sidebar {
+  position: fixed;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 230px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  /* 入場アニメーション */
+  opacity: 0;
+  translate: -30px 0;
+  transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              translate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sidebar.visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ロゴカード */
+.logo-card {
+  background: var(--white);
+  border-radius: 20px;
+  border: 2.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 1.5rem 1.25rem 1.5rem ;
+  position: relative;
+  overflow: hidden;
+}
+.logo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--pink) 0%, var(--blue) 100%);
+}
+.logo-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
   background: var(--pink);
-  padding: 0.85rem 1.5rem;
+  border: 2px solid var(--ink);
+  margin-bottom: 0.4rem;
+}
+.logo-name {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.logo-name span { color: var(--pink-dark); }
+.logo-sub {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--ink-light);
+  margin-top: 0.35rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  text-transform: uppercase;
+}
+
+/* ナビカード */
+.nav-card {
+  background: var(--white);
+  border-radius: 20px;
+  border: 2.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 0.75rem 0.75rem;
+  overflow: hidden;
+}
+.nav-card a {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header-logo {
+  gap: 0.55rem;
   font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 16px;
+  font-size: 15.5px;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink-mid);
   text-decoration: none;
-  letter-spacing: 0.05em;
+  padding: 0.8rem 0.8rem;
+  border-radius: 12px;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, color 0.12s, translate 0.15s;
+  position: relative;
 }
-.header-nav { display: flex; gap: 1rem; align-items: center; }
-.header-nav a {
-  font-size: 12px;
-  color: rgba(255,255,255,0.85);
-  text-decoration: none;
-  transition: color 0.2s;
+.nav-card a:hover {
+  background: var(--blue-pale);
+  color: var(--blue-dark);
+  translate: 3px 0;
 }
-.header-nav a:hover { color: #fff; }
-.header-nav .nav-btn {
-  background: #fff;
-  color: var(--pink-dark);
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
+.nav-card a .nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 1.5px solid var(--ink);
+  flex-shrink: 0;
+  transition: background 0.15s;
 }
-.header-nav .nav-btn:hover { opacity: 0.9; color: var(--pink-dark); }
+.nav-card a:hover .nav-dot { background: var(--blue-dark); }
+.nav-divider { height: 1px; background: var(--bg); margin: 0.3rem 0.8rem; }
 
 /* =====================
-   ヒーロー
+   受付状況ドロップダウン（右上固定）
    ===================== */
-.hero {
-  background: var(--pink-light);
-  border-bottom: 2px dashed var(--pink-border);
-  padding: 3.5rem 1.5rem 3rem;
+
+/* トリガーボタン */
+.status-trigger {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  padding: 0.55rem 1.2rem 0.55rem 0.9rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--pink-dark);
+  transition: translate 0.1s, box-shadow 0.1s;
+  user-select: none;
+
+  /* 入場アニメーション */
+  opacity: 0;
+  translate: 0 -8px;
+}
+.status-trigger.visible {
+  transition: opacity 0.5s ease 0.3s,
+              translate 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.3s,
+              box-shadow 0.1s, transform 0.1s;
+  opacity: 1;
+  translate: 0 0;
+}
+.status-trigger:hover { translate: 1px 1px; box-shadow: 2px 2px 0 var(--pink-dark); }
+
+/* トリガー内のドット（代表色：1つでも受付中なら緑） */
+.status-trigger-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #666;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.status-trigger-dot.open {
+  background: #5fdb82;
+  box-shadow: 0 0 6px rgba(95,219,130,0.7);
+}
+
+/* 矢印 */
+.status-trigger-arrow {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  line-height: 1;
+}
+.status-trigger.open .status-trigger-arrow { transform: rotate(180deg); }
+
+/* ドロップダウンパネル */
+.status-dropdown {
+  position: fixed;
+  top: 95px;
+  right: 50px;
+  z-index: 149;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--pink-dark);
+  min-width: 220px;
+  overflow: hidden;
+
+  /* 閉じた状態 */
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.25s cubic-bezier(0.34,1.2,0.64,1);
+}
+.status-dropdown.open {
+  opacity: 1;
+  transform: translateY(0px) scale(1);
+  pointer-events: auto;
+}
+
+/* ドロップダウン内のヘッダー */
+.status-dropdown-header {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--blue);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  text-transform: uppercase;
+  padding: 0.75rem 1.1rem 0.4rem;
+}
+
+/* 各タイプの行 */
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.status-row:last-child { padding-bottom: 1.1rem; }
+
+.status-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #555;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+.status-dot.open {
+  background: #5fdb82;
+  box-shadow: 0 0 6px rgba(95,219,130,0.6);
+}
+.status-row-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  font-family: 'Zen Maru Gothic', sans-serif;
+  line-height: 1.4;
+}
+
+/* オーダーボタンカード */
+.order-card {
+  text-decoration: none;
+  display: block;
+  background: var(--blue);
+  border-radius: 16px;
+  border: 2.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 0.75rem 1rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ink);
   text-align: center;
+  letter-spacing: 0.05em;
+  transition: translate 0.12s, box-shadow 0.12s, background 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.order-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.15s;
+}
+.order-card:hover {
+  translate: 2px 2px;
+  box-shadow: 2px 2px 0 var(--ink);
+  background: var(--blue-dark);
+  color: var(--white);
+}
+
+/* =====================
+   メインエリア
+   ===================== */
+.main {
+  flex: 1;
+  height: 100vh;
   position: relative;
   overflow: hidden;
 }
 
-/* 背景の丸い装飾 */
-.hero::before {
-  content: '';
+/* =====================
+   背景スライドショー
+   ===================== */
+.bg-slide {
   position: absolute;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: var(--pink);
-  opacity: 0.15;
-  top: -80px; right: -60px;
+  inset: 0;
+  background-color: var(--pink-pale);
+  /* =============================================
+     写真を設定するときはここに background-image を追加
+     例: background-image: url('photo1.jpg');
+     ============================================= */
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
 }
-.hero::after {
-  content: '';
+.bg-slide.active { opacity: 1; }
+
+/* 写真がない間のプレースホルダー */
+.bg-placeholder {
   position: absolute;
-  width: 200px; height: 200px;
-  border-radius: 50%;
-  background: var(--pink);
-  opacity: 0.12;
-  bottom: -60px; left: -40px;
-}
-
-.hero-inner { position: relative; z-index: 1; }
-
-/* イラストエリア */
-.hero-illust {
-  width: 160px; height: 160px;
-  border-radius: 50%;
-  background: #fff;
-  border: 3px solid var(--pink-border);
-  margin: 0 auto 1.5rem;
+  inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  color: var(--pink-mid);
+  gap: 0.75rem;
   font-family: 'Zen Maru Gothic', sans-serif;
-  text-align: center;
-  line-height: 1.6;
-  overflow: hidden;
-  /* イラスト画像がある場合はimgタグに差し替えてください */
+  font-size: 13px;
+  color: var(--pink-dark);
+  pointer-events: none;
+  /* 写真を設定したら display: none; にしてください */
 }
-.hero-illust img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
+.bg-placeholder-icon { font-size: 40px; opacity: 0.35; }
+.bg-placeholder-text { opacity: 0.45; }
 
-.hero-tagline {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--pink-mid);
-  margin-bottom: 0.75rem;
-  font-family: 'Zen Maru Gothic', sans-serif;
+/* スライドインジケーター（右下の点） */
+.slide-indicators {
+  display: none;
 }
-.hero-title {
+.slide-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(42,32,48,0.2);
+  border: 1.5px solid rgba(42,32,48,0.25);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.slide-dot.active { background: var(--ink); transform: scale(1.25); }
+.slide-dot:hover { background: var(--pink-dark); }
+
+/* タイトルオーバーレイ（右下） */
+.main-title {
+  position: absolute;
+  bottom: 3rem; right: 3rem;
+  text-align: right;
+  z-index: 5;
+  pointer-events: none;
+
+  opacity: 0;
+  translate: 0 20px;
+  transition: opacity 0.6s ease 0.4s, translate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s;
+}
+.main-title.visible { opacity: 1; translate: 0 0; }
+
+.main-title-badge {
+  display: inline-block;
+  background: var(--yellow);
+  color: var(--ink);
   font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: clamp(26px, 6vw, 38px);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 2px solid var(--ink);
+  margin-bottom: 0.4rem;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.main-title-ja {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: clamp(20px, 2.8vw, 32px);
   font-weight: 700;
   color: var(--ink);
   line-height: 1.5;
-  margin-bottom: 1rem;
-}
-.hero-title span { color: var(--pink-dark); }
-
-.hero-desc {
-  font-size: 13.5px;
-  line-height: 2;
-  color: var(--ink-mid);
-  margin-bottom: 1.75rem;
+  text-shadow:
+    2px 2px 0 var(--white),
+    -1px -1px 0 var(--white),
+    1px -1px 0 var(--white),
+    -1px 1px 0 var(--white),
+    0 0 20px rgba(255,255,255,0.9);
 }
 
-/* 受付状況 */
-.status-wrap { margin-bottom: 1.75rem; }
-.status-badge {
-  display: inline-flex;
+/* =====================
+   スマホ用ヘッダー
+   ===================== */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 58px;
+  background: var(--white);
+  border-bottom: 2.5px solid var(--ink);
+  z-index: 200;
   align-items: center;
-  gap: 0.5rem;
-  background: #fff;
-  border: 1px solid var(--pink-border);
-  border-radius: 24px;
-  padding: 0.5rem 1.25rem;
-  font-size: 12.5px;
-  color: var(--ink-mid);
-  font-family: 'Zen Maru Gothic', sans-serif;
+  justify-content: space-between;
+  padding: 0 1rem;
 }
-.status-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #ddd;
-  flex-shrink: 0;
-}
-.status-dot.open { background: #84cc9a; }
-
-.hero-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-.btn-main {
-  display: inline-block;
-  background: var(--pink-dark);
-  color: #fff;
-  padding: 0.85rem 2rem;
-  border-radius: 30px;
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  letter-spacing: 0.05em;
-  transition: opacity 0.2s;
-  box-shadow: 0 4px 12px rgba(196,92,128,0.25);
-}
-.btn-main:hover { opacity: 0.85; }
-.btn-sub {
-  display: inline-block;
-  background: #fff;
-  color: var(--pink-dark);
-  padding: 0.85rem 1.5rem;
-  border-radius: 30px;
-  border: 1.5px solid var(--pink-border);
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  transition: background 0.2s;
-}
-.btn-sub:hover { background: var(--pink-light); }
-
-/* =====================
-   セクション共通
-   ===================== */
-.section {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 3.5rem 1.5rem;
-}
-.section-head { text-align: center; margin-bottom: 2rem; }
-.section-en {
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  color: var(--pink-mid);
-  font-family: 'Zen Maru Gothic', sans-serif;
-  margin-bottom: 0.3rem;
-}
-.section-ja {
-  font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--ink);
-}
-.section-deco {
-  width: 32px; height: 2px;
-  background: var(--pink);
-  margin: 0.75rem auto 0;
-  border-radius: 2px;
-}
-
-/* =====================
-   サンプルグリッド
-   ===================== */
-.sample-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 1.25rem;
-}
-.sample-item {
-  aspect-ratio: 1 / 1;
-  background: var(--pink-light);
-  overflow: hidden;
-}
-.sample-item img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s ease;
-}
-.sample-item:hover img { transform: scale(1.06); }
-.sample-placeholder {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; color: var(--pink-mid);
-  font-family: 'Zen Maru Gothic', sans-serif;
-}
-.sample-more { text-align: center; }
-.sample-more a {
-  font-size: 13px;
-  color: var(--pink-dark);
-  text-decoration: none;
-  border-bottom: 1px solid var(--pink-border);
-  padding-bottom: 2px;
-  font-family: 'Zen Maru Gothic', sans-serif;
-}
-
-/* =====================
-   区切り
-   ===================== */
-.sep {
-  text-align: center;
-  color: var(--pink-border);
-  font-size: 20px;
-  letter-spacing: 0.3em;
-  padding: 0.5rem 0;
-}
-
-/* =====================
-   メニューカード
-   ===================== */
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-.menu-card {
-  background: #fff;
-  border: 1.5px solid var(--pink-border);
-  border-radius: 16px;
-  padding: 1.25rem 1.25rem 1rem;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  transition: background 0.2s, border-color 0.2s;
-}
-.menu-card:hover {
-  background: var(--pink-light);
-  border-color: var(--pink-mid);
-}
-.menu-card-en {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--pink-mid);
-  font-family: 'Zen Maru Gothic', sans-serif;
-}
-.menu-card-title {
-  font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ink);
-}
-.menu-card-desc {
-  font-size: 12px;
-  color: var(--ink-mid);
-  line-height: 1.7;
-  margin-top: 0.25rem;
-}
-.menu-card-arrow {
-  font-size: 12px;
-  color: var(--pink-mid);
-  margin-top: auto;
-  padding-top: 0.5rem;
-}
-
-/* =====================
-   ハンドメイドアピール
-   ===================== */
-.handmade-box {
-  background: var(--pink-light);
-  border: 1.5px dashed var(--pink-border);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
-  text-align: center;
-}
-.handmade-icon { font-size: 28px; margin-bottom: 0.75rem; }
-.handmade-title {
+.mobile-logo {
   font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 17px;
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 0.75rem;
+  text-decoration: none;
 }
-.handmade-desc {
-  font-size: 13.5px;
-  color: var(--ink-mid);
-  line-height: 2;
+.mobile-logo span { color: var(--pink-dark); }
+
+/* MENUボタン */
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--blue);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: translate 0.1s, box-shadow 0.1s;
+  user-select: none;
+}
+.menu-btn:hover { translate: 1px 1px; box-shadow: 1px 1px 0 var(--ink); }
+.menu-btn .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--pink);
+  border: 1.5px solid var(--ink);
+  flex-shrink: 0;
 }
 
 /* =====================
-   フッター
+   ドロワーメニュー（JS制御）
    ===================== */
-.footer {
-  background: var(--pink);
-  padding: 2rem 1.5rem;
-  text-align: center;
+.drawer {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  background: var(--white);
+  border-radius: 0 0 24px 24px;
+  border: 2.5px solid var(--ink);
+  border-top: none;
+  padding: 0 1.25rem 1.5rem;
+  /* 初期状態：上に隠す */
+  transform: translateY(calc(-100% - 4px));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 4px 0 rgba(42,32,48,0.15);
+  /* ヘッダー分の余白 */
+  padding-top: 70px;
 }
-.footer-logo {
+.drawer.open {
+  transform: translateY(0);
+}
+
+.drawer-logo {
   font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--bg);
+}
+.drawer-logo span { color: var(--pink-dark); }
+
+.drawer-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
   margin-bottom: 1rem;
 }
-.footer-links {
+.drawer-nav a {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 1.25rem;
-}
-.footer-links a {
-  font-size: 12px;
-  color: rgba(255,255,255,0.85);
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-mid);
   text-decoration: none;
-  transition: color 0.2s;
+  padding: 0.6rem 0.85rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--bg);
+  background: var(--pink-pale);
+  letter-spacing: 0.03em;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-.footer-links a:hover { color: #fff; }
-.footer-copy { font-size: 11px; color: rgba(255,255,255,0.6); }
+.drawer-nav a:hover {
+  background: var(--blue-pale);
+  color: var(--blue-dark);
+  border-color: var(--blue);
+}
+
+.drawer-footer {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.drawer-order {
+  flex: 1;
+  display: block;
+  background: var(--blue);
+  color: var(--ink);
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 14px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2.5px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: translate 0.1s, box-shadow 0.1s, background 0.15s;
+}
+.drawer-order:hover {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ink);
+  background: var(--blue-dark);
+  color: var(--white);
+}
+.drawer-sns a {
+  font-size: 12px;
+  color: var(--ink-mid);
+  text-decoration: none;
+  padding: 0.55rem 0.85rem;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  background: var(--white);
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: translate 0.1s, box-shadow 0.1s;
+}
+.drawer-sns a:hover { translate: 1px 1px; box-shadow: 1px 1px 0 var(--ink); }
+
+/* オーバーレイ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(42,32,48,0.3);
+  z-index: 250;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+.overlay.open { opacity: 1; pointer-events: auto; }
 
 /* =====================
    レスポンシブ
    ===================== */
-@media (max-width: 600px) {
-  .sample-grid { grid-template-columns: repeat(2, 1fr); }
-  .menu-grid { grid-template-columns: 1fr; }
-  .header-nav a:not(.nav-btn) { display: none; }
+@media (max-width: 720px) {
+  html, body { height: auto; overflow: auto; }
+  body { flex-direction: column; background-size: 20px 20px; }
+  .sidebar { display: none; }
+  .mobile-header { display: flex; }
+  .main { margin-left: 0; height: 100svh; padding-top: 58px; }
+
+  .main-title { position: fixed; bottom: 1.2rem; right: 1rem; }
+  .main-title-ja { font-size: 18px; }
+
+  /* モバイル時：受付状況ボタンをロゴの下（ヘッダー直下・左寄せ）に配置 */
+  .status-trigger {
+    top: 75px;
+    left: 1.5rem;
+    right: auto;
+    z-index: 150;
+    font-size: 12px;
+    padding: 0.4rem 0.75rem 0.4rem 0.65rem;
+    box-shadow: 2px 2px 0 var(--pink-dark);
+    opacity: 1 !important;
+    translate: none !important;
+    transition: box-shadow 0.1s, translate 0.1s !important;
+  }
+
+  /* ドロップダウンもロゴ下・左寄せで表示 */
+  .status-dropdown {
+    top: 120px;
+    left: 1.5rem;
+    right: auto;
+    transform-origin: top left;
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- ヘッダー -->
-<header class="header">
-  <a href="#" class="header-logo">hug nui² studio 🧸</a>
-  <nav class="header-nav">
-    <a href="gallery.html">作品一覧</a>
-    <a href="order.html">オーダーの流れ</a>
-    <!-- STORESのURLに変更してください -->
-    <a href="https://hughana.stores.jp/" class="nav-btn" target="_blank">オーダーはこちら ✉️</a>
-  </nav>
+<!-- スマホ用ヘッダー -->
+<header class="mobile-header">
+  <a href="#" class="mobile-logo">hug <span>nui²</span> studio</a>
+  <div style="display:flex;gap:0.5rem;align-items:center;">
+    <button class="menu-btn" id="menuBtn">
+      <span class="dot"></span>
+      <span id="menuLabel">MENU</span>
+    </button>
+  </div>
 </header>
 
-<!-- ヒーロー -->
-<section class="hero">
-  <div class="hero-inner">
+<!-- オーバーレイ -->
+<div class="overlay" id="overlay"></div>
 
-    <!-- イラストエリア：画像がある場合はimgタグに差し替えてください -->
-    <div class="hero-illust">
-      <!--
-      <img src="illust.png" alt="hug nui² studio">
-      -->
-      ここにイラストを<br>配置してね🩷
-    </div>
-
-    <p class="hero-tagline">✦ handmade plush doll ✦</p>
-    <h1 class="hero-title">
-      あなたの推しを、<br>
-      <span>ぬいぐるみ</span>にしませんか？
-    </h1>
-    <p class="hero-desc">
-      オリジナルキャラクターを<br>
-      ひとつひとつ手作りでお届けしています。
-    </p>
-
-    <!-- 受付状況：受付中は class="status-dot open" に変更 -->
-    <div class="status-wrap">
-      <span class="status-badge">
-        <span class="status-dot"></span>
-        <!-- ↓ 受付状況に合わせて書き換えてください -->
-        8cm海星型：受付停止中
-      </span>
-    </div>
-
-    <div class="hero-btns">
-      <!-- STORESの仮予約ページURLに変更してください -->
-      <a href="https://hughana.stores.jp/" class="btn-main" target="_blank">オーダーページへ 🛒</a>
-      <a href="order.html" class="btn-sub">オーダーの流れ</a>
-    </div>
-
+<!-- ドロワー -->
+<div class="drawer" id="drawer">
+  <div class="drawer-logo">hug <span>nui²</span> studio</div>
+  <div class="drawer-nav">
+    <a href="../hug-site/order.html">オーダーの流れ</a>
+    <a href="../hug-site/size_1.html">料金表</a>
+    <a href="../hug-site/before-order.html">オーダー前のお願い</a>
+    <a href="../hug-site/fabric.html">布素材紹介</a>
+    <a href="../hug-site/select-size.html">テンプレート</a>
+    <a href="../hug-site/coupon.html">クーポン</a>
+    <a href="https://twitter.com/hug87_OuO" target="_blank">X(旧Twitter)</a>
   </div>
-</section>
+  <div class="drawer-footer">
+    <a href="https://hughana.stores.jp/" class="drawer-order" target="_blank">オーダーページへ</a>
+  </div>
+</div>
 
-<!-- サンプル -->
-<section class="section">
-  <div class="section-head">
-    <p class="section-en">works</p>
-    <p class="section-ja">最近の作品</p>
-    <div class="section-deco"></div>
+<!-- PC左サイドバー -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="logo-card">
+    
+    <div class="logo-name">hug <span>nui²</span><br>studio</div>
+    <div class="logo-sub">handmade plush doll</div>
   </div>
 
+  <div class="nav-card">
+    <a href="order.html"><span class="nav-dot"></span>オーダーの流れ</a>
+    <a href="price.html"><span class="nav-dot"></span>料金表</a>
+    <a href="before-order.html"><span class="nav-dot"></span>オーダー前のお願い</a>
+    <a href="fabric.html"><span class="nav-dot"></span>布素材紹介</a>
+    <a href="about-template.html"><span class="nav-dot"></span>テンプレートについて</a>
+    <div class="nav-divider"></div>
+    <a href="gallery.html"><span class="nav-dot"></span>サンプル一覧</a>
+    <a href="coupon.html"><span class="nav-dot"></span>クーポン</a>
+    <a href="https://twitter.com/hug87_OuO" target="_blank"><span class="nav-dot"></span>X（旧Twitter）</a>
+  </div>
+
+  <a href="https://hughana.stores.jp/" class="order-card" target="_blank">
+    オーダーページへ
+  </a>
+
+</aside>
+
+<!-- 受付状況ボタン（右上固定・PC/スマホ共通） -->
+<button class="status-trigger" id="statusTrigger">
+  <span class="status-trigger-dot" id="statusTriggerDot"></span>
+  <span id="statusTriggerLabel">受付状況</span>
+  <span class="status-trigger-arrow">▾</span>
+</button>
+
+<!-- 受付状況ドロップダウン -->
+<div class="status-dropdown" id="statusDropdown">
+  <div class="status-dropdown-header">RECEPTION STATUS</div>
+  <!-- JSで動的生成 -->
+  <div class="status-row">
+    <span class="status-dot"></span>
+    <span class="status-row-text">読み込み中...</span>
+  </div>
+</div>
+
+<!-- メインエリア -->
+<main class="main">
   <!-- =============================================
-       サンプル画像
-       <img src="ファイル名.jpg" alt="説明"> に差し替えてください
+       背景スライドショー
+
+       【写真の設定方法】
+       各 .bg-slide に background-image を追加してください。
+       例: style="background-image: url('photo1.jpg');"
+
+       【枚数の変更方法】
+       .bg-slide を増減させるだけでOKです。
+       JSが自動で枚数を検出してインジケーター（点）も自動生成します。
+
+       【切り替え間隔の変更】
+       JSの INTERVAL_MS の値を変更してください（ミリ秒）。
        ============================================= -->
-  <div class="sample-grid">
-    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
-    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
-    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
-    <div class="sample-item"><div class="sample-placeholder">photo</div></div>
-  </div>
 
-  <div class="sample-more">
-    <a href="gallery.html">作品をもっと見る →</a>
-  </div>
-</section>
-
-<div class="sep">✦ ✦ ✦</div>
-
-<!-- ハンドメイドアピール -->
-<section class="section" style="padding-top:2rem;padding-bottom:2rem;">
-  <div class="handmade-box">
-    <div class="handmade-icon">🪡</div>
-    <div class="handmade-title">すべて手作りでお届けします</div>
-    <div class="handmade-desc">
-      昇華転写×手縫いで、<br>
-      イラストをそのままぬいぐるみに。<br>
-      世界にひとつだけの作品をお作りします。
+  <!-- スライド1 -->
+  <div class="bg-slide active">
+    <!-- 写真なし：プレースホルダー表示中 -->
+    <div class="bg-placeholder">
+      <span class="bg-placeholder-icon">🧸</span>
+      <span class="bg-placeholder-text">ここに写真が入ります</span>
     </div>
   </div>
-</section>
 
-<div class="sep">✦ ✦ ✦</div>
-
-<!-- メニュー -->
-<section class="section" style="padding-top:2rem;">
-  <div class="section-head">
-    <p class="section-en">menu</p>
-    <p class="section-ja">ご案内</p>
-    <div class="section-deco"></div>
+  <!-- スライド2 -->
+  <div class="bg-slide">
+    <div class="bg-placeholder">
+      <span class="bg-placeholder-icon">🩷</span>
+      <span class="bg-placeholder-text">写真2</span>
+    </div>
   </div>
 
-  <div class="menu-grid">
-    <a href="order.html" class="menu-card">
-      <span class="menu-card-en">order</span>
-      <span class="menu-card-title">オーダーの流れ</span>
-      <span class="menu-card-desc">はじめての方も安心。受注の手順をご案内します。</span>
-      <span class="menu-card-arrow">→</span>
-    </a>
-    <a href="price.html" class="menu-card">
-      <span class="menu-card-en">price</span>
-      <span class="menu-card-title">料金表</span>
-      <span class="menu-card-desc">8cmサイズ ¥12,000〜。オプションも充実。</span>
-      <span class="menu-card-arrow">→</span>
-    </a>
-    <a href="before-order.html" class="menu-card">
-      <span class="menu-card-en">notice</span>
-      <span class="menu-card-title">オーダー前のお願い</span>
-      <span class="menu-card-desc">ご依頼前に必ずお読みください。</span>
-      <span class="menu-card-arrow">→</span>
-    </a>
-    <a href="coupon.html" class="menu-card">
-      <span class="menu-card-en">coupon</span>
-      <span class="menu-card-title">クーポン 🎟️</span>
-      <span class="menu-card-desc">Xフォロワー限定で10%OFF！</span>
-      <span class="menu-card-arrow">→</span>
-    </a>
-    <a href="fabric.html" class="menu-card">
-      <span class="menu-card-en">fabric</span>
-      <span class="menu-card-title">布素材紹介</span>
-      <span class="menu-card-desc">使用している布素材と色見本をご確認いただけます。</span>
-      <span class="menu-card-arrow">→</span>
-    </a>
-    <a href="about-template.html" class="menu-card">
-      <span class="menu-card-en">template</span>
-      <span class="menu-card-title">テンプレートについて</span>
-      <span class="menu-card-desc">デザイン用・転写用テンプレートの説明はこちら。</span>
-      <span class="menu-card-arrow">→</span>
-    </a>
+  <!-- スライド3 -->
+  <div class="bg-slide">
+    <div class="bg-placeholder">
+      <span class="bg-placeholder-icon">🪡</span>
+      <span class="bg-placeholder-text">写真3</span>
+    </div>
   </div>
-</section>
 
-<!-- フッター -->
-<footer class="footer">
-  <div class="footer-logo">hug nui² studio 🧸</div>
-  <div class="footer-links">
-    <a href="order.html">オーダーの流れ</a>
-    <a href="gallery.html">作品一覧</a>
-    <a href="coupon.html">クーポン</a>
-    <a href="https://twitter.com/hug87_OuO" target="_blank">X（Twitter）</a>
+  <!-- インジケーター（JSで自動生成されます） -->
+  <div class="slide-indicators" id="slideIndicators"></div>
+
+  <div class="main-title" id="mainTitle">
+    <div class="main-title-badge">✦ HANDMADE PLUSH DOLL ✦</div>
+    <div class="main-title-ja">あなただけのぬいぐるみを<br>作ってみませんか。</div>
   </div>
-  <p class="footer-copy">© hug nui² studio. All rights reserved.</p>
-</footer>
+</main>
 
+<script>
+// ページ読み込み時のアニメーション
+window.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.getElementById('sidebar')?.classList.add('visible');
+      document.getElementById('mainTitle')?.classList.add('visible');
+      document.getElementById('statusTrigger')?.classList.add('visible');
+    });
+  });
+
+  // =============================================
+  // JSONBinからステータスを読み込む（複数タイプ対応）
+  // =============================================
+  const BIN_ID = '69c3843daa77b81da918a941';    // ← JSONBinのBin IDに置き換え
+  const X_KEY  = '$2a$10$KFVz/3GKzgslRLpOZVkMYuNSlAefLbU8/bd7W7R/aW2xv5pe..Nza'; // ← JSONBinのAccess Keyに置き換え
+
+  async function loadStatus() {
+    const dropdown = document.getElementById('statusDropdown');
+    const triggerDot = document.getElementById('statusTriggerDot');
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { 'X-Access-Key': X_KEY }
+      });
+      if (!res.ok) throw new Error();
+      const data = (await res.json()).record;
+      const types = data.types ?? [];
+
+      // ドロップダウン内を生成
+      dropdown.innerHTML = '<div class="status-dropdown-header">RECEPTION STATUS</div>';
+      if (types.length === 0) {
+        dropdown.innerHTML += '<div class="status-row"><span class="status-dot"></span><span class="status-row-text">---</span></div>';
+        return;
+      }
+      const anyOpen = types.some(t => t.open);
+      anyOpen ? triggerDot.classList.add('open') : triggerDot.classList.remove('open');
+
+      types.forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'status-row';
+        row.innerHTML = `
+          <span class="status-dot${t.open ? ' open' : ''}"></span>
+          <span class="status-row-text">${t.text ?? t.name}</span>`;
+        dropdown.appendChild(row);
+      });
+    } catch {
+      dropdown.innerHTML = '<div class="status-dropdown-header">RECEPTION STATUS</div><div class="status-row"><span class="status-dot"></span><span class="status-row-text">---</span></div>';
+    }
+  }
+
+  loadStatus();
+
+  // =============================================
+  // 背景スライドショー
+  // 切り替え間隔を変えるには INTERVAL_MS を変更してください
+  // =============================================
+  const INTERVAL_MS = 4000; // 4秒ごとに切り替え
+  const FADE_OVERLAP = 200; // フェードの重なり時間（ms）
+
+  const slides = Array.from(document.querySelectorAll('.bg-slide'));
+  const indicatorWrap = document.getElementById('slideIndicators');
+  let current = 0;
+  let timer = null;
+
+  if (slides.length <= 1) return; // 1枚以下なら何もしない
+
+  // インジケーター（点）を枚数分自動生成
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    indicatorWrap.appendChild(dot);
+  });
+
+  function getDots() {
+    return Array.from(indicatorWrap.querySelectorAll('.slide-dot'));
+  }
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    getDots()[current]?.classList.remove('active');
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    getDots()[current]?.classList.add('active');
+  }
+
+  function next() { goTo(current + 1); }
+
+  // 自動再生
+  function startTimer() {
+    timer = setInterval(next, INTERVAL_MS);
+  }
+  function resetTimer() {
+    clearInterval(timer);
+    startTimer();
+  }
+
+  startTimer();
+
+  // ドット手動操作後はタイマーリセット
+  indicatorWrap.addEventListener('click', resetTimer);
+});
+
+// ドロワーメニューの開閉
+const menuBtn = document.getElementById('menuBtn');
+const menuLabel = document.getElementById('menuLabel');
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('overlay');
+let isOpen = false;
+
+function openMenu() {
+  isOpen = true;
+  drawer.classList.add('open');
+  overlay.classList.add('open');
+  menuLabel.textContent = 'CLOSE';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  isOpen = false;
+  drawer.classList.remove('open');
+  overlay.classList.remove('open');
+  menuLabel.textContent = 'MENU';
+  document.body.style.overflow = '';
+}
+
+menuBtn.addEventListener('click', () => {
+  isOpen ? closeMenu() : openMenu();
+});
+
+overlay.addEventListener('click', closeMenu);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && isOpen) closeMenu();
+});
+
+// ドロワー内リンクを押したら閉じる
+drawer.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    if (!a.target) closeMenu();
+  });
+});
+
+// =====================
+// 受付状況ドロップダウン
+// =====================
+const statusTrigger  = document.getElementById('statusTrigger');
+const statusDropdown = document.getElementById('statusDropdown');
+let statusOpen = false;
+
+function openStatus() {
+  statusOpen = true;
+  statusTrigger.classList.add('open');
+  statusDropdown.classList.add('open');
+}
+function closeStatus() {
+  statusOpen = false;
+  statusTrigger.classList.remove('open');
+  statusDropdown.classList.remove('open');
+}
+
+statusTrigger.addEventListener('click', e => {
+  e.stopPropagation();
+  statusOpen ? closeStatus() : openStatus();
+});
+
+// 外側クリックで閉じる
+document.addEventListener('click', e => {
+  if (statusOpen && !statusDropdown.contains(e.target)) closeStatus();
+});
+
+// Escキーで閉じる
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeStatus(); }
+});
+</script>
 </body>
 </html>
