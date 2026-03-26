@@ -6,379 +6,21 @@
 <title>テンプレートのダウンロード | hug nui² studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#fdf0f4;
-  --blue:#a8d8ea;--blue-dark:#5ba4c7;--blue-pale:#e8f4fa;
-  --pink:#f7b8cc;--pink-dark:#d96a8a;--pink-pale:#fef0f5;
-  --ink:#2a2030;--ink-mid:#6a5870;--ink-light:#b0a0b8;
-  --white:#ffffff;--shadow:5px 5px 0 #2a2030;
-}
-body{
-  font-family:'Noto Sans JP',sans-serif;
-  background:var(--bg);
-  background-image:radial-gradient(circle,rgba(168,216,234,.25) 1.5px,transparent 1.5px);
-  background-size:28px 28px;
-  color:var(--ink);min-height:100vh;
-}
-
-/* ========== レイアウト ========== */
-.site-layout{display:flex;min-height:100vh;}
-
-/* サイドバー */
-.site-sidebar{
-  position:fixed;left:24px;top:50%;transform:translateY(-50%);
-  width:210px;z-index:50;display:flex;flex-direction:column;gap:10px;
-}
-.sidebar-logo{
-  font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:700;
-  color:var(--ink);background:var(--white);
-  border-radius:20px;border:2.5px solid var(--ink);
-  box-shadow:var(--shadow);padding:.75rem 1rem;letter-spacing:.05em;
-}
-.sidebar-logo span{color:var(--pink-dark);}
-.sidebar-logo small{display:block;font-size:10px;color:var(--ink-light);font-weight:400;margin-top:2px;letter-spacing:.1em;}
-.nav-card{
-  background:var(--white);border-radius:20px;
-  border:2.5px solid var(--ink);box-shadow:var(--shadow);
-  padding:.6rem .6rem;overflow:hidden;
-}
-.nav-card a{
-  display:flex;align-items:center;gap:.5rem;
-  font-family:'Zen Maru Gothic',sans-serif;font-size:13.5px;font-weight:700;
-  color:var(--ink-mid);text-decoration:none;
-  padding:.6rem .75rem;border-radius:10px;
-  transition:background .15s,color .12s;
-}
-.nav-card a:hover{background:var(--pink-pale);color:var(--pink-dark);}
-.nav-card a.active{background:var(--pink);color:var(--ink);}
-.nav-divider{height:1px;background:#fce8f0;margin:.3rem .5rem;}
-
-/* メインコンテンツ */
-.site-main{
-  margin-left:258px;flex:1;
-  padding:2.5rem 2rem 5rem;
-  max-width:calc(100% - 258px);
-}
-.content-card{
-  background:var(--white);border-radius:24px;
-  border:2.5px solid var(--ink);box-shadow:var(--shadow);
-  padding:2rem 2rem;max-width:740px;margin:0 auto;
-}
-
-/* ページヘッダー */
-.page-eyebrow{
-  font-size:10px;letter-spacing:.25em;color:var(--blue-dark);
-  text-transform:uppercase;font-weight:700;
-  font-family:'Zen Maru Gothic',sans-serif;margin-bottom:.4rem;
-}
-.page-title{
-  font-family:'Zen Maru Gothic',sans-serif;font-size:24px;
-  font-weight:700;color:var(--ink);margin-bottom:.5rem;
-}
-.page-subtitle{font-size:13px;color:var(--ink-light);line-height:1.85;margin-bottom:1.5rem;}
-.page-divider{height:2px;background:#fce8f0;margin-bottom:1.75rem;}
-
-/* セクション */
-.section{margin-bottom:1.75rem;}
-.section:last-child{margin-bottom:0;}
-.section-title{
-  font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:700;color:var(--ink);
-  padding:.5rem 1rem;background:var(--pink-pale);
-  border-left:4px solid var(--pink);border-radius:0 10px 10px 0;
-  margin-bottom:.85rem;
-}
-.section-body{font-size:13.5px;line-height:1.95;color:#444;padding:0 .25rem;}
-.section-body p{margin-bottom:.5rem;}
-.section-body p:last-child{margin-bottom:0;}
-
-/* ハイライトボックス */
-.highlight-box{
-  background:var(--pink-pale);border:1.5px solid var(--pink);
-  border-radius:12px;padding:1rem 1.25rem;margin:.75rem 0;
-  font-size:13.5px;color:var(--ink-mid);line-height:1.95;
-}
-.highlight-box p{margin-bottom:.4rem;}
-.highlight-box p:last-child{margin-bottom:0;}
-
-/* 注意事項 */
-.note-box{
-  background:#fef9e8;border:1.5px solid #ffe27a;
-  border-radius:12px;padding:.85rem 1.1rem;
-  font-size:12.5px;color:#7a6a20;line-height:1.85;margin:.75rem 0;
-}
-.note-box p{margin-bottom:.35rem;}
-.note-box p:last-child{margin-bottom:0;}
-
-/* チェックリスト */
-.check-list{list-style:none;padding:0;}
-.check-list li{
-  padding:.5rem .75rem;border-bottom:1px solid #fce8f0;
-  font-size:13.5px;color:#444;display:flex;align-items:flex-start;gap:.5rem;
-}
-.check-list li:last-child{border-bottom:none;}
-.check-list li::before{content:'✓';color:var(--pink);font-weight:700;flex-shrink:0;}
-
-/* ステップリスト */
-.step-list{display:flex;flex-direction:column;}
-.step-item{display:flex;gap:1.25rem;position:relative;}
-.step-item:not(:last-child)::after{
-  content:'';position:absolute;left:22px;top:52px;
-  width:2px;height:calc(100% - 16px);background:var(--pink);
-}
-.step-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:4px;}
-.step-num{
-  width:44px;height:44px;border-radius:50%;
-  background:var(--pink);border:2px solid var(--ink);
-  color:var(--ink);font-family:'Zen Maru Gothic',sans-serif;
-  font-size:11px;font-weight:700;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  line-height:1.2;flex-shrink:0;
-}
-.step-num span{font-size:16px;}
-.step-body{
-  background:var(--white);border:2px solid #fce8f0;border-radius:14px;
-  padding:1rem 1.25rem;margin-bottom:1.5rem;flex:1;
-}
-.step-body h2{
-  font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:700;
-  color:var(--ink);margin-bottom:.75rem;
-}
-.step-body p,.step-body li{font-size:13.5px;line-height:1.85;color:#444;}
-.step-body ul{padding-left:1.25rem;margin-top:.5rem;}
-.step-body li{margin-bottom:.25rem;}
-.step-badge{
-  display:inline-block;background:var(--pink);color:var(--ink);
-  font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;
-  margin-bottom:.5rem;font-family:'Zen Maru Gothic',sans-serif;
-  border:1.5px solid var(--ink);
-}
-
-/* 料金ヒーロー */
-.price-hero{
-  background:var(--ink);border-radius:16px;padding:1.5rem;
-  margin-bottom:1.5rem;text-align:center;
-}
-.price-hero-label{font-size:11px;color:var(--blue);font-weight:700;letter-spacing:.1em;margin-bottom:.4rem;}
-.price-hero-amount{font-family:'Zen Maru Gothic',sans-serif;font-size:38px;font-weight:700;color:var(--white);line-height:1.2;}
-.price-hero-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:.4rem;}
-
-/* オプションアイテム */
-.option-list{display:flex;flex-direction:column;gap:.75rem;}
-.option-item{
-  background:var(--pink-pale);border:1.5px solid var(--pink);
-  border-radius:12px;padding:.9rem 1rem;
-}
-.option-header{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.35rem;flex-wrap:wrap;}
-.option-name{font-size:14px;font-weight:700;color:var(--ink);}
-.option-price{font-size:13px;font-weight:700;color:var(--pink-dark);white-space:nowrap;}
-.option-desc{font-size:12.5px;color:#555;line-height:1.75;}
-
-/* 送料ボックス */
-.shipping-box{
-  background:var(--blue-pale);border:1.5px solid var(--blue);
-  border-radius:12px;padding:.9rem 1rem;font-size:13.5px;color:#2a5870;line-height:1.8;
-}
-
-/* クーポンカード */
-.coupon-list{display:flex;flex-direction:column;gap:1.25rem;}
-.coupon-card{
-  background:var(--white);border:2px solid var(--ink);
-  border-radius:16px;overflow:hidden;box-shadow:3px 3px 0 var(--ink);
-}
-.coupon-inner{display:flex;align-items:center;gap:1.25rem;padding:1.25rem 1.25rem 1.25rem 1.5rem;}
-.coupon-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--pink);}
-.coupon-card{position:relative;}
-.coupon-discount{flex-shrink:0;text-align:center;background:var(--pink-pale);border-radius:10px;padding:.65rem .85rem;min-width:72px;border:1.5px solid var(--pink);}
-.coupon-discount-num{font-family:'Zen Maru Gothic',sans-serif;font-size:38px;font-weight:700;color:var(--pink-dark);line-height:1;}
-.coupon-discount-unit{font-size:11px;color:var(--pink-dark);font-weight:700;margin-top:.2rem;}
-.coupon-info{flex:1;}
-.coupon-badge{display:inline-block;background:var(--pink);color:var(--ink);font-size:10px;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:.4rem;letter-spacing:.05em;font-family:'Zen Maru Gothic',sans-serif;border:1.5px solid var(--ink);}
-.coupon-title{font-family:'Zen Maru Gothic',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:.2rem;}
-.coupon-sub{font-size:12px;color:var(--ink-light);}
-.coupon-divider{border:none;border-top:1.5px dashed var(--pink);margin:0 1rem .85rem;}
-.coupon-footer{padding:0 1.25rem 1.1rem 1.5rem;}
-.coupon-btn{
-  display:block;text-align:center;background:var(--ink);color:var(--white);
-  font-size:13px;font-weight:700;padding:.65rem 1rem;border-radius:12px;
-  text-decoration:none;font-family:'Zen Maru Gothic',sans-serif;transition:opacity .2s;
-}
-.coupon-btn:hover{opacity:.75;}
-
-/* 布素材カード */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;}
-.fabric-card,.size-card{
-  background:var(--white);border:2px solid var(--ink);
-  border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
-  box-shadow:3px 3px 0 var(--ink);
-}
-.card-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
-.card-img-placeholder{width:100%;aspect-ratio:1/1;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-light);}
-.card-body{padding:1.1rem 1.1rem;flex:1;display:flex;flex-direction:column;gap:.6rem;}
-.card-title{font-family:'Zen Maru Gothic',sans-serif;font-size:16px;font-weight:700;color:var(--ink);}
-.card-divider{height:1px;background:#fce8f0;}
-.card-desc{font-size:13px;line-height:1.85;color:#555;}
-.card-credit{font-size:11.5px;color:var(--ink-light);line-height:1.7;}
-.card-price{font-size:18px;font-weight:700;color:var(--pink-dark);font-family:'Zen Maru Gothic',sans-serif;}
-.card-footer{padding:0 1.1rem 1.1rem;}
-.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;font-family:'Zen Maru Gothic',sans-serif;}
-.badge-ok{background:var(--pink-pale);color:var(--pink-dark);border:1.5px solid var(--pink);}
-.badge-ng{background:#f5f5f5;color:#aaa;border:1px solid #ddd;}
-
-/* テンプレートダウンロード */
-.download-area{display:flex;flex-direction:column;gap:.85rem;margin-bottom:2rem;}
-.download-btn{
-  display:flex;align-items:center;justify-content:space-between;
-  background:var(--blue-pale);border:2px solid var(--ink);border-radius:14px;
-  padding:1rem 1.25rem;text-decoration:none;
-  box-shadow:3px 3px 0 var(--ink);transition:translate .1s,box-shadow .1s;gap:1rem;
-}
-.download-btn:hover{translate:1px 1px;box-shadow:2px 2px 0 var(--ink);}
-.download-btn-service{font-size:11px;color:var(--blue-dark);font-weight:700;letter-spacing:.05em;}
-.download-btn-label{font-size:15px;font-weight:700;color:var(--ink);font-family:'Zen Maru Gothic',sans-serif;}
-.download-btn-arrow{font-size:18px;color:var(--blue-dark);flex-shrink:0;}
-
-/* ファイルリスト */
-.file-list{list-style:none;padding:0;}
-.file-list li{padding:.5rem .75rem;border-bottom:1px solid #fce8f0;font-size:13.5px;color:#444;display:flex;align-items:flex-start;gap:.5rem;}
-.file-list li:last-child{border-bottom:none;}
-.file-list li::before{content:'📄';flex-shrink:0;font-size:14px;}
-
-/* ギャラリー */
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:2rem;}
-@media(max-width:500px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:3px;}}
-.gallery-item{position:relative;overflow:hidden;aspect-ratio:1/1;background:var(--pink-pale);cursor:pointer;border-radius:8px;}
-.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s,filter .3s;filter:brightness(.96);}
-.gallery-item:hover img{transform:scale(1.05);filter:brightness(1.01);}
-
-/* ライトボックス */
-.lightbox{display:none;position:fixed;inset:0;background:rgba(18,8,12,.94);z-index:999;align-items:center;justify-content:center;padding:1rem;cursor:pointer;}
-.lightbox.open{display:flex;}
-.lightbox img{max-width:min(88vw,680px);max-height:88vh;object-fit:contain;display:block;border-radius:4px;}
-.lightbox-close{position:fixed;top:1.25rem;right:1.25rem;width:38px;height:38px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:50%;color:rgba(255,255,255,.8);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
-.lightbox-close:hover{background:rgba(255,255,255,.2);}
-
-/* サイズ選択 */
-.size-card-coming{
-  background:var(--pink-pale);border:2px dashed var(--pink);border-radius:16px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:280px;padding:2rem 1.5rem;text-align:center;gap:.75rem;
-}
-.coming-title{font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:700;color:var(--pink-dark);letter-spacing:.1em;}
-.coming-desc{font-size:12px;color:var(--ink-light);line-height:1.8;}
-.page-link{font-size:13px;margin-bottom:1.25rem;}
-.page-link a{color:var(--blue-dark);text-decoration:underline;}
-
-/* テンプレートCTAボタン */
-.cta-btn{
-  display:block;text-align:center;padding:.9rem 1rem;margin-top:1.5rem;
-  background:var(--pink);color:var(--ink);border:2.5px solid var(--ink);border-radius:16px;
-  font-size:15px;font-weight:700;text-decoration:none;
-  font-family:'Zen Maru Gothic',sans-serif;box-shadow:4px 4px 0 var(--ink);
-  transition:translate .1s,box-shadow .1s;letter-spacing:.04em;
-}
-.cta-btn:hover{translate:2px 2px;box-shadow:2px 2px 0 var(--ink);}
-
-/* クロージング */
-.closing{
-  text-align:center;font-size:13px;color:var(--pink-dark);
-  font-family:'Zen Maru Gothic',sans-serif;
-  background:var(--pink-pale);border:2px solid var(--pink);border-radius:14px;
-  padding:1.25rem 1.5rem;margin-top:1.5rem;line-height:2;
-}
-
-/* ボタン共通 */
-.btn{display:block;text-align:center;padding:.65rem 1rem;border-radius:12px;font-size:13px;font-weight:700;text-decoration:none;transition:opacity .2s;font-family:'Zen Maru Gothic',sans-serif;}
-.btn:hover{opacity:.8;}
-.btn-primary{background:var(--ink);color:var(--white);}
-.btn-secondary{background:var(--pink-pale);color:var(--pink-dark);border:1.5px solid var(--pink);}
-
-/* フッター */
-.site-footer{text-align:center;margin-top:2rem;padding-top:1.25rem;border-top:1.5px solid #fce8f0;font-size:12px;color:var(--ink-light);font-family:'Zen Maru Gothic',sans-serif;}
-.site-footer p{margin-bottom:.35rem;}
-
-/* ========== スマホヘッダー・ドロワー ========== */
-.mobile-header{
-  display:none;position:fixed;top:0;left:0;right:0;height:56px;
-  background:var(--white);border-bottom:2.5px solid var(--ink);
-  z-index:200;align-items:center;justify-content:space-between;padding:0 1rem;
-}
-.mobile-logo{font-family:'Zen Maru Gothic',sans-serif;font-size:16px;font-weight:700;color:var(--ink);text-decoration:none;}
-.mobile-logo span{color:var(--pink-dark);}
-.menu-btn{
-  display:flex;align-items:center;gap:.4rem;background:var(--blue);
-  border:2px solid var(--ink);border-radius:20px;padding:.38rem .95rem;
-  font-family:'Zen Maru Gothic',sans-serif;font-size:12px;font-weight:700;
-  color:var(--ink);cursor:pointer;letter-spacing:.1em;
-  box-shadow:2px 2px 0 var(--ink);transition:translate .1s,box-shadow .1s;user-select:none;
-}
-.menu-btn:hover{translate:1px 1px;box-shadow:1px 1px 0 var(--ink);}
-.menu-btn .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);border:1.5px solid var(--ink);flex-shrink:0;}
-.drawer{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  background:var(--white);border-radius:0 0 24px 24px;
-  border:2.5px solid var(--ink);border-top:none;
-  padding:70px 1.25rem 1.5rem;
-  transform:translateY(calc(-100% - 4px));
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-  box-shadow:4px 4px 0 rgba(42,32,48,.15);
-}
-.drawer.open{transform:translateY(0);}
-.drawer-title{font-family:'Zen Maru Gothic',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:2px solid #fce8f0;}
-.drawer-title span{color:var(--pink-dark);}
-.drawer-nav{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.5rem;}
-.drawer-nav a{display:flex;align-items:center;gap:.4rem;font-family:'Zen Maru Gothic',sans-serif;font-size:13px;font-weight:700;color:var(--ink-mid);text-decoration:none;padding:.6rem .85rem;border-radius:12px;border:1.5px solid #fce8f0;background:var(--pink-pale);transition:background .15s,color .15s,border-color .15s;}
-.drawer-nav a:hover{background:var(--blue-pale);color:var(--blue-dark);border-color:var(--blue);}
-.overlay{position:fixed;inset:0;background:rgba(42,32,48,.3);z-index:250;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(2px);}
-.overlay.open{opacity:1;pointer-events:auto;}
-
-/* ========== レスポンシブ ========== */
-@media(max-width:900px){
-  .site-sidebar{display:none;}
-  .mobile-header{display:flex;}
-  .site-main{margin-left:0;padding:1.5rem 1rem 4rem;padding-top:72px;max-width:100%;}
-  .content-card{padding:1.5rem 1.25rem;}
-  .gallery-grid{grid-template-columns:repeat(3,1fr);}
-}
-@media(max-width:480px){
-  .gallery-grid{grid-template-columns:repeat(2,1fr);}
-  .card-grid{grid-template-columns:1fr;}
-  .drawer-nav{grid-template-columns:1fr 1fr;}
-}
-</style>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
-<!-- PCサイドバー -->
-<aside class="site-sidebar">
-  <div class="sidebar-logo">
-    hug <span>nui²</span> studio
-    <small>handmade plush doll</small>
-  </div>
-  <div class="nav-card">
-    <a href="gallery_2.html">🧸 作品一覧</a>
-    <a href="order.html">📋 オーダーの流れ</a>
-    <a href="size_1.html">💴 料金表</a>
-    <a href="before-order.html">📝 ご依頼前に</a>
-    <a href="fabric.html">🎀 布素材紹介</a>
-    <a href="about-template.html">📐 テンプレート</a>
-    <a href="coupon.html">🎟️ クーポン</a>
-    <div class="nav-divider"></div>
-    <a href="../hug-top/order.html">✉️ オーダーはこちら</a>
-  </div>
-</aside>
-
-<!-- スマホヘッダー -->
 <header class="mobile-header">
-  <a href="./index.html" class="mobile-logo">hug <span>nui²</span> studio</a>
+  <a href="index.html" class="mobile-logo">hug <span>nui²</span> studio</a>
   <button class="menu-btn" id="menuBtn">
-    <span class="dot"></span><span>MENU</span>
+    <span class="dot"></span>
+    <span id="menuLabel">MENU</span>
   </button>
 </header>
 <div class="overlay" id="overlay"></div>
 <div class="drawer" id="drawer">
-  <div class="drawer-title">hug <span>nui²</span> studio 🧸</div>
+  <div class="drawer-logo">hug <span>nui²</span> studio 🧸</div>
   <div class="drawer-nav">
+    <a href="index.html">TOP</a>
     <a href="gallery_2.html">🧸 作品一覧</a>
     <a href="order.html">📋 オーダーの流れ</a>
     <a href="size_1.html">💴 料金表</a>
@@ -386,9 +28,32 @@ body{
     <a href="fabric.html">🎀 布素材紹介</a>
     <a href="about-template.html">📐 テンプレート</a>
     <a href="coupon.html">🎟️ クーポン</a>
-    <a href="../hug-top/order.html">✉️ オーダーはこちら</a>
+    <a href="https://twitter.com/hug87_OuO" target="_blank">🐦 X</a>
+  </div>
+  <div class="drawer-footer">
+    <a href="../hug-top/order.html" class="drawer-order">オーダーはこちら ✉️</a>
   </div>
 </div>
+<!-- PCサイドバー -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo-card">
+    <div class="logo-dot"></div>
+    <div class="logo-name">hug <span>nui²</span><br>studio</div>
+    <div class="logo-sub">handmade plush doll</div>
+  </div>
+  <div class="nav-card">
+    <a href="index.html"><span class="nav-dot"></span>TOP</a>
+    <a href="gallery_2.html"><span class="nav-dot"></span>サンプル一覧</a>
+    <a href="order.html"><span class="nav-dot"></span>オーダーの流れ</a>
+    <a href="size_1.html"><span class="nav-dot"></span>料金表</a>
+    <a href="before-order.html"><span class="nav-dot"></span>オーダー前のお願い</a>
+    <a href="fabric.html"><span class="nav-dot"></span>布素材紹介</a>
+    <a href="about-template.html"><span class="nav-dot"></span>テンプレートについて</a>
+    <div class="nav-divider"></div>
+    <a href="coupon.html"><span class="nav-dot"></span>クーポン 🎟️</a>
+    <a href="https://twitter.com/hug87_OuO" target="_blank"><span class="nav-dot"></span>X（Twitter）</a>
+  </div>
+</aside>
 <div class="site-main">
   <div class="content-card">
     <div class="page-eyebrow">template</div>
@@ -396,38 +61,48 @@ body{
     <p class="page-subtitle">サイズを選ぶと次のステップへ進めます。</p>
     <p class="page-link">テンプレートってなに？という方は<a href="about-template.html">こちら</a></p>
     <div class="page-divider"></div>
-    
-  <div class="card-grid">
-    <div class="size-card">
-      <div class="card-img-placeholder"><img class="card-img" src="MEITU_20251024_113744857.png" alt="8cmサイズ（海星型）"></div>
-      <div class="card-body">
-        <div class="card-title">8cmサイズ（海星型）</div>
-        <div class="card-divider"></div>
-        <div class="card-desc">手のひらにすっぽり収まる小さめサイズ。おでかけやぬい撮りにもぴったりです。</div>
-        <div class="card-credit">型紙：Dia様（@Diawu_Q）より配布されている型紙を縮小して使用しています。</div>
+    <div class="card-grid">
+      <div class="size-card">
+        <div class="card-img-placeholder"><img class="card-img" src="MEITU_20251024_113744857.png" alt="8cmサイズ（海星型）"></div>
+        <div class="card-body">
+          <div class="card-title">8cmサイズ（海星型）</div>
+          <div class="card-divider"></div>
+          <div class="card-desc">手のひらにすっぽり収まる小さめサイズ。おでかけやぬい撮りにもぴったりです。</div>
+          <div class="card-credit">型紙：Dia様（@Diawu_Q）より配布されている型紙を縮小して使用しています。</div>
+        </div>
+        <div class="card-footer"><a href="template.html" class="btn btn-primary">この子にする</a></div>
       </div>
-      <div class="card-footer"><a href="template.html" class="btn btn-primary">この子にする</a></div>
+      <div class="size-card-coming">
+        <div class="coming-title">Coming Soon</div>
+        <div class="coming-desc">新しいサイズを準備中です。<br>もうしばらくお待ちください。</div>
+      </div>
     </div>
-    <div class="size-card-coming">
-      <div class="coming-title">Coming Soon</div>
-      <div class="coming-desc">新しいサイズを準備中です。<br>もうしばらくお待ちください。</div>
-    </div>
-  </div>
-    <div class="site-footer" style="margin-top:2rem;">
+    <div class="site-footer">
       <p>ご不明な点はXのDMにてお問い合わせください</p>
       <p>@hug87_OuO</p>
     </div>
   </div>
 </div>
 <script>
-const menuBtn=document.getElementById('menuBtn');
-const drawer=document.getElementById('drawer');
-const overlay=document.getElementById('overlay');
-function openMenu(){drawer.classList.add('open');overlay.classList.add('open');}
-function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('open');}
-menuBtn.addEventListener('click',()=>drawer.classList.contains('open')?closeMenu():openMenu());
-overlay.addEventListener('click',closeMenu);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+const menuBtn = document.getElementById('menuBtn');
+const menuLabel = document.getElementById('menuLabel');
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('overlay');
+let isOpen = false;
+function openMenu() { isOpen=true; drawer.classList.add('open'); overlay.classList.add('open'); menuLabel.textContent='CLOSE'; document.body.style.overflow='hidden'; }
+function closeMenu() { isOpen=false; drawer.classList.remove('open'); overlay.classList.remove('open'); menuLabel.textContent='MENU'; document.body.style.overflow=''; }
+menuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
+overlay.addEventListener('click', closeMenu);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+// サイドバー入場アニメーション
+window.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.getElementById('sidebar')?.classList.add('visible');
+    });
+  });
+});
 </script>
 </body>
 </html>
