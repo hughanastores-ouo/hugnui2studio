@@ -203,33 +203,23 @@ function renderPeriods() {
     const mStr = `${y}-${String(m).padStart(2,'0')}`;
     html += `<div class="period-month-label">${y}年${m}月</div><div class="period-row">`;
     ['early','mid','late'].forEach(phase => {
-      const key   = `${mStr}-${phase}`;
-      const sched = scheduleData[key] ?? {};
-      const slots = sched.slots ?? {};
-
-      // 選択中タイプの枠数だけ見る
+      const key     = `${mStr}-${phase}`;
+      const sched   = scheduleData[key] ?? {};
+      const slots   = sched.slots ?? {};
       const slotVal = selectedType && slots[selectedType] !== undefined
         ? slots[selectedType]
         : null;
+      const canSelect = (sched.open ?? false) && (slotVal === null || slotVal > 0);
 
-      // openかつ（枠設定なし or 枠>0）なら選択可
-      let canSelect = (sched.open ?? false) && (slotVal === null || slotVal > 0);
-
-      // 枠数表示テキスト（選択タイプの分だけ）
-      let slotLabel = '';
-      if (slotVal !== null) {
-        const cls   = slotVal === 0 ? 'full' : slotVal === 1 ? 'warn' : 'ok';
-        const label = slotVal === 0 ? '満枠' : `あと${slotVal}枠`;
-        slotLabel = `<span class="period-slot-count ${cls}" style="font-size:10px;font-weight:700;margin-top:2px;">${label}</span>`;
-      }
+      // 枠数ラベル：選択可なら「あと○枠」、それ以外はすべて「満枠」
+      const cls   = canSelect ? (slotVal === 1 ? 'warn' : 'ok') : 'full';
+      const label = canSelect && slotVal !== null ? `あと${slotVal}枠` : '満枠';
+      const slotLabel = `<span class="period-slot-count ${cls}">${label}</span>`;
 
       const btnClass = canSelect ? '' : ' disabled';
       html += `<button class="period-btn${btnClass}"
         ${canSelect ? `onclick="selectPeriod('${key}','${m}月${PHASE_LABEL[phase]}',this)"` : ''}
-      >
-        <span class="period-name">${PHASE_LABEL[phase]}</span>
-        ${slotLabel || `<span style="font-size:10px;color:${canSelect?'#5ba4c7':'#ccc'}">${canSelect?'受付中':'受付停止'}</span>`}
-      </button>`;
+      ><span class="period-name">${PHASE_LABEL[phase]}</span>${slotLabel}</button>`;
     });
     html += '</div>';
   }
