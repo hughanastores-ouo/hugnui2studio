@@ -210,8 +210,13 @@ function renderPeriods() {
       const remain = selectedType && slots[selectedType] !== undefined
         ? slots[selectedType]
         : null;
-      // openかつ残り枠>0（またはslots未設定）なら受付可
-      const isOpen = sched.open && (remain === null || remain > 0);
+      // openかつ「枠が設定されていれば1以上、未設定なら受付可」
+      const hasSlotSetting = selectedType && Object.keys(slots).length > 0;
+      const isOpen = sched.open && (
+        !hasSlotSetting          // slotsが未設定なら制限なし
+        || remain === null        // 選択タイプの枠が未設定なら制限なし
+        || remain > 0             // 枠が1以上あれば受付可
+      );
       const remainLabel = remain !== null ? `残り${remain}枠` : '';
       html += `<button class="period-btn${isOpen ? '' : ' disabled'}"
         ${isOpen ? `onclick="selectPeriod('${key}','${m}月${PHASE_LABEL[phase]}',this)"` : ''}
