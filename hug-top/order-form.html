@@ -452,7 +452,9 @@ async function submitForm() {
     submitted = true;
     const cp = new URLSearchParams({ orderId, name: nameVal, type: typeVal, periodLabel, email: emailVal, xid: xidVal });
     document.getElementById('loadingOverlay').classList.remove('show');
-    location.href = 'order-complete.html?' + cp.toString();
+    const completeUrl = 'order-complete.html?' + cp.toString();
+    history.replaceState(null, '', completeUrl);
+    location.replace(completeUrl);
 
   } catch (e) {
     btn.disabled = false;
