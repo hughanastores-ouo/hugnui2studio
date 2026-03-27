@@ -20,22 +20,22 @@ body {
 .page-header { text-align: center; margin-bottom: 2rem; }
 .page-header a { font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; color: #b0a0b8; text-decoration: none; display: inline-block; margin-bottom: 0.75rem; }
 .page-header a:hover { color: #d96a8a; }
-.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 26px; font-weight: 700; color: #2a2030; }
+.page-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 22px; font-weight: 700; color: #2a2030; }
 .page-title small { display: block; font-size: 11px; color: #b0a0b8; font-weight: 400; margin-top: 0.25rem; letter-spacing: 0.1em; }
 
 /* ステップ（3がactive） */
 .steps { display: flex; align-items: center; justify-content: center; max-width: 360px; margin: 0 auto 2rem; }
 .step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
-.step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700; border: 2.5px solid #ddd; background: #fff; color: #ccc; }
+.step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700; border: 2.5px solid #ddd; background: #fff; color: #ccc; }
 .step-circle.done { background: #a8d8ea; border-color: #5ba4c7; color: #2a2030; }
 .step-circle.active { background: #f7b8cc; border-color: #d96a8a; color: #2a2030; }
-.step-label { font-size: 11px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
+.step-label { font-size: 10px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
 .step-label.active { color: #d96a8a; font-weight: 700; }
 .step-line { height: 2px; background: #f0c0d0; flex: 1; margin-bottom: 1.4rem; max-width: 40px; }
 
 /* 選択内容サマリー */
 .summary-bar {
-  max-width: 680px; margin: 0 auto 1.25rem;
+  max-width: 520px; margin: 0 auto 1.25rem;
   background: #2a2030; border-radius: 12px; padding: 0.75rem 1.1rem;
   display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
 }
@@ -46,16 +46,16 @@ body {
 .card {
   background: #fff; border-radius: 20px; border: 2.5px solid #2a2030;
   box-shadow: 5px 5px 0 #2a2030; padding: 1.75rem;
-  width: 100%; max-width: 680px; margin: 0 auto 1.25rem;
+  width: 100%; max-width: 520px; margin: 0 auto 1.25rem;
 }
-.card-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 18px; font-weight: 700; color: #2a2030; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #fce8f0; }
+.card-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700; color: #2a2030; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #fce8f0; }
 
 /* フォームフィールド */
 .field { margin-bottom: 1.1rem; }
 .field:last-child { margin-bottom: 0; }
 .field-label {
   display: flex; align-items: center; gap: 0.35rem;
-  font-family: 'Zen Maru Gothic', sans-serif; font-size: 14px; font-weight: 700;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 12px; font-weight: 700;
   color: #6a5870; margin-bottom: 0.4rem;
 }
 .field-required {
@@ -66,12 +66,12 @@ body {
   background: #e8f4fa; color: #5ba4c7; font-size: 9px; font-weight: 700;
   padding: 1px 6px; border-radius: 10px; font-family: 'Zen Maru Gothic', sans-serif;
 }
-.field-hint { font-size: 12px; color: #b0a0b8; margin-top: 0.3rem; line-height: 1.6; }
+.field-hint { font-size: 11px; color: #b0a0b8; margin-top: 0.3rem; line-height: 1.6; }
 
 input[type="text"], input[type="email"], textarea {
-  width: 100%; padding: 0.85rem 1rem;
+  width: 100%; padding: 0.7rem 0.9rem;
   border: 2px solid #f7b8cc; border-radius: 10px;
-  font-family: 'Noto Sans JP', sans-serif; font-size: 15px; color: #2a2030;
+  font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: #2a2030;
   background: #fff; outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -107,14 +107,14 @@ input[type="file"] { display: none; }
   background: #fef0f5; border: 1.5px solid #f7b8cc; border-radius: 12px; padding: 0.85rem 1rem;
 }
 .agree-row input[type="checkbox"] { margin-top: 2px; width: 16px; height: 16px; flex-shrink: 0; accent-color: #d96a8a; }
-.agree-row label { font-size: 14px; color: #2a2030; font-family: 'Zen Maru Gothic', sans-serif; line-height: 1.6; }
+.agree-row label { font-size: 13px; color: #2a2030; font-family: 'Zen Maru Gothic', sans-serif; line-height: 1.6; }
 .agree-row label a { color: #5ba4c7; }
 
 /* 送信ボタン */
 .submit-btn {
-  display: block; width: 100%; max-width: 680px; margin: 0 auto;
-  padding: 1rem; background: #f7b8cc; border: 2.5px solid #2a2030; border-radius: 14px;
-  font-family: 'Zen Maru Gothic', sans-serif; font-size: 17px; font-weight: 700;
+  display: block; width: 100%; max-width: 520px; margin: 0 auto;
+  padding: 0.9rem; background: #f7b8cc; border: 2.5px solid #2a2030; border-radius: 14px;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 15px; font-weight: 700;
   color: #2a2030; cursor: pointer; box-shadow: 4px 4px 0 #2a2030;
   transition: translate 0.1s, box-shadow 0.1s, background 0.15s; letter-spacing: 0.04em;
 }
@@ -132,7 +132,7 @@ input[type="file"] { display: none; }
 .complete-text { font-size: 13.5px; color: #6a5870; line-height: 2; }
 
 /* エラー */
-.field-error { font-size: 12px; color: #c0405a; margin-top: 0.3rem; font-family: 'Zen Maru Gothic', sans-serif; display: none; }
+.field-error { font-size: 11px; color: #c0405a; margin-top: 0.3rem; font-family: 'Zen Maru Gothic', sans-serif; display: none; }
 .field-error.show { display: block; }
 input.error, textarea.error { border-color: #c0405a; }
 
@@ -161,10 +161,6 @@ input.error, textarea.error { border-color: #c0405a; }
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes deadlinePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(232,160,32,0); }
-  50%       { box-shadow: 0 0 0 6px rgba(232,160,32,0.3); }
-}
 .loading-overlay-text {
   font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 13px; font-weight: 700;
@@ -214,7 +210,7 @@ input.error, textarea.error { border-color: #c0405a; }
 
     <!-- お名前・ニックネーム -->
     <div class="card">
-      <div class="card-title">基本情報</div>
+      <div class="card-title">📝 基本情報</div>
 
       <div class="field">
         <div class="field-label">お名前・ニックネーム <span class="field-required">必須</span></div>
@@ -238,14 +234,14 @@ input.error, textarea.error { border-color: #c0405a; }
     <!-- 次ページ案内 -->
     <div class="card" style="background:#e8f4fa;border-color:#a8d8ea;box-shadow:5px 5px 0 #5ba4c7;">
       <div style="display:flex;align-items:flex-start;gap:1rem;">
-        
+        <span style="font-size:32px;flex-shrink:0;line-height:1;">🎨</span>
         <div>
           <div style="font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:700;color:#2a2030;margin-bottom:0.5rem;">
-            イラスト・データは次のページで送ってください！
+            イラスト・データは次のページで送ってね！
           </div>
           <p style="font-size:13px;color:#2a5870;line-height:1.85;margin-bottom:0.6rem;">
             このフォームを送信すると、<strong>STEP 2</strong> のページに移動します。<br>
-            そこからイラスト画像・転写テンプレート・こだわりたいポイントなどをまとめてアップロードできます。
+            そこからイラスト画像・転写テンプレート・こだわりポイントなどをまとめてアップロードできます。
           </p>
           <div style="display:flex;flex-direction:column;gap:0.35rem;">
             <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
@@ -258,16 +254,12 @@ input.error, textarea.error { border-color: #c0405a; }
             </div>
             <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
               <span style="width:18px;height:18px;border-radius:50%;background:#a8d8ea;border:1.5px solid #2a2030;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">✓</span>
-              キャラクターの説明・こだわりたいポイント
+              キャラクターの説明・こだわりポイント
             </div>
           </div>
-          <div style="display:flex;align-items:flex-start;gap:0.6rem;background:#fff8e6;border:2px solid #e8a020;border-radius:12px;padding:0.85rem 1rem;margin-top:0.9rem;animation:deadlinePulse 2.5s ease-in-out 1s 3;">
-            <span style="font-size:22px;flex-shrink:0;line-height:1;margin-top:1px;">⏰</span>
-            <div>
-              <div style="font-size:10px;letter-spacing:0.2em;color:#b87000;font-weight:700;font-family:'Zen Maru Gothic',sans-serif;text-transform:uppercase;margin-bottom:0.25rem;">提出期限 / Deadline</div>
-              <div style="font-family:'Zen Maru Gothic',sans-serif;font-size:13px;color:#2a2030;line-height:1.6;">このフォームの送信後<strong style="font-size:16px;color:#c05c00;">６時間以内</strong>に<br>イラストデータをお送りください</div>
-            </div>
-          </div>
+          <p style="font-size:11px;color:#7ab8d4;margin-top:0.75rem;">
+            ※ 後から送っていただいても大丈夫です！
+          </p>
         </div>
       </div>
     </div>
@@ -277,7 +269,7 @@ input.error, textarea.error { border-color: #c0405a; }
       <div class="agree-row">
         <input type="checkbox" id="agree" name="agree">
         <label for="agree">
-          <a href="../hug-site/before-order.html" target="_blank">オーダー前のお願い</a>と
+          <a href="before-order.html" target="_blank">オーダー前のお願い</a>と
           <a href="terms.html" target="_blank">利用規約</a>を読み、内容に同意します。
         </label>
       </div>
@@ -287,7 +279,7 @@ input.error, textarea.error { border-color: #c0405a; }
   </form>
 
   <button class="submit-btn" id="submitBtn" onclick="submitForm()">
-    フォームを送信する
+    依頼を送信する 🧸
   </button>
 
 </div><!-- /#formWrap -->
@@ -405,6 +397,25 @@ let submitted = false;
 async function submitForm() {
   if (submitted) { alert('すでに送信済みです'); return; }
   if (!validate()) return;
+
+  // ブロックリストチェック
+  const emailInput = document.getElementById('email').value.trim().toLowerCase();
+  try {
+    const blockRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN1_ID}/latest`, {
+      headers: { 'X-Access-Key': X_KEY }
+    });
+    if (blockRes.ok) {
+      const blockData = (await blockRes.json()).record;
+      const blocked = (blockData.blocked ?? []).map(e => e.toLowerCase());
+      if (blocked.includes(emailInput)) {
+        const errEl = document.getElementById('err-email');
+        errEl.textContent = 'このメールアドレスからのご依頼はお受けできません。';
+        errEl.classList.add('show');
+        document.getElementById('email').classList.add('error');
+        return;
+      }
+    }
+  } catch { /* ブロックチェック失敗時は続行 */ }
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true; btn.textContent = '送信中...';
