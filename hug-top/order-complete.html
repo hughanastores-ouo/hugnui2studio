@@ -289,7 +289,7 @@ body {
   </div><!-- /.layout -->
 
   <div class="top-link">
-    <a href="index.html">← hug nui² studio トップへ</a>
+    <a href="../hug-site/index.html">← hug nui² studio トップへ</a>
   </div>
 
 </div>
@@ -317,7 +317,7 @@ const email       = params.get('email')       ?? '';
 const xid         = params.get('xid')         ?? '';
 
 // パラメータがなければトップへ
-if (!orderId) { location.href = 'index.html'; }
+if (!orderId) { location.href = '../hug-site/index.html'; }
 
 // 表示を埋める
 document.getElementById('orderIdDisplay').textContent = orderId;
