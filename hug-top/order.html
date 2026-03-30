@@ -212,7 +212,7 @@ function renderPeriods() {
       const slotVal = selectedType && slots[selectedType] !== undefined
         ? slots[selectedType]
         : null;
-      const canSelect = (sched.open ?? false) && (slotVal === null || slotVal > 0);
+      const canSelect = (sched.open ?? false) && slotVal !== null && slotVal > 0;
       const cls   = canSelect ? (slotVal === 1 ? 'warn' : 'ok') : 'full';
       const label = canSelect && slotVal !== null ? `あと${slotVal}枠` : '満枠';
       const slotLabel = `<span class="period-slot-count ${cls}">${label}</span>`;
