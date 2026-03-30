@@ -315,56 +315,59 @@ body {
 }
 
 /* =====================
-   背景スライドショー
+   ぬいぐるみ浮遊背景
    ===================== */
-.bg-slide {
+.nuigurumi-bg {
   position: absolute;
   inset: 0;
-  background-color: var(--pink-pale);
-  /* =============================================
-     写真を設定するときはここに background-image を追加
-     例: background-image: url('photo1.jpg');
-     ============================================= */
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity;
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, rgba(168,216,234,0.3) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  overflow: hidden;
 }
-.bg-slide.active { opacity: 1; }
-
-/* 写真がない間のプレースホルダー */
-.bg-placeholder {
+.nuigurumi-item {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  font-size: 13px;
-  color: var(--pink-dark);
-  pointer-events: none;
-  /* 写真を設定したら display: none; にしてください */
+  width: clamp(80px, 10vw, 140px);
+  height: clamp(80px, 10vw, 140px);
+  will-change: transform;
+  image-rendering: auto;
 }
-.bg-placeholder-icon { font-size: 40px; opacity: 0.35; }
-.bg-placeholder-text { opacity: 0.45; }
+.nuigurumi-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 
-/* スライドインジケーター（右下の点） */
-.slide-indicators {
-  display: none;
+/* 動きの種類（カクカク感はstepsで表現） */
+@keyframes nui-bounce {
+  0%,100% { transform: translateY(0) rotate(var(--r)); }
+  50%      { transform: translateY(-14px) rotate(var(--r)); }
 }
-.slide-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: rgba(42,32,48,0.2);
-  border: 1.5px solid rgba(42,32,48,0.25);
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+@keyframes nui-shake {
+  0%,100% { transform: rotate(var(--r)); }
+  25%     { transform: translateX(-5px) rotate(calc(var(--r) - 3deg)); }
+  75%     { transform: translateX(5px)  rotate(calc(var(--r) + 3deg)); }
 }
-.slide-dot.active { background: var(--ink); transform: scale(1.25); }
-.slide-dot:hover { background: var(--pink-dark); }
+@keyframes nui-slide {
+  0%,100% { transform: translateX(0) rotate(var(--r)); }
+  50%     { transform: translateX(12px) rotate(var(--r)); }
+}
+@keyframes nui-spin {
+  0%   { transform: rotate(var(--r)); }
+  100% { transform: rotate(calc(var(--r) + 360deg)); }
+}
+@keyframes nui-float {
+  0%,100% { transform: translateY(0) rotate(var(--r)); }
+  33%     { transform: translateY(-8px) rotate(calc(var(--r) + 2deg)); }
+  66%     { transform: translateY(6px)  rotate(calc(var(--r) - 2deg)); }
+}
+
+.nui-bounce { animation: nui-bounce var(--dur, 1.6s) steps(4, end) infinite; }
+.nui-shake  { animation: nui-shake  var(--dur, 1.2s) steps(3, end) infinite; }
+.nui-slide  { animation: nui-slide  var(--dur, 2.0s) steps(4, end) infinite; }
+.nui-spin   { animation: nui-spin   var(--dur, 3.0s) steps(8, end) infinite; }
+.nui-float  { animation: nui-float  var(--dur, 2.4s) steps(5, end) infinite; }
 
 /* タイトルオーバーレイ（右下） */
 .main-title {
@@ -693,48 +696,27 @@ body {
 
 <!-- メインエリア -->
 <main class="main">
-  <!-- =============================================
-       背景スライドショー
-
-       【写真の設定方法】
-       各 .bg-slide に background-image を追加してください。
-       例: style="background-image: url('photo1.jpg');"
-
-       【枚数の変更方法】
-       .bg-slide を増減させるだけでOKです。
-       JSが自動で枚数を検出してインジケーター（点）も自動生成します。
-
-       【切り替え間隔の変更】
-       JSの INTERVAL_MS の値を変更してください（ミリ秒）。
-       ============================================= -->
-
-  <!-- スライド1 -->
-  <div class="bg-slide active">
-    <!-- 写真なし：プレースホルダー表示中 -->
-    <div class="bg-placeholder">
-      <span class="bg-placeholder-icon">🧸</span>
-      <span class="bg-placeholder-text">ここに写真が入ります</span>
-    </div>
+  <!-- ぬいぐるみ浮遊背景 -->
+  <div class="nuigurumi-bg" id="nuigurumiContainer">
+    <!--
+      【画像の設定方法】
+      data-motion に動きの種類を指定してください。
+      種類: bounce / shake / slide / spin / float
+      画像ファイルを用意したら src のダミー名を実際のファイル名に変更してください。
+    -->
+    <div class="nuigurumi-item" data-motion="bounce"><img src="nui01.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="shake" ><img src="nui02.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="slide" ><img src="nui03.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="spin"  ><img src="nui04.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="float" ><img src="nui05.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="bounce"><img src="nui06.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="shake" ><img src="nui07.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="slide" ><img src="nui08.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="float" ><img src="nui09.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="bounce"><img src="nui10.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="spin"  ><img src="nui11.png" alt=""></div>
+    <div class="nuigurumi-item" data-motion="shake" ><img src="nui12.png" alt=""></div>
   </div>
-
-  <!-- スライド2 -->
-  <div class="bg-slide">
-    <div class="bg-placeholder">
-      <span class="bg-placeholder-icon">🩷</span>
-      <span class="bg-placeholder-text">写真2</span>
-    </div>
-  </div>
-
-  <!-- スライド3 -->
-  <div class="bg-slide">
-    <div class="bg-placeholder">
-      <span class="bg-placeholder-icon">🪡</span>
-      <span class="bg-placeholder-text">写真3</span>
-    </div>
-  </div>
-
-  <!-- インジケーター（JSで自動生成されます） -->
-  <div class="slide-indicators" id="slideIndicators"></div>
 
   <div class="main-title" id="mainTitle">
     <div class="main-title-badge">✦ HANDMADE PLUSH DOLL ✦</div>
@@ -795,55 +777,47 @@ window.addEventListener('DOMContentLoaded', () => {
   loadStatus();
 
   // =============================================
-  // 背景スライドショー
-  // 切り替え間隔を変えるには INTERVAL_MS を変更してください
+  // ぬいぐるみ浮遊アニメーション配置
   // =============================================
-  const INTERVAL_MS = 4000; // 4秒ごとに切り替え
-  const FADE_OVERLAP = 200; // フェードの重なり時間（ms）
+  function layoutNuigurumi() {
+    const container = document.getElementById('nuigurumiContainer');
+    if (!container) return;
+    const items = Array.from(container.querySelectorAll('.nuigurumi-item'));
+    const W = container.offsetWidth;
+    const H = container.offsetHeight;
+    const cols = window.innerWidth < 600 ? 3 : 4;
+    const rows = Math.ceil(items.length / cols);
+    const cellW = W / cols;
+    const cellH = H / rows;
+    const motions = ['bounce','shake','slide','spin','float'];
+    const durations = [1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.8, 3.2];
+    const delays    = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2];
+    const rotations = [-18, -12, -8, -4, 0, 4, 8, 12, 18, -15, 6, -6];
 
-  const slides = Array.from(document.querySelectorAll('.bg-slide'));
-  const indicatorWrap = document.getElementById('slideIndicators');
-  let current = 0;
-  let timer = null;
+    items.forEach((item, i) => {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const size = item.offsetWidth || 110;
+      // セル内でランダムにばらける（端に寄りすぎないよう余白を持たせる）
+      const margin = size * 0.3;
+      const x = cellW * col + margin + Math.random() * (cellW - size - margin * 1.5);
+      const y = cellH * row + margin + Math.random() * (cellH - size - margin * 1.5);
+      const r = rotations[i % rotations.length];
+      const dur = durations[i % durations.length];
+      const delay = delays[i % delays.length];
+      const motion = item.dataset.motion || motions[i % motions.length];
 
-  if (slides.length <= 1) return; // 1枚以下なら何もしない
-
-  // インジケーター（点）を枚数分自動生成
-  slides.forEach((_, i) => {
-    const dot = document.createElement('div');
-    dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
-    dot.addEventListener('click', () => goTo(i));
-    indicatorWrap.appendChild(dot);
-  });
-
-  function getDots() {
-    return Array.from(indicatorWrap.querySelectorAll('.slide-dot'));
+      item.style.left = `${Math.max(0, Math.min(W - size, x))}px`;
+      item.style.top  = `${Math.max(0, Math.min(H - size, y))}px`;
+      item.style.setProperty('--r', `${r}deg`);
+      item.style.setProperty('--dur', `${dur}s`);
+      item.style.animationDelay = `${delay}s`;
+      item.classList.add(`nui-${motion}`);
+    });
   }
 
-  function goTo(index) {
-    slides[current].classList.remove('active');
-    getDots()[current]?.classList.remove('active');
-    current = (index + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    getDots()[current]?.classList.add('active');
-  }
-
-  function next() { goTo(current + 1); }
-
-  // 自動再生
-  function startTimer() {
-    timer = setInterval(next, INTERVAL_MS);
-  }
-  function resetTimer() {
-    clearInterval(timer);
-    startTimer();
-  }
-
-  startTimer();
-
-  // ドット手動操作後はタイマーリセット
-  indicatorWrap.addEventListener('click', resetTimer);
-});
+  layoutNuigurumi();
+  window.addEventListener('resize', layoutNuigurumi);
 
 // ドロワーメニューの開閉
 const menuBtn = document.getElementById('menuBtn');
@@ -917,6 +891,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeStatus(); }
 });
+}); // DOMContentLoaded
 </script>
 </body>
 </html>
