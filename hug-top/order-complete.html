@@ -22,7 +22,7 @@ body {
 .step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
 .step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700; border: 2.5px solid #ddd; background: #fff; color: #ccc; }
 .step-circle.done { background: #a8d8ea; border-color: #5ba4c7; color: #2a2030; }
-.step-label { font-size: 11px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
+.step-label { font-size: 15px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
 .step-line { height: 2px; background: #a8d8ea; flex: 1; margin-bottom: 1.4rem; max-width: 40px; }
 
 /* =====================
@@ -52,6 +52,9 @@ body {
   box-shadow: 5px 5px 0 #2a2030; padding: 1.75rem;
   opacity: 0; transform: translateY(16px);
   animation: fadeUp 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s forwards;
+  max-width: 800px;
+  margin: 0 auto;
+
 }
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
@@ -68,10 +71,36 @@ body {
 .order-id-banner {
   background: #2a2030; border-radius: 12px; padding: 0.9rem 1.1rem;
   margin-bottom: 1rem; text-align: center;
+  cursor: pointer; user-select: none;
+  transition: opacity 0.15s, transform 0.1s;
+  position: relative;
 }
+.order-id-banner:hover { opacity: 0.88; transform: scale(0.99); }
+.order-id-banner:active { transform: scale(0.97); }
 .order-id-label { font-size: 10px; letter-spacing: 0.3em; color: #a8d8ea; text-transform: uppercase; margin-bottom: 0.35rem; font-family: 'Zen Maru Gothic', sans-serif; }
 .order-id-value { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.1em; font-family: 'Zen Maru Gothic', sans-serif; }
-.order-id-hint { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+.order-id-hint { font-size: 14px; color: rgba(255, 255, 255, 1); margin-top: 6px; font-family: 'Zen Maru Gothic', sans-serif; }
+.copy-toast {
+  position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%) translateY(-8px);
+  background: #2a2030; color: #a8d8ea; font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 13px; font-weight: 700; padding: 0.55rem 1.25rem;
+  border-radius: 20px; border: 1.5px solid #5ba4c7;
+  box-shadow: 0 4px 16px rgba(42,32,48,0.25);
+  opacity: 0; pointer-events: none; z-index: 500;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* つなぐボタン */
+.tsunagu-btn {
+  display: block; width: 100%; max-width: 800px; margin: 1.25rem auto 0;
+  padding: 1rem; background: #a8d8ea; border: 2.5px solid #2a2030; border-radius: 14px;
+  font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; font-weight: 700;
+  color: #2a2030; text-align: center; text-decoration: none;
+  box-shadow: 4px 4px 0 #2a2030; letter-spacing: 0.04em;
+  transition: translate 0.1s, box-shadow 0.1s, background 0.15s;
+  opacity: 0; animation: fadeUp 0.5s ease 0.35s forwards;
+}
+.tsunagu-btn:hover { translate: 2px 2px; box-shadow: 2px 2px 0 #2a2030; background: #5ba4c7; color: #fff; }
 
 /* サマリー */
 .summary { background: #fef0f5; border-radius: 12px; padding: 0.85rem 1rem; margin-bottom: 1rem; }
@@ -226,23 +255,22 @@ body {
   </div>
 
   <!-- 2カラムレイアウト -->
-  <div class="layout">
+  
 
     <!-- 左：STEP1完了 -->
     <div class="complete-card">
       <div class="complete-header">
         <span class="complete-icon">🎉</span>
         <div>
-          <div style="font-size:10px;letter-spacing:.25em;color:#d96a8a;text-transform:uppercase;font-weight:700;font-family:'Zen Maru Gothic',sans-serif;margin-bottom:.3rem;">STEP 1 / Confirmed</div>
-          <div class="complete-title">STEP 1 完了！</div>
-          <div class="complete-sub">依頼情報を受け取りました。確認メールをお送りしているのでご確認ください。</div>
+          <div class="complete-title">オーダー番号を発行しました！</div>
+          <div class="complete-sub">下記のオーダー番号をコピーして、つなぐのメッセージに送信してください。</div>
         </div>
       </div>
 
-      <div class="order-id-banner">
+      <div class="order-id-banner" onclick="copyOrderId()" title="タップしてコピー">
         <div class="order-id-label">オーダー番号 / Order Number</div>
         <div class="order-id-value" id="orderIdDisplay">-</div>
-        <div class="order-id-hint">STEP 2のフォームに記入してください</div>
+        <div class="order-id-hint">📋 タップ(クリック)してコピー</div>
       </div>
 
       <div class="summary">
@@ -251,7 +279,7 @@ body {
         <div class="summary-row"><span class="summary-key">希望時期</span><span class="summary-val" id="sPeriod">-</span></div>
         <div class="summary-row"><span class="summary-key">お名前</span><span class="summary-val" id="sName">-</span></div>
         <div class="summary-row"><span class="summary-key">メール</span><span class="summary-val" id="sEmail">-</span></div>
-        <div class="summary-row"><span class="summary-key">X ID</span><span class="summary-val" id="sXid">-</span></div>
+        <div class="summary-row"><span class="summary-key">つなぐID</span><span class="summary-val" id="sTsunaguId">-</span></div>
       </div>
 
       <div class="mail-notice">
@@ -260,51 +288,24 @@ body {
       </div>
     </div>
 
-    <!-- PC：STEP間矢印 -->
-    <div class="step-arrow" aria-hidden="true"></div>
 
-    <!-- 右：STEP2 -->
-    <div class="step2-card" id="step2Card">
-      <div class="step2-eyebrow">STEP 2 / Next Step</div>
-      <div class="step2-title">イラスト・データを<br>送ってください</div>
 
-      <div class="deadline-banner">
-        <span class="deadline-icon">⏰</span>
-        <div class="deadline-body">
-          <div class="deadline-label">提出期限 / Deadline</div>
-          <div class="deadline-main">このフォームの送信後<strong>６時間以内</strong>に<br>イラストデータをお送りください</div>
-        </div>
-      </div>
-
-      <div class="step2-desc">
-        オーダー番号を添えて、下記フォームよりイラストや転写用テンプレート、こだわりたいポイントをお送りください。
-      </div>
-      <img class="sample-img" src="ぬいぐるみデザイン作例.png">
-      <div class="step2-spacer"></div>
-      <a class="cta-btn" id="step2Btn" href="https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog" target="_blank">
-        イラスト・データを送る
-      </a>
-    </div>
-
-  </div><!-- /.layout -->
-
-  <div class="top-link">
-    <a href="../hug-site/index.html">← hug nui² studio トップへ</a>
-  </div>
+  <a class="tsunagu-btn" id="tsunaguBtn" href="#" target="_blank">
+    つなぐのメッセージページへ移動する →
+  </a>
 
 </div>
+<div class="copy-toast" id="copyToast">✓ コピーしました！</div>
 
-<!-- スマホ用スクロール誘導バナー -->
-<div class="scroll-hint" id="scrollHint" onclick="scrollToStep2()">
-  <span>↓</span> STEP 2 へ進んでください
-</div></div>
+</div>
 
 <script>
 history.pushState(null, '', location.href);
 // =============================================
-// ★ GoogleフォームURLを設定してください ★
+// ★ URLを設定してください ★
 // =============================================
-const STEP2_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog'; // ← GoogleフォームのURLに置き換え
+const STEP2_URL   = 'https://docs.google.com/forms/d/e/1FAIpQLSe9rP0Lgb5A1jpdCGLWVLU5GHJAMm9j2Os7-Hp7NOX4INaIZA/viewform?usp=dialog';
+const TSUNAGU_URL = 'https://tsunagu.cloud/rooms/83983'; // ← つなぐのメッセージページURLに置き換え
 // =============================================
 
 // URLパラメータから情報を復元
@@ -314,7 +315,7 @@ const name        = params.get('name')        ?? '';
 const type        = params.get('type')        ?? '';
 const periodLabel = params.get('periodLabel') ?? '';
 const email       = params.get('email')       ?? '';
-const xid         = params.get('xid')         ?? '';
+const tsunaguId   = params.get('tsunaguId')   ?? '';
 
 // パラメータがなければトップへ
 if (!orderId) { location.href = '../hug-site/index.html'; }
@@ -325,60 +326,40 @@ document.getElementById('sType').textContent          = type        || '-';
 document.getElementById('sPeriod').textContent        = periodLabel || '-';
 document.getElementById('sName').textContent          = name        || '-';
 document.getElementById('sEmail').textContent         = email       || '-';
-document.getElementById('sXid').textContent           = xid         || '未記入';
+document.getElementById('sTsunaguId').textContent     = tsunaguId   || '未記入';
 document.getElementById('sEmailInline').textContent   = email       || '-';
 
-// STEP2ボタンにURLを設定（設定済みならそのまま）
-const step2Btn = document.getElementById('step2Btn');
-if (STEP2_URL && STEP2_URL !== 'YOUR_GOOGLE_FORM_URL_HERE') {
-  step2Btn.href = STEP2_URL;
+// つなぐボタンにURLを設定
+const tsunaguBtn = document.getElementById('tsunaguBtn');
+if (TSUNAGU_URL && !TSUNAGU_URL.includes('example.com')) {
+  tsunaguBtn.href = TSUNAGU_URL;
 } else {
-  // URL未設定の場合はボタンを無効化
-  step2Btn.style.opacity = '0.5';
-  step2Btn.style.cursor  = 'not-allowed';
-  step2Btn.removeAttribute('href');
-  step2Btn.addEventListener('click', e => {
-    e.preventDefault();
-    alert('STEP2のGoogleフォームURLが設定されていません。');
-  });
+  tsunaguBtn.style.opacity = '0.5';
+  tsunaguBtn.style.cursor  = 'not-allowed';
+  tsunaguBtn.removeAttribute('href');
+  tsunaguBtn.addEventListener('click', e => e.preventDefault());
 }
 
 function esc(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// =====================
-// スマホ用スクロール誘導バナー
-// =====================
-function isMobile() { return window.innerWidth <= 680; }
-
-function scrollToStep2() {
-  document.getElementById('step2Card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  // スクロール後はバナーを非表示
-  setTimeout(() => document.getElementById('scrollHint').classList.remove('visible'), 800);
+// オーダー番号コピー
+function copyOrderId() {
+  const id = document.getElementById('orderIdDisplay').textContent;
+  navigator.clipboard.writeText(id).then(() => {
+    const toast = document.getElementById('copyToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }).catch(() => {
+    // フォールバック：選択してコピーを促す
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById('orderIdDisplay'));
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  });
 }
-
-function updateScrollHint() {
-  if (!isMobile()) return;
-  const step2 = document.getElementById('step2Card');
-  if (!step2) return;
-  const rect = step2.getBoundingClientRect();
-  const hint = document.getElementById('scrollHint');
-  // STEP2カードがまだ画面外（下）にあるときだけ表示
-  if (rect.top > window.innerHeight - 60) {
-    hint.classList.add('visible');
-  } else {
-    hint.classList.remove('visible');
-  }
-}
-
-// 少し遅延してからスクロール監視開始（アニメーション後）
-setTimeout(() => {
-  if (isMobile()) {
-    updateScrollHint();
-    window.addEventListener('scroll', updateScrollHint, { passive: true });
-  }
-}, 800);
 </script>
 </body>
 </html>

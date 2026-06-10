@@ -29,7 +29,7 @@ body {
 .step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700; border: 2.5px solid #ddd; background: #fff; color: #ccc; }
 .step-circle.done { background: #a8d8ea; border-color: #5ba4c7; color: #2a2030; }
 .step-circle.active { background: #f7b8cc; border-color: #d96a8a; color: #2a2030; }
-.step-label { font-size: 10px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
+.step-label { font-size: 15px; color: #b0a0b8; font-family: 'Zen Maru Gothic', sans-serif; }
 .step-label.active { color: #d96a8a; font-weight: 700; }
 .step-line { height: 2px; background: #f0c0d0; flex: 1; margin-bottom: 1.4rem; max-width: 40px; }
 
@@ -39,7 +39,7 @@ body {
   background: #2a2030; border-radius: 12px; padding: 0.75rem 1.1rem;
   display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
 }
-.summary-item { font-family: 'Zen Maru Gothic', sans-serif; font-size: 12px; color: rgba(255,255,255,0.7); }
+.summary-item { font-family: 'Zen Maru Gothic', sans-serif; font-size: 14px; color: rgba(255,255,255,0.7); }
 .summary-item strong { color: #fff; }
 
 /* フォームカード */
@@ -225,47 +225,11 @@ input.error, textarea.error { border-color: #c0405a; }
       </div>
 
       <div class="field">
-        <div class="field-label">X（Twitter）ID <span class="field-optional">任意</span></div>
-        <input type="text" id="xid" name="xid" placeholder="例：@hug87_OuO" maxlength="50">
-        <div class="field-hint">DM連絡を希望する場合はご記入ください</div>
+        <div class="field-label">つなぐのアカウントID <span class="field-required">必須</span></div>
+        <input type="text" id="tsunaguId" name="tsunaguId" placeholder="例：@hana_123" maxlength="100">
+        <div class="field-error" id="err-tsunaguId">つなぐのアカウントIDを入力してください</div>
       </div>
-    </div>
 
-    <!-- 次ページ案内 -->
-    <div class="card" style="background:#e8f4fa;border-color:#a8d8ea;box-shadow:5px 5px 0 #5ba4c7;">
-      <div style="display:flex;align-items:flex-start;gap:1rem;">
-        <span style="font-size:32px;flex-shrink:0;line-height:1;"></span>
-        <div>
-          <div style="font-family:'Zen Maru Gothic',sans-serif;font-size:15px;font-weight:700;color:#2a2030;margin-bottom:0.5rem;">
-            イラスト・データは次のページで送ります
-          </div>
-          <p style="font-size:13px;color:#2a5870;line-height:1.85;margin-bottom:0.6rem;">
-            このフォームを送信すると、<strong>STEP 2</strong> のページに移動します。<br>
-            そこからイラスト画像・転写テンプレート・こだわりポイントなどをまとめてアップロードできます。
-          </p>
-          <div style="display:flex;flex-direction:column;gap:0.35rem;">
-            <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
-              <span style="width:18px;height:18px;border-radius:50%;background:#a8d8ea;border:1.5px solid #2a2030;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">✓</span>
-              イラスト画像（PNG・JPG・GIF など）
-            </div>
-            <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
-              <span style="width:18px;height:18px;border-radius:50%;background:#a8d8ea;border:1.5px solid #2a2030;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">✓</span>
-              転写用テンプレート（任意）
-            </div>
-            <div style="font-size:12px;color:#5ba4c7;display:flex;align-items:center;gap:0.4rem;">
-              <span style="width:18px;height:18px;border-radius:50%;background:#a8d8ea;border:1.5px solid #2a2030;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">✓</span>
-              こだわりたいポイント
-            </div>
-          </div>
-          <p style="font-size:11px;color:#7ab8d4;margin-top:0.75rem;">
-            ※このフォームを送信後、６時間以内に送ってください。
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 規約同意 -->
-    <div class="card">
       <div class="agree-row">
         <input type="checkbox" id="agree" name="agree">
         <label for="agree">
@@ -273,7 +237,16 @@ input.error, textarea.error { border-color: #c0405a; }
         </label>
       </div>
       <div class="field-error" id="err-agree" style="margin-top:0.5rem;">規約への同意が必要です</div>
+    
+
     </div>
+
+    <!-- 次ページ案内 -->
+    
+
+    <!-- 規約同意 -->
+    
+      
 
   </form>
 
@@ -378,6 +351,12 @@ function validate() {
   document.getElementById('err-email').classList.toggle('show', noEmail);
   if (noEmail) ok = false;
 
+  const tsunaguIdEl = document.getElementById('tsunaguId');
+  const noTsunaguId = !tsunaguIdEl.value.trim();
+  tsunaguIdEl.classList.toggle('error', noTsunaguId);
+  document.getElementById('err-tsunaguId').classList.toggle('show', noTsunaguId);
+  if (noTsunaguId) ok = false;
+
   // 規約同意
   const errAgree = document.getElementById('err-agree');
   const noAgree  = !document.getElementById('agree').checked;
@@ -416,6 +395,31 @@ async function submitForm() {
     }
   } catch { /* ブロックチェック失敗時は続行 */ }
 
+  // BIN2の注文データで同月重複チェック（削除後の再申込にも対応するため常にサーバー確認）
+  const lsKey = `ordered_${emailInput}_${periodKey}`;
+  try {
+    const dupRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, {
+      headers: { 'X-Access-Key': X_KEY }
+    });
+    if (dupRes.ok) {
+      const dupData = (await dupRes.json()).record ?? {};
+      const orders  = dupData.orders ?? [];
+      const isDup   = orders.some(o =>
+        o.email?.toLowerCase() === emailInput && o.periodKey === periodKey
+      );
+      if (isDup) {
+        const errEl = document.getElementById('err-email');
+        errEl.textContent = 'このメールアドレスではすでに同じ月の枠をお申し込み済みです。';
+        errEl.classList.add('show');
+        document.getElementById('email').classList.add('error');
+        return;
+      } else {
+        // BIN2に存在しない＝削除済みの場合はlocalStorageもクリア
+        localStorage.removeItem(lsKey);
+      }
+    }
+  } catch { /* 重複チェック失敗時は続行 */ }
+
   const btn = document.getElementById('submitBtn');
   btn.disabled = true; btn.textContent = '送信中...';
   document.getElementById('loadingOverlay').classList.add('show');
@@ -428,7 +432,7 @@ async function submitForm() {
     fd.append('periodLabel', periodLabel);
     fd.append('name',        document.getElementById('name').value.trim());
     fd.append('email',       document.getElementById('email').value.trim());
-    fd.append('xid',         document.getElementById('xid').value.trim());
+    fd.append('tsunaguId',   document.getElementById('tsunaguId').value.trim());
     // charDescはSTEP2フォームで収集
     // messageはSTEP2フォームで収集
 
@@ -441,16 +445,17 @@ async function submitForm() {
 
     // 依頼番号生成
     const orderId  = generateOrderId();
-    const nameVal  = document.getElementById('name').value.trim();
-    const emailVal = document.getElementById('email').value.trim();
-    const xidVal   = document.getElementById('xid').value.trim();
+    const nameVal       = document.getElementById('name').value.trim();
+    const emailVal      = document.getElementById('email').value.trim();
+    const tsunaguIdVal  = document.getElementById('tsunaguId').value.trim();
+    const xidVal        = tsunaguIdVal; // 後方互換のためxidも同値を保持
 
     // JSONBin Bin②に依頼データを保存
     try {
       const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}/latest`, { headers: { 'X-Access-Key': X_KEY } });
       const existing = getRes.ok ? ((await getRes.json()).record ?? {}) : {};
       const orders = existing.orders ?? [];
-      orders.push({ id: orderId, type: typeVal, periodKey, periodLabel, name: nameVal, email: emailVal, xid: xidVal, charDesc:'', message:'', submittedAt: new Date().toISOString(), status:'pending' });
+      orders.push({ id: orderId, type: typeVal, periodKey, periodLabel, name: nameVal, email: emailVal, tsunaguId: tsunaguIdVal, charDesc:'', message:'', submittedAt: new Date().toISOString(), status:'pending' });
       await fetch(`https://api.jsonbin.io/v3/b/${BIN2_ID}`, { method:'PUT', headers:{'Content-Type':'application/json','X-Access-Key':X_KEY}, body:JSON.stringify({orders}) });
     } catch(e) { console.warn('JSONBin保存失敗:', e); }
 
@@ -462,13 +467,13 @@ async function submitForm() {
       await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
         order_id: orderId, type: typeVal, period_label: periodLabel,
         name: nameVal, reply_email: emailVal,
-        xid: xidVal || '未記入', step2_url: STEP2_URL
+        tsunagu_id: tsunaguIdVal || '未記入', step2_url: STEP2_URL
       });
     } catch(ejsErr) { console.warn('EmailJS失敗:', ejsErr); }
 
     // 完了ページへ遷移
     submitted = true;
-    const cp = new URLSearchParams({ orderId, name: nameVal, type: typeVal, periodLabel, email: emailVal, xid: xidVal });
+    const cp = new URLSearchParams({ orderId, name: nameVal, type: typeVal, periodLabel, email: emailVal, tsunaguId: tsunaguIdVal });
     document.getElementById('loadingOverlay').classList.remove('show');
     location.href = 'order-complete.html?' + cp.toString();
 

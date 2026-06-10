@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>注意事項 | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #b8b8b0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    font-family: 'Zen Maru Gothic', sans-serif;
+  }
+
+  .page-wrap {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* カード共通 */
+  .card {
+    background: #f0f0ea;
+    border-radius: 20px;
+    border: 2px solid #d0d0c8;
+    padding: 1.75rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(160,160,150,.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(160,160,150,.15) 1px, transparent 1px);
+    background-size: 26px 26px;
+    pointer-events: none;
+  }
+
+  /* タイトルカード */
+  .title-card {
+    text-align: center;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .title-card h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: .05em;
+  }
+
+  /* セクション見出し */
+  .section-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid #c4c4bc;
+  }
+
+  /* 箇条書き */
+  .caution-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+  .caution-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: .45rem;
+    font-size: .92rem;
+    line-height: 1.75;
+    color: #333;
+  }
+  .caution-list li::before {
+    content: '●';
+    font-size: .75rem;
+    flex-shrink: 0;
+    margin-top: .35em;
+    color: #444;
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- タイトル -->
+  <div class="card title-card">
+    <h1>注意事項</h1>
+  </div>
+
+  <!-- ご注文前のお願い -->
+  <div class="card">
+    <div class="section-heading">ご注文前のお願い</div>
+    <ul class="caution-list">
+      <li>ぬいぐるみは生活必需品ではありません。<br>無理のない予算で、よく考えてから注文してください。</li>
+      <li>お支払い後のキャンセルや返金はできません。<br>キャンセルされた場合、制作しためいぐるみは制作者が処分します。</li>
+    </ul>
+  </div>
+
+  <!-- 著作権とデザインについて -->
+  <div class="card">
+    <div class="section-heading">著作権とデザインについて</div>
+    <ul class="caution-list">
+      <li>デザイン画（イラスト）はご自身で用意してください。<br>制作の許可を得ているデザインに限ります。</li>
+      <li>版権キャラクターやVTuberなどのご依頼は、二次創作ガイドラインにて、「個人への有償依頼（オーダーメイド制作）」や、「立体物の制作・販売」が公式に許可されている作品のみお受け可能です。<br>トラブル防止のため、ご依頼前に必ずご自身でガイドラインの確認をお願いいたします。</li>
+      <li>著作権のトラブルには一切関与しません。<br>また、他社の作品をそっくりそのまま作る「複製」も受け付けていません。</li>
+    </ul>
+  </div>
+
+  <!-- ハンドメイド作品の特性について -->
+  <div class="card">
+    <div class="section-heading">ハンドメイド作品の特性について</div>
+    <ul class="caution-list">
+      <li>ハンドメイド作品のため、制作の跡が必ず残ります。左右の僅かなズレ、微量の接着剤のはみ出し、縫い目が見えるといったことが起きる場合があります。<br>完璧を求める方や、細かいことが気になる方は、ご依頼をお控えください。</li>
+      <li>布の色は目視で選ぶため、色差が生じる場合があります。</li>
+    </ul>
+  </div>
+
+  <!-- 出来上がりについて -->
+  <div class="card">
+    <div class="section-heading">出来上がりについて</div>
+    <ul class="caution-list">
+      <li>イラストを100%完全に再現することはできません。再現ができない細かい描写は、省略される場合があります。<br>ぬいぐるみにした際、どのように形が変わるかを事前に理解したうえで依頼してください。</li>
+      <li>2.5Dのフラットな形状を保つために、綿はあえて満杯には詰めません。</li>
+      <li>全体のサイズは11-13cmですが、デザインによって変わるので、正確な大きさを保証することはできません。</li>
+    </ul>
+  </div>
+
+  <!-- 連絡について -->
+  <div class="card">
+    <div class="section-heading">連絡について</div>
+    <ul class="caution-list">
+      <li>要望は必ず制作前に伝えてください。<br>制作の途中で仕様を変更する場合は、追加料金がかかります。</li>
+      <li>お急ぎの方はご遠慮ください。<br>納期内での催促はせず、完成までお待ちください。</li>
+      <li>メッセージを確認次第、時間が空いたときに返信いたします。</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
