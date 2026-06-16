@@ -205,6 +205,56 @@
     color: #555;
     word-break: break-all;
   }
+
+  /* イラスト例トグル */
+  .illust-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    width: 100%;
+    margin-top: 1rem;
+    padding: .6rem 1rem;
+    background: #f2f2f0;
+    border: 1.5px solid #b0b0a8;
+    border-radius: 99px;
+    font-family: inherit;
+    font-size: .9rem;
+    font-weight: 700;
+    color: #444;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .illust-toggle-btn:hover { background: #e8e8e6; }
+  .illust-toggle-btn .arrow {
+    display: inline-block;
+    transition: transform .25s;
+    font-style: normal;
+  }
+  .illust-toggle-btn.open .arrow { transform: rotate(180deg); }
+
+  .illust-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .4s ease, opacity .3s ease, margin-top .3s ease;
+    margin-top: 0;
+  }
+  .illust-gallery.open {
+    max-height: 4000px;
+    opacity: 1;
+    margin-top: .85rem;
+  }
+  .illust-gallery img {
+    width: 100%;
+    border-radius: 10px;
+    border: 1.5px solid #d0d0c8;
+    object-fit: cover;
+    display: block;
+  }
 </style>
 </head>
 <body>
@@ -324,6 +374,16 @@
       デザイン画（イラスト）はご自身でご用意ください。制作の許可を得ているデザインに限ります。<br>
       AIによって生成されたイラストはお受けできません。
     </div>
+
+    <button class="illust-toggle-btn" onclick="toggleIllust(this)" aria-expanded="false">
+      イラスト例を見る <i class="arrow">▼</i>
+    </button>
+    <div class="illust-gallery" id="illustGallery">
+      <img src="image/template-example-1.png" alt="イラスト例1">
+      <img src="image/template-example-2.png" alt="イラスト例2">
+      <img src="image/sample (1).jpg" alt="イラスト例3">
+      <img src="image/sample (2).jpg" alt="イラスト例4">
+    </div>
   </div>
 
   <!-- 著作権・肖像権について -->
@@ -364,5 +424,15 @@
   </div>
 
 </div>
+<script>
+  function toggleIllust(btn) {
+    const gallery = document.getElementById('illustGallery');
+    const isOpen = gallery.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    btn.querySelector('.arrow').textContent = isOpen ? '▲' : '▼';
+    btn.childNodes[0].textContent = isOpen ? '閉じる ' : 'イラスト例を見る ';
+  }
+</script>
 </body>
 </html>
