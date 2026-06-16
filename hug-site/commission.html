@@ -36,6 +36,7 @@
     padding: 1.75rem 1.5rem;
     position: relative;
     overflow: hidden;
+    isolation: isolate;
   }
   .card::before {
     content: '';
@@ -46,6 +47,7 @@
       linear-gradient(90deg, rgba(160,160,150,.15) 1px, transparent 1px);
     background-size: 26px 26px;
     pointer-events: none;
+    z-index: -1;
   }
 
   /* タイトルカード */
