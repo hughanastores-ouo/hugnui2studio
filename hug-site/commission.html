@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コミッション詳細 | hug nui² studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #A9A9A9;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    font-family: 'Zen Maru Gothic', sans-serif;
+  }
+
+  .page-wrap {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* カード共通 */
+  .card {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 2px solid #8a8a8a;
+    padding: 1.75rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(160,160,150,.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(160,160,150,.15) 1px, transparent 1px);
+    background-size: 26px 26px;
+    pointer-events: none;
+  }
+
+  /* タイトルカード */
+  .title-card {
+    text-align: center;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .title-card h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: .05em;
+    line-height: 1.6;
+  }
+  .title-card .subtitle {
+    margin-top: .75rem;
+    font-size: .9rem;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  /* セクション見出し */
+  .section-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid #a5a5a5;
+  }
+
+  /* 通常テキスト */
+  .card p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: .6rem;
+  }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* 箇条書き */
+  .caution-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+  .caution-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: .45rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #333;
+  }
+  .caution-list li::before {
+    content: '●';
+    font-size: .75rem;
+    flex-shrink: 0;
+    margin-top: .35em;
+    color: #444;
+  }
+
+  /* ステップリスト */
+  .step-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .step-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #333;
+  }
+  .step-num {
+    background: #555;
+    color: #fff;
+    font-size: .78rem;
+    font-weight: 700;
+    border-radius: 50%;
+    width: 1.6em;
+    height: 1.6em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: .2em;
+  }
+  .step-title {
+    font-weight: 700;
+    display: block;
+  }
+  .step-desc {
+    font-size: .92rem;
+    color: #555;
+    display: block;
+    margin-top: .2rem;
+  }
+
+  /* 料金テーブル */
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .95rem;
+    margin-top: .25rem;
+  }
+  .price-table th, .price-table td {
+    padding: .6rem .75rem;
+    text-align: left;
+    border-bottom: 1px solid #d8d8d0;
+    line-height: 1.6;
+    color: #333;
+  }
+  .price-table th {
+    font-weight: 700;
+    color: #222;
+    background: rgba(0,0,0,.04);
+  }
+  .price-table tr:last-child td { border-bottom: none; }
+
+  /* FAQ */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .faq-item {}
+  .faq-q {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #222;
+    margin-bottom: .35rem;
+  }
+  .faq-a {
+    font-size: .95rem;
+    color: #444;
+    line-height: 1.75;
+    padding-left: 1rem;
+    border-left: 3px solid #c0c0b8;
+  }
+
+  /* 注意ボックス */
+  .notice-box {
+    background: rgba(255, 0, 0, 0.07);
+    border-radius: 10px;
+    padding: .85rem 1rem;
+    font-size: .9rem;
+    line-height: 1.75;
+    color: #444;
+    margin-top: .75rem;
+  }
+  .notice-box a {
+    color: #555;
+    word-break: break-all;
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- タイトル -->
+  <div class="card title-card">
+    <h1>2.5Dぬいぐるみ<br>コミッション</h1>
+    <p class="subtitle">
+      ミニキャライラストを元に、平たいマスコットぬいぐるみを<br>
+      手作りで丁寧に制作いたします。<br>
+      完成サイズは11〜13cm（デザインによって前後します）
+    </p>
+  </div>
+
+  <!-- お問い合わせの前に -->
+  <div class="card">
+    <div class="section-heading">ご相談の前に</div>
+    <p>専用の入稿テンプレートなどは不要です。</p>
+    <p>「このイラストをぬいぐるみにしてみたい！」と思ったら、お気軽にイラストを添えてお問い合わせください！</p>
+    <div class="notice-box">
+      トラブルを防ぎ、お互いに気持ちよくやり取りをするため、ご相談の前に必ず以下より【注意事項】をお読みいただき、ご同意の上でお問い合わせをお願いいたします。<br><br>
+      <a href="https://hughanastores-ouo.github.io/hugnui2studio/hug-site/cautions.html">https://hughanastores-ouo.github.io/hugnui2studio/hug-site/cautions.html</a>
+    </div>
+  </div>
+
+  <!-- 料金目安 -->
+  <div class="card">
+    <div class="section-heading">料金目安</div>
+    <table class="price-table">
+      <tr><th>シンプルなデザイン</th><td>7,000円〜</td></tr>
+      <tr><th>複雑なデザイン</th><td>10,000円〜</td></tr>
+    </table>
+    <p style="margin-top:.85rem;font-size:.9rem;color:#555;">デザインの複雑さや装飾の多さによって前後いたします。詳しくは画像【料金目安】をご確認ください。</p>
+    <p style="margin-top:.6rem;font-size:.9rem;color:#555;">オプション（ナスカン・マグネットなど）を追加することもできます。追加料金がかかりますので、お問い合わせ時にご相談ください。</p>
+  </div>
+
+  <!-- コミッションの流れ -->
+  <div class="card">
+    <div class="section-heading">コミッションの流れ</div>
+    <p style="margin-bottom:.6rem;font-size:.92rem;color:#555;">このコミッションはスケジュール管理の都合上、抽選式となっております。</p>
+    <div class="notice-box" style="margin-bottom:1rem;">1回の抽選で2〜3ヶ月分の制作枠を一括で受け付けております。当選後の制作月はランダムに割り当てられるため、ご希望の月を選ぶことはできません。お急ぎの方にはご不便をおかけしますが、長期間お待ちいただける方のみご応募ください。</div>
+    <ol class="step-list">
+      <li>
+        <span class="step-num">1</span>
+        <span>
+          <span class="step-title">お問い合わせ</span>
+          <span class="step-desc">メッセージにて、ぬいぐるみにしたいイラストを添付のうえお問い合わせください。おおまかな見積もりと抽選フォームのご案内をお送りします。<br>抽選は定期的に行っており、受付期間中のみお問い合わせをお受けしております。受付期間外はご返信ができませんのでご注意ください。</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span>
+          <span class="step-title">抽選フォームに応募</span>
+          <span class="step-desc">ご案内した抽選フォームに必要事項を記入して応募してください。</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span>
+          <span class="step-title">抽選</span>
+          <span class="step-desc">抽選フォームの締め切り後に抽選を行い、当選した方へ正式なお見積もりをお送りします。落選した場合のご連絡はいたしませんのであらかじめご了承ください。</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <span>
+          <span class="step-title">見積もりの確認</span>
+          <span class="step-desc">お送りした見積もりをご確認いただき、2日以内にご返答をお願いします。2日以内にご返答がない場合は、繰り上げ当選の方にご連絡いたします。ご返答がなかった方は、今後の抽選への応募をお断りする場合がございます。</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num">5</span>
+        <span>
+          <span class="step-title">お支払い・制作開始</span>
+          <span class="step-desc">ご同意いただいた後、お支払いをしていただき、材料の発注・制作を開始いたします。</span>
+        </span>
+      </li>
+    </ol>
+  </div>
+
+  <!-- 制作期間 -->
+  <div class="card">
+    <div class="section-heading">制作期間</div>
+    <p>当選月の2〜3週間（土日祝除く）</p>
+    <p>受注状況やデザインの複雑さによって前後する場合がございます。</p>
+    <p>必要な材料が手元にある場合は、少し前倒しで納品できる場合があります。</p>
+    <p>手作りのため、制作が始まってからの大幅なデザイン変更やリテイクはお受けできかねます。あらかじめご了承ください。</p>
+  </div>
+
+  <!-- 修正について -->
+  <div class="card">
+    <div class="section-heading">修正について</div>
+    <p>組み立て（パーツ固定）の前に、パーツ位置などの確認のご連絡をさせていただきます。</p>
+    <p>顔の刺繍および昇華プリントの色味については、できる限りイメージに近づけるよう努めておりますが、素材の特性上、後からの修正が難しい部分となります。ご理解いただけますと幸いです。</p>
+  </div>
+
+  <!-- 発送について -->
+  <div class="card">
+    <div class="section-heading">発送について</div>
+    <p>発送先は制作完了後に確認させていただきます。</p>
+    <p>クリックポストにて発送いたします。（送料は基本料金に含まれています）</p>
+  </div>
+
+  <!-- ご用意いただくもの -->
+  <div class="card">
+    <div class="section-heading">ご用意いただくもの</div>
+    <ul class="caution-list">
+      <li>キャラクターのミニキャライラスト<br>
+        <span style="font-size:.9rem;color:#555;">正面・後ろ姿の2面があると、より再現度が高くなります！<br>デフォルメされていないイラストからの制作はできかねますのでご注意ください。詳しくは画像をご確認ください。</span>
+      </li>
+    </ul>
+    <div class="notice-box" style="margin-top:.85rem;">
+      デザイン画（イラスト）はご自身でご用意ください。制作の許可を得ているデザインに限ります。<br>
+      AIによって生成されたイラストはお受けできません。
+    </div>
+  </div>
+
+  <!-- 著作権・肖像権について -->
+  <div class="card">
+    <div class="section-heading">著作権・肖像権について</div>
+    <ul class="caution-list">
+      <li>版権キャラクターやVTuberなどのご依頼は、二次創作ガイドラインにて、「個人への有償依頼（オーダーメイド制作）」や、「立体物の制作・販売」が公式に許可されている作品のみお受け可能です。トラブル防止のため、ご依頼前に必ずご自身でガイドラインの確認をお願いいたします。</li>
+      <li>著作権のトラブルに関して、当方では一切の責任を負いかねます。</li>
+    </ul>
+  </div>
+
+  <!-- 免責事項 -->
+  <div class="card">
+    <div class="section-heading">免責事項</div>
+    <ul class="caution-list">
+      <li>当サービスでは、デザイン（イラスト）の権利関係に関して、個別の確認を行っておりません。</li>
+      <li>制作した作品に関して発生したトラブルにつきましては、一切の責任を負いません。</li>
+    </ul>
+  </div>
+
+  <!-- よくある質問 -->
+  <div class="card">
+    <div class="section-heading">よくある質問</div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Q. イラストが描けないので、デザインから描いてほしいです。</div>
+        <div class="faq-a">当方ではイラストの描き起こしは行っておりません。つなぐ内には素敵なミニキャライラストを描かれるクリエイター様がたくさんいらっしゃいますので、ぜひそちらで「ぬいぐるみ制作の許可」をいただいた上でイラストをご用意ください！</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q. 納期指定やお急ぎ納品はできますか？</div>
+        <div class="faq-a">1体ずつ手作りで時間がかかるため、基本的にお受けしておりません。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q. 匿名配送はできますか？</div>
+        <div class="faq-a">申し訳ありませんが、現在は匿名配送には対応しておりません。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
