@@ -275,6 +275,71 @@
     object-fit: cover;
     display: block;
   }
+
+  /* トーク風お問い合わせ例 */
+  .talk-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    margin-top: .25rem;
+  }
+  .talk-row {
+    display: flex;
+  }
+  .talk-row.right { justify-content: flex-end; }
+  .talk-row.left  { justify-content: flex-start; }
+
+  .talk-bubble {
+    position: relative;
+    max-width: 88%;
+    padding: .85rem 1rem;
+    font-size: .92rem;
+    line-height: 1.75;
+    color: #333;
+    background: #fff;
+  }
+
+  /* ピンク（お客様） */
+  .talk-bubble.pink {
+    border: 5px solid #e07878;
+    border-radius: 16px 16px 4px 16px;
+  }
+  .talk-bubble.pink::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    right: -3px;
+    width: 0; height: 0;
+    border-left: 13px solid transparent;
+    border-top: 13px solid #e07878;
+  }
+
+  /* ブルー（制作者） */
+  .talk-bubble.blue {
+    border: 5px solid #7888d8;
+    border-radius: 16px 16px 16px 4px;
+  }
+  .talk-bubble.blue::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: -3px;
+    width: 0; height: 0;
+    border-right: 13px solid transparent;
+    border-top: 13px solid #7888d8;
+  }
+
+  /* 吹き出し内の画像プレースホルダー */
+  .talk-img-placeholder {
+    margin-top: .6rem;
+    background: #e0e0de;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    font-size: .85rem;
+    color: #888;
+    font-weight: 700;
+  }
 </style>
 </head>
 <body>
@@ -318,7 +383,7 @@
     <div class="section-heading">コミッションの流れ</div>
     <p style="margin-bottom:.6rem;font-size:.92rem;color:#555;">このコミッションはスケジュール管理の都合上、抽選式となっております。</p>
     <div class="notice-box" style="margin-bottom:1rem;">1回の抽選で2〜3ヶ月分の制作枠を一括で受け付けております。当選後の制作月はランダムに割り当てられるため、ご希望の月を選ぶことはできません。お急ぎの方にはご不便をおかけしますが、長期間お待ちいただける方のみご応募ください。<br><br>
-      例：6月中旬〜下旬に抽選受付を行った場合、7月制作分は全額・8〜9月制作分は手付金（半額）のお支払いとなります</div>
+      例：6月中旬〜下旬に抽選受付を行った場合、7月制作分は全額・8〜9月制作分は手付金（お支払い総額の半額）のお支払いとなります</div>
     <ol class="step-list">
       <li>
         <span class="step-num">1</span>
@@ -332,7 +397,7 @@
         <span>
           <span class="step-title">抽選フォームに応募</span>
           <span class="step-desc">
-            制作可能と判断した場合、個別に抽選フォームのリンクをお送りします。<br>フォームに必要事項を記入のうえ、ご応募ください。</span>
+            お送りした抽選フォームに必要事項を記入のうえ、ご応募ください。</span>
         </span>
       </li>
       <li>
@@ -413,6 +478,34 @@
     </div>
   </div>
 
+   <!-- お問い合わせ例 -->
+  <div class="card">
+    <div class="section-heading">お問い合わせ例</div>
+    <div class="talk-list">
+
+      <div class="talk-row right">
+        <div class="talk-bubble pink">
+          はじめまして！<br>
+          2.5Dぬい制作に応募したいです。<br><br>
+          このイラストで制作できますか？
+          <div class="talk-img-placeholder">イラストの画像</div>
+        </div>
+      </div>
+
+      <div class="talk-row left">
+        <div class="talk-bubble blue">
+          はじめまして！<br>
+          ご連絡ありがとうございます。<br><br>
+          制作可能です！<br>
+          大体〇〇〜〇〇円の範囲で制作ができます。<br>
+          抽選フォームのURLをお送りします。<br><br>
+          https://〇〇〇〇……
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- 著作権・肖像権について -->
   <div class="card">
     <div class="section-heading">著作権・肖像権について</div>
@@ -449,6 +542,8 @@
       </div>
     </div>
   </div>
+
+ 
 
 </div>
 <script>
